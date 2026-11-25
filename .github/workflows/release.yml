@@ -77,18 +77,15 @@ jobs:
       - name: Build APKs
         run: |
           flutter build apk --release \
-            --android-skip-build-dependency-validation \
             --build-name="$VERSION_NAME" \
             --build-number="$GITHUB_RUN_NUMBER"
           flutter build apk --release --split-per-abi \
-            --android-skip-build-dependency-validation \
             --build-name="$VERSION_NAME" \
             --build-number="$GITHUB_RUN_NUMBER"
 
       - name: Build AAB
         run: |
           flutter build appbundle --release \
-            --android-skip-build-dependency-validation \
             --build-name="$VERSION_NAME" \
             --build-number="$GITHUB_RUN_NUMBER"
 
