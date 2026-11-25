@@ -75,3 +75,7 @@
 .env*
 !.env.example
 docs/
+
+# Release signing material injected by CI
+*.p12
+android/upload-keystore.p12
