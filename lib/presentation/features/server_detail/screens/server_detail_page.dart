@@ -79,6 +79,10 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
 
   late int _selectedIndex;
   final Map<int, double> _scrollOffsets = {};
+
+  /// 已访问过的 Tab。未访问的 Tab 不构建，避免进入详情页时同时挂载
+  /// 概览、网站、文件、容器、更多 5 个页面并并发发起请求造成首帧卡顿。
+  late final Set<int> _mountedTabs;
   bool _isTabBarVisible = true;
   bool _scrollStateUpdateScheduled = false;
 
@@ -92,6 +96,7 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
   void initState() {
     super.initState();
     _selectedIndex = widget.initialIndex.clamp(0, 4).toInt();
+    _mountedTabs = {_selectedIndex};
   }
 
   @override
@@ -221,11 +226,26 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
             child: IndexedStack(
               index: _selectedIndex,
               children: [
-                DashboardPage(isActive: _selectedIndex == 0),
-                WebsitesPage(isActive: _selectedIndex == 1),
-                FilesPage(tabBarVisible: showTabBar),
-                ContainersPage(isActive: _selectedIndex == 3),
-                MorePage(onOpenFilesPath: _openFilesPath),
+                if (_mountedTabs.contains(0))
+                  DashboardPage(isActive: _selectedIndex == 0)
+                else
+                  const SizedBox.shrink(),
+                if (_mountedTabs.contains(1))
+                  WebsitesPage(isActive: _selectedIndex == 1)
+                else
+                  const SizedBox.shrink(),
+                if (_mountedTabs.contains(2))
+                  FilesPage(tabBarVisible: showTabBar)
+                else
+                  const SizedBox.shrink(),
+                if (_mountedTabs.contains(3))
+                  ContainersPage(isActive: _selectedIndex == 3)
+                else
+                  const SizedBox.shrink(),
+                if (_mountedTabs.contains(4))
+                  MorePage(onOpenFilesPath: _openFilesPath)
+                else
+                  const SizedBox.shrink(),
               ],
             ),
           ),
@@ -273,6 +293,7 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
                       (_isSearchMode || _searchController.text.isNotEmpty);
                   setState(() {
                     _selectedIndex = index;
+                    _mountedTabs.add(index);
                     _isSearchMode = false;
                   });
                   if (shouldClearFileSearch) _clearFileSearch();

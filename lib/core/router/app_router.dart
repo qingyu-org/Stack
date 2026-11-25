@@ -23,18 +23,22 @@ final appRouter = GoRouter(
   routes: [
     GoRoute(
       path: '/',
-      builder: (context, state) => const ServersPage(),
+      pageBuilder: (context, state) =>
+          CupertinoPage<void>(key: state.pageKey, child: const ServersPage()),
     ),
     GoRoute(
       path: '/server/:id',
-      builder: (context, state) {
+      pageBuilder: (context, state) {
         final idStr = state.pathParameters['id']!;
         final id = int.tryParse(idStr) ?? 0;
-        return ProviderScope(
-          overrides: [
-            activeServerIdProvider.overrideWithValue(id),
-          ],
-          child: const ServerDetailPage(),
+        return CupertinoPage<void>(
+          key: state.pageKey,
+          child: ProviderScope(
+            overrides: [
+              activeServerIdProvider.overrideWithValue(id),
+            ],
+            child: const ServerDetailPage(),
+          ),
         );
       },
     ),

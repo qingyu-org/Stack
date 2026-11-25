@@ -47,6 +47,7 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
 
   int _selectedIndex = 0;
   Timer? _refreshTimer;
+  Timer? _popRefreshTimer;
   ProviderSubscription<AsyncValue<AppSettings>>? _settingsSubscription;
   bool _autoRefreshEnabled = true;
   int _refreshIntervalSeconds =
@@ -73,6 +74,7 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   @override
   void didPushNext() {
     _isCurrentRoute = false;
+    _popRefreshTimer?.cancel();
     _stopTimer();
   }
 
@@ -80,7 +82,12 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   void didPopNext() {
     _isCurrentRoute = true;
     _syncTimerWithSettings();
-    _refreshServerSnapshots();
+    // 等返回动画结束再刷新卡片快照，避免在转场期间同时重建整页列表
+    // 与发起网络请求，造成退出页面时的掉帧。
+    _popRefreshTimer?.cancel();
+    _popRefreshTimer = Timer(const Duration(milliseconds: 320), () {
+      if (mounted) _refreshServerSnapshots();
+    });
   }
 
   void _applyRefreshSettings(AppSettings? settings) {
@@ -113,6 +120,7 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   void dispose() {
     routeObserver.unsubscribe(this);
     _settingsSubscription?.close();
+    _popRefreshTimer?.cancel();
     _stopTimer();
     super.dispose();
   }
