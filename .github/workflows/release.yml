@@ -116,6 +116,30 @@ jobs:
             echo "verified: $apk"
           done
 
+      - name: Verify APK metadata
+        run: |
+          SDK="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
+          AAPT="$(find "$SDK/build-tools" -name aapt -type f | sort -V | tail -1)"
+          if [ -z "$AAPT" ]; then
+            echo "::error::aapt not found"
+            exit 1
+          fi
+          APK="build/app/outputs/flutter-apk/app-release.apk"
+          BADGING="$("$AAPT" dump badging "$APK")"
+          echo "$BADGING" | head -5
+          echo "$BADGING" | grep -q "package: name='cc.boring_lab.monodash'" || {
+            echo "::error::unexpected applicationId; this would break in-place updates"
+            exit 1
+          }
+          echo "$BADGING" | grep -q "versionCode='$VERSION_CODE'" || {
+            echo "::error::APK versionCode does not match pubspec ($VERSION_CODE)"
+            exit 1
+          }
+          echo "$BADGING" | grep -q "application-label:'FeatherStack'" || {
+            echo "::error::APK application label is not FeatherStack"
+            exit 1
+          }
+
       - name: Build AAB
         run: |
           flutter build appbundle --release \
