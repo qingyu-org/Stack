@@ -525,6 +525,7 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
 
     setState(() {
       _selectedIndex = 2;
+      _mountedTabs.add(2);
       _isSearchMode = false;
       _isTabBarVisible = true;
     });
