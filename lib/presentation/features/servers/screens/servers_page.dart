@@ -487,11 +487,10 @@ class _ProServerCardView extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-    final shouldFetch = server.nodes.isEmpty || server.hasChildNodes;
-    final nodes = shouldFetch
-        ? (ref.watch(serverNodesProvider(server.id)).valueOrNull ??
-              server.nodes)
-        : server.nodes;
+    // 探测阶段即使没拿到子节点，Server.nodes 也会被补成 [local]；因此不
+    // 能以缓存为空作为「需要刷新」的条件，Pro 面板统一以实时列表为准。
+    final nodes =
+        ref.watch(serverNodesProvider(server.id)).valueOrNull ?? server.nodes;
     final hasChildren = nodes.any((node) => !node.isLocal);
 
     if (!hasChildren) {
