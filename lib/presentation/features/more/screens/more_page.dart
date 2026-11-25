@@ -8,9 +8,12 @@ import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/sub_menu_page.dart';
 import '../../../common/components/terminal/app_terminal.dart';
 import '../../server_detail/providers/active_server_provider.dart';
+import '../../servers/providers/node_providers.dart';
 import '../../servers/providers/servers_provider.dart';
 import '../../pro/screens/node_management_page.dart';
 import '../../pro/screens/pro_feature_page.dart';
+import '../../pro/screens/waf_page.dart';
+import '../../pro/screens/website_monitor_page.dart';
 import '../../app_store/screens/app_store_page.dart';
 import '../../databases/screens/database_page.dart';
 import '../../websites/screens/ssl_manage_page.dart';
@@ -33,7 +36,12 @@ class MorePage extends ConsumerWidget {
     final l10n = context.l10n;
     final serverId = ref.watch(activeServerIdProvider);
     final activeServer = _findServer(ref, serverId);
+    // Pro 能力按活动节点判断：1Panel Pro 的只有主节点有 WAF/监控/报表，
+    // 子节点即使绑定了授权也按社区版展示。
     final isPro = activeServer?.isProActive ?? false;
+    final nodeIsPro = isPro
+        ? ref.watch(activeNodeIsProProvider(serverId))
+        : false;
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(
         parent: BouncingScrollPhysics(),
@@ -175,6 +183,8 @@ class MorePage extends ConsumerWidget {
                 SubMenuCard(
                   title: l10n.pro_sectionTitle,
                   children: [
+                    // 多机管理始终保留：即使当前选中的是社区版子节点，也要
+                    // 能从 More 页切回主节点。
                     SubMenuRow(
                       icon: TablerIcons.sitemap,
                       iconColor: CupertinoColors.activeBlue,
@@ -187,62 +197,65 @@ class MorePage extends ConsumerWidget {
                         ),
                       ),
                     ),
-                    SubMenuRow(
-                      icon: TablerIcons.shield_lock,
-                      iconColor: CupertinoColors.systemRed,
-                      title: l10n.pro_waf_title,
-                      subtitle: l10n.pro_waf_subtitle,
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (_) => WafPage(serverId: serverId),
+                    if (nodeIsPro) ...[
+                      SubMenuRow(
+                        icon: TablerIcons.shield_lock,
+                        iconColor: CupertinoColors.systemRed,
+                        title: l10n.pro_waf_title,
+                        subtitle: l10n.pro_waf_subtitle,
+                        onTap: () => Navigator.of(context).push(
+                          CupertinoPageRoute<void>(
+                            builder: (_) => WafPage(serverId: serverId),
+                          ),
                         ),
                       ),
-                    ),
-                    SubMenuRow(
-                      icon: TablerIcons.chart_line,
-                      iconColor: CupertinoColors.systemGreen,
-                      title: l10n.pro_monitor_title,
-                      subtitle: l10n.pro_monitor_subtitle,
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (_) =>
-                              WebsiteMonitorPage(serverId: serverId),
+                      SubMenuRow(
+                        icon: TablerIcons.chart_line,
+                        iconColor: CupertinoColors.systemGreen,
+                        title: l10n.pro_monitor_title,
+                        subtitle: l10n.pro_monitor_subtitle,
+                        onTap: () => Navigator.of(context).push(
+                          CupertinoPageRoute<void>(
+                            builder: (_) =>
+                                WebsiteMonitorPage(serverId: serverId),
+                          ),
                         ),
                       ),
-                    ),
-                    SubMenuRow(
-                      icon: TablerIcons.report_analytics,
-                      iconColor: CupertinoColors.systemPurple,
-                      title: l10n.pro_opsReport_title,
-                      subtitle: l10n.pro_opsReport_subtitle,
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (_) => OpsReportPage(serverId: serverId),
+                      SubMenuRow(
+                        icon: TablerIcons.report_analytics,
+                        iconColor: CupertinoColors.systemPurple,
+                        title: l10n.pro_opsReport_title,
+                        subtitle: l10n.pro_opsReport_subtitle,
+                        onTap: () => Navigator.of(context).push(
+                          CupertinoPageRoute<void>(
+                            builder: (_) => OpsReportPage(serverId: serverId),
+                          ),
                         ),
                       ),
-                    ),
-                    SubMenuRow(
-                      icon: TablerIcons.lock,
-                      iconColor: CupertinoColors.systemOrange,
-                      title: l10n.pro_tamper_title,
-                      subtitle: l10n.pro_tamper_subtitle,
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (_) => TamperPage(serverId: serverId),
+                      SubMenuRow(
+                        icon: TablerIcons.lock,
+                        iconColor: CupertinoColors.systemOrange,
+                        title: l10n.pro_tamper_title,
+                        subtitle: l10n.pro_tamper_subtitle,
+                        onTap: () => Navigator.of(context).push(
+                          CupertinoPageRoute<void>(
+                            builder: (_) => TamperPage(serverId: serverId),
+                          ),
                         ),
                       ),
-                    ),
-                    SubMenuRow(
-                      icon: TablerIcons.refresh_dot,
-                      iconColor: CupertinoColors.systemTeal,
-                      title: l10n.pro_sync_title,
-                      subtitle: l10n.pro_sync_subtitle,
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (_) => ResourceSyncPage(serverId: serverId),
+                      SubMenuRow(
+                        icon: TablerIcons.refresh_dot,
+                        iconColor: CupertinoColors.systemTeal,
+                        title: l10n.pro_sync_title,
+                        subtitle: l10n.pro_sync_subtitle,
+                        onTap: () => Navigator.of(context).push(
+                          CupertinoPageRoute<void>(
+                            builder: (_) =>
+                                ResourceSyncPage(serverId: serverId),
+                          ),
                         ),
                       ),
-                    ),
+                    ],
                   ],
                 ),
               ],
