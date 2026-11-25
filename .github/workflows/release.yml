@@ -28,6 +28,8 @@ jobs:
     steps:
       - name: Checkout
         uses: actions/checkout@v4
+        with:
+          fetch-depth: 0
 
       - name: Set up Java
         uses: actions/setup-java@v4
@@ -64,6 +66,21 @@ jobs:
           echo "VERSION_CODE=$VERSION_CODE" >> "$GITHUB_ENV"
           echo "building $TAG with versionCode $VERSION_CODE"
 
+          # Android only accepts an in-place update when versionCode increases.
+          # Compare against the previous release tag before spending build time.
+          PREV_TAG="$(git tag --sort=-v:refname | grep -vx "$TAG" | head -n 1 || true)"
+          if [ -n "$PREV_TAG" ]; then
+            PREV_LINE="$(git show "$PREV_TAG:pubspec.yaml" 2>/dev/null | grep '^version:' || true)"
+            PREV_CODE="$(echo "$PREV_LINE" | sed 's/version:[[:space:]]*//' | cut -d+ -f2)"
+            if [ -n "$PREV_CODE" ]; then
+              if [ "$VERSION_CODE" -le "$PREV_CODE" ]; then
+                echo "::error::versionCode $VERSION_CODE must be greater than $PREV_CODE from $PREV_TAG"
+                exit 1
+              fi
+              echo "versionCode $VERSION_CODE > $PREV_CODE from $PREV_TAG"
+            fi
+          fi
+
       - name: Configure release signing
         env:
           ANDROID_KEYSTORE_BASE64: ${{ secrets.ANDROID_KEYSTORE_BASE64 }}
@@ -98,6 +115,11 @@ jobs:
             --build-number="$VERSION_CODE"
 
       - name: Verify APK signatures
+        env:
+          # Stable FeatherStack release certificate SHA-256. Pinning the
+          # fingerprint (not just CN=FeatherStack) prevents a different
+          # keystore with the same subject from silently breaking updates.
+          EXPECTED_CERT_SHA256: "27d93933cf183386071af4441ad750def4c1f9a28d2b7623f5ee961fed4b5b33"
         run: |
           SDK="${ANDROID_HOME:-$ANDROID_SDK_ROOT}"
           APKSIGNER="$(find "$SDK/build-tools" -name apksigner -type f | sort -V | tail -1)"
@@ -110,6 +132,12 @@ jobs:
             "$APKSIGNER" verify --print-certs "$apk" > /tmp/apk-certs.txt
             if ! grep -q "CN=FeatherStack" /tmp/apk-certs.txt; then
               echo "::error::unexpected signing certificate for $apk"
+              cat /tmp/apk-certs.txt
+              exit 1
+            fi
+            SEEN_CERT_SHA256="$(sed -n 's/^Signer #1 certificate SHA-256 digest: //p' /tmp/apk-certs.txt | tr -d ':' | tr 'A-F' 'a-f' | tr -d '[:space:]')"
+            if [ "$SEEN_CERT_SHA256" != "$EXPECTED_CERT_SHA256" ]; then
+              echo "::error::APK signing certificate fingerprint does not match the stable FeatherStack keystore"
               cat /tmp/apk-certs.txt
               exit 1
             fi
