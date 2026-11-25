@@ -28,6 +28,7 @@ class PanelProbeService {
     }
 
     var nodes = <PanelNode>[];
+    List<PanelNode>? simpleNodes;
     try {
       nodes = await api.listNodes();
       nodeApiAvailable = true;
@@ -39,7 +40,8 @@ class PanelProbeService {
       error = '$e';
       try {
         // 某些版本只开放 simple/all，仍可用它拿到节点名与资源概览。
-        nodes = await api.listSimpleNodes();
+        simpleNodes = await api.listSimpleNodes();
+        nodes = simpleNodes;
         nodeApiAvailable = nodes.isNotEmpty;
         if (nodes.any((node) => !node.isLocal)) isPro = true;
       } catch (_) {
@@ -49,10 +51,8 @@ class PanelProbeService {
 
     if (nodeApiAvailable) {
       try {
-        nodes = PanelNode.mergeSimpleMetrics(
-          nodes,
-          await api.listSimpleNodes(),
-        );
+        simpleNodes ??= await api.listSimpleNodes();
+        nodes = PanelNode.mergeSimpleMetrics(nodes, simpleNodes);
       } catch (_) {
         // 资源指标是锦上添花，失败不影响节点结构。
       }
