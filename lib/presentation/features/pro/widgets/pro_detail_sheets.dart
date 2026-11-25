@@ -69,6 +69,10 @@ class _WafLogDetailSheet extends ConsumerWidget {
                     value: data.method,
                   ),
                   _InfoRow(
+                    label: proText(context, zh: '处理动作', en: 'Action'),
+                    value: data.action,
+                  ),
+                  _InfoRow(
                     label: proText(context, zh: '状态码', en: 'Status'),
                     value: data.statusCode,
                   ),
@@ -242,7 +246,9 @@ class _DetailHero extends StatelessWidget {
           ),
           ProStatusPill(
             healthy: false,
-            label: proText(context, zh: '已拦截', en: 'Blocked'),
+            label: entry.denied
+                ? proText(context, zh: '已拦截', en: 'Blocked')
+                : proText(context, zh: '已记录', en: 'Logged'),
           ),
         ],
       ),
