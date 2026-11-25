@@ -17,11 +17,19 @@ class ActiveNodeController extends AutoDisposeFamilyAsyncNotifier<String, int> {
     final storage = ref.watch(storageServiceProvider);
     final stored = storage.activeNodeName(serverId);
     final server = await storage.getServer(serverId);
-    if (server == null || server.nodes.isEmpty) return stored;
-    final exists = server.nodes.any((node) => node.name == stored);
-    if (exists) return stored;
-    await storage.setActiveNodeName(serverId, PanelNode.localName);
-    return PanelNode.localName;
+
+    // 非专业版面板没有子节点可路由；清掉历史选择，避免把社区版请求
+    // 错误地带上 CurrentNode。
+    if (server == null || !server.isProActive) {
+      if (stored.isNotEmpty) {
+        await storage.setActiveNodeName(serverId, '');
+      }
+      return PanelNode.localName;
+    }
+
+    // 节点拓扑可能比本地缓存新（刷新后才会回写），因此这里不再用缓存
+    // 列表否定用户的选择；真正的节点列表由 serverNodesProvider 校验。
+    return stored.isEmpty ? PanelNode.localName : stored;
   }
 
   /// 切换当前节点。`local` 表示主面板本身。
