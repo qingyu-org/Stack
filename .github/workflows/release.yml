@@ -199,8 +199,8 @@ jobs:
       - name: Package zip
         shell: pwsh
         run: |
-          $exe = Get-ChildItem build\windows -Recurse -Filter mono_dash.exe | Select-Object -First 1
-          if (-not $exe) { throw "mono_dash.exe not found" }
+          $exe = Get-ChildItem build\windows -Recurse -Filter onepanel_mate.exe | Select-Object -First 1
+          if (-not $exe) { throw "onepanel_mate.exe not found" }
           $dir = $exe.Directory.FullName
           New-Item -ItemType Directory -Force dist | Out-Null
           Compress-Archive -Path "$dir\*" -DestinationPath "dist\MonoDash-$env:VERSION_NAME-windows-x64.zip" -Force
