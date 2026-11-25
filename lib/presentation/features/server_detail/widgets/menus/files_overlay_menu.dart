@@ -139,15 +139,12 @@ class FilesOverlayMenu extends ConsumerWidget {
                     '/';
                 final result = await FilePicker.pickFiles(
                   type: FileType.image,
-                  allowMultiple: true,
                 );
-                if (result != null &&
-                    result.files.isNotEmpty &&
-                    context.mounted) {
+                if (result.isNotEmpty && context.mounted) {
                   await showFileUploadSheet(
                     context,
                     path,
-                    initialFiles: result.files,
+                    initialFiles: result,
                   );
                 }
               },
@@ -164,15 +161,12 @@ class FilesOverlayMenu extends ConsumerWidget {
                     '/';
                 final result = await FilePicker.pickFiles(
                   type: FileType.any,
-                  allowMultiple: true,
                 );
-                if (result != null &&
-                    result.files.isNotEmpty &&
-                    context.mounted) {
+                if (result.isNotEmpty && context.mounted) {
                   await showFileUploadSheet(
                     context,
                     path,
-                    initialFiles: result.files,
+                    initialFiles: result,
                   );
                 }
               },

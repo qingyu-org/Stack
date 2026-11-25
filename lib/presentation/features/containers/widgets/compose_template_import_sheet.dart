@@ -22,17 +22,13 @@ Future<void> importComposeTemplates(BuildContext context, WidgetRef ref) async {
     allowedExtensions: ['json'],
   );
 
-  if (result == null || result.files.isEmpty) return;
+  if (result.isEmpty) return;
 
-  final file = result.files.first;
+  final file = result.first;
   final String jsonString;
   try {
     if (kIsWeb) {
-      if (file.bytes == null) {
-        showAppErrorToast(cannotReadFileText);
-        return;
-      }
-      jsonString = utf8.decode(file.bytes!);
+      jsonString = utf8.decode(await file.readAsBytes());
     } else {
       if (file.path == null) {
         showAppErrorToast(cannotReadFileText);

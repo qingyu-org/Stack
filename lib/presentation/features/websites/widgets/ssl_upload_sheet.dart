@@ -172,13 +172,10 @@ class _SslUploadSheetState extends State<_SslUploadSheet> {
   }
 
   Future<void> _pickLocalFile(TextEditingController controller) async {
-    final result = await FilePicker.pickFiles(
-      type: FileType.any,
-      allowMultiple: false,
-    );
-    if (!mounted || result == null || result.files.isEmpty) return;
+    final result = await FilePicker.pickFile(type: FileType.any);
+    if (!mounted || result == null) return;
 
-    final path = result.files.first.path;
+    final path = result.path;
     if (path == null || path.isEmpty) return;
     controller.text = path;
   }

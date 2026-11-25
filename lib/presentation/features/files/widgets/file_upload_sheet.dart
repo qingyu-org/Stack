@@ -62,7 +62,7 @@ class _FileUploadSheetState extends ConsumerState<FileUploadSheet>
     if (widget.initialFiles != null && widget.initialFiles!.isNotEmpty) {
       final tasks = widget.initialFiles!
           .where((f) => f.path != null)
-          .map((f) => UploadTask(filePath: f.path!, fileSize: f.size))
+          .map((f) => UploadTask(filePath: f.path!, fileSize: f.lengthSync() ?? 0))
           .toList();
       _tasks.addAll(tasks);
     }
@@ -80,13 +80,13 @@ class _FileUploadSheetState extends ConsumerState<FileUploadSheet>
   }
 
   Future<void> _pickFiles(FileType type) async {
-    final result = await FilePicker.pickFiles(allowMultiple: true, type: type);
+    final result = await FilePicker.pickFiles(type: type);
     if (!mounted) return;
-    if (result == null || result.files.isEmpty) return;
+    if (result.isEmpty) return;
 
-    final newTasks = result.files
+    final newTasks = result
         .where((f) => f.path != null)
-        .map((f) => UploadTask(filePath: f.path!, fileSize: f.size))
+        .map((f) => UploadTask(filePath: f.path!, fileSize: f.lengthSync() ?? 0))
         .toList();
 
     final startIndex = _tasks.length;

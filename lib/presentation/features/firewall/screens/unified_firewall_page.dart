@@ -629,13 +629,10 @@ class _UnifiedFirewallPageState extends ConsumerState<UnifiedFirewallPage> {
       final picked = await FilePicker.pickFiles(
         type: FileType.custom,
         allowedExtensions: ['json'],
-        withData: true,
       );
-      if (picked == null || picked.files.isEmpty || !mounted) return;
-      final file = picked.files.single;
-      final content = file.bytes != null
-          ? utf8.decode(file.bytes!)
-          : await File(file.path!).readAsString();
+      if (picked.isEmpty || !mounted) return;
+      final file = picked.single;
+      final content = utf8.decode(await file.readAsBytes());
       final decoded = jsonDecode(content);
       if (decoded is! List) {
         throw const FormatException('JSON root must be an array');

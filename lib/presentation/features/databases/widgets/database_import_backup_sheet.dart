@@ -122,14 +122,14 @@ class _DatabaseImportBackupSheetState
   Future<void> _pickFromLocal() async {
     final result = await FilePicker.pickFiles(type: FileType.any);
     if (!mounted) return;
-    if (result == null || result.files.isEmpty) return;
+    if (result.isEmpty) return;
 
-    for (final file in result.files) {
+    for (final file in result) {
       if (file.path == null) continue;
       final task = _UploadTask(
         filePath: file.path!,
         fileName: file.name,
-        fileSize: file.size,
+        fileSize: file.lengthSync() ?? 0,
       );
       setState(() => _uploadTasks.add(task));
       _startUpload(task);
