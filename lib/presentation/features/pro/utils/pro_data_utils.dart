@@ -151,6 +151,34 @@ String _formatNumber(num value, {required bool zh}) {
   return value.toString();
 }
 
+/// 把字节数格式化成可读大小（1024 进制）。
+String formatProBytes(Object? value, {int decimals = 1}) {
+  var size = value is num
+      ? value.toDouble()
+      : double.tryParse(value?.toString() ?? '') ?? 0;
+  if (!size.isFinite || size <= 0) return '0 B';
+  const units = ['B', 'KB', 'MB', 'GB', 'TB', 'PB'];
+  var unit = 0;
+  while (size >= 1024 && unit < units.length - 1) {
+    size /= 1024;
+    unit++;
+  }
+  final digits = unit == 0 || size >= 100 ? 0 : decimals;
+  return '${size.toStringAsFixed(digits)} ${units[unit]}';
+}
+
+/// 统一格式化后端时间，兼容带时区的 ISO 与本地时间字符串。
+String formatProTime(String raw, {bool withSeconds = false}) {
+  if (raw.isEmpty) return '-';
+  final value = DateTime.tryParse(raw);
+  if (value == null) return raw;
+  final local = value.toLocal();
+  String two(int n) => n.toString().padLeft(2, '0');
+  final date = '${local.year}-${two(local.month)}-${two(local.day)}';
+  final time = '${two(local.hour)}:${two(local.minute)}';
+  return withSeconds ? '$date $time:${two(local.second)}' : '$date $time';
+}
+
 /// 列表行里可读的标题字段。
 String proRowTitle(Map<String, dynamic> row) {
   for (final key in const [

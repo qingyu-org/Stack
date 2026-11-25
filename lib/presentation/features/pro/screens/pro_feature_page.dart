@@ -3,7 +3,6 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
-import '../../../../data/api/pro_api.dart';
 import '../../../../domain/entities/panel_node.dart';
 import '../../../../domain/entities/server.dart';
 import '../../servers/providers/node_providers.dart';
@@ -204,78 +203,6 @@ class _ProNodeChip extends StatelessWidget {
           child: Text(l10n.common_cancel),
         ),
       ),
-    );
-  }
-}
-
-class WafPage extends StatelessWidget {
-  const WafPage({super.key, required this.serverId});
-
-  final int serverId;
-
-  @override
-  Widget build(BuildContext context) {
-    return ProFeaturePage(
-      serverId: serverId,
-      feature: ProFeature.waf,
-      baseTitle: context.l10n.pro_waf_title,
-      sectionTitles: (context) => {
-        'status': proText(context, zh: '运行状态', en: 'Status'),
-        'attack': proText(context, zh: '攻击统计', en: 'Attack stats'),
-        'relation': proText(context, zh: '拦截关系', en: 'Block relation'),
-        'stat': proText(context, zh: 'WAF 统计', en: 'WAF stats'),
-        'websites': proText(context, zh: '站点配置', en: 'Website config'),
-        'logs': proText(context, zh: '拦截日志', en: 'Block logs'),
-        'cdn': 'CDN',
-      },
-      sectionOrder: const [
-        'status',
-        'attack',
-        'relation',
-        'stat',
-        'websites',
-        'logs',
-        'cdn',
-      ],
-    );
-  }
-}
-
-class WebsiteMonitorPage extends StatelessWidget {
-  const WebsiteMonitorPage({super.key, required this.serverId});
-
-  final int serverId;
-
-  @override
-  Widget build(BuildContext context) {
-    return ProFeaturePage(
-      serverId: serverId,
-      feature: ProFeature.monitor,
-      baseTitle: context.l10n.pro_monitor_title,
-      sectionTitles: (context) => {
-        'status': proText(context, zh: '运行状态', en: 'Status'),
-        'stat': proText(context, zh: '实时统计', en: 'Live stats'),
-        'visitors': proText(context, zh: '访客趋势', en: 'Visitors'),
-        'locations': proText(context, zh: '访客地区', en: 'Locations'),
-        'qps': 'QPS',
-        'trend': proText(context, zh: '访问趋势', en: 'Traffic trend'),
-        'rank': proText(context, zh: '排行', en: 'Ranking'),
-        'websites': proText(context, zh: '网站', en: 'Websites'),
-        'logs': proText(context, zh: '请求日志', en: 'Request logs'),
-        'logStat': proText(context, zh: '日志统计', en: 'Log stats'),
-      },
-      sectionOrder: const [
-        'status',
-        'stat',
-        'visitors',
-        'locations',
-        'qps',
-        'trend',
-        'rank',
-        'websites',
-        'logs',
-        'logStat',
-      ],
     );
   }
 }
