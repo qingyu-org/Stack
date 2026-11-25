@@ -19,7 +19,10 @@ class OnePanelAuth {
     return {
       '1Panel-Token': token,
       '1Panel-Timestamp': timestamp,
-      if (nodeName.trim().isNotEmpty && nodeName.trim() != 'local')
+      // 1Panel Web 端对主节点也会显式发送 `CurrentNode: local`。部分
+      // XPack 接口（例如 WAF 攻击统计）缺少该头时会返回空数据，因此这里
+      // 只要知道节点名就发送，不能把 local 当作「不发送」。
+      if (nodeName.trim().isNotEmpty)
         'CurrentNode': Uri.encodeComponent(nodeName.trim()),
       HttpHeaders.userAgentHeader: userAgent,
     };

@@ -28,31 +28,20 @@ class PanelProbeService {
     }
 
     var nodes = <PanelNode>[];
-    List<PanelNode>? simpleNodes;
+    List<PanelNode>? currentNodes;
     try {
       nodes = await api.listNodes();
-      nodeApiAvailable = true;
-      if (nodes.any((node) => !node.isLocal) ||
-          nodes.any((node) => node.isXpack)) {
-        isPro = true;
-      }
+      nodeApiAvailable = nodes.isNotEmpty;
+      // 官方 Pro 用每个节点自己的 isXpack 决定该节点是否有 Pro 菜单。
+      if (nodes.any((node) => node.isXpack)) isPro = true;
     } catch (e) {
       error = '$e';
-      try {
-        // 某些版本只开放 simple/all，仍可用它拿到节点名与资源概览。
-        simpleNodes = await api.listSimpleNodes();
-        nodes = simpleNodes;
-        nodeApiAvailable = nodes.isNotEmpty;
-        if (nodes.any((node) => !node.isLocal)) isPro = true;
-      } catch (_) {
-        nodes = const [];
-      }
     }
 
     if (nodeApiAvailable) {
       try {
-        simpleNodes ??= await api.listSimpleNodes();
-        nodes = PanelNode.mergeSimpleMetrics(nodes, simpleNodes);
+        currentNodes = await api.listCurrentNodes();
+        nodes = PanelNode.mergeSimpleMetrics(nodes, currentNodes);
       } catch (_) {
         // 资源指标是锦上添花，失败不影响节点结构。
       }

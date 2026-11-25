@@ -17,14 +17,14 @@ String _$serversNotifierHash() => r'41f85757cdea9984ae2361e8686c42cbcdb53c71';
 @ProviderFor(ServersNotifier)
 final serversNotifierProvider =
     AutoDisposeAsyncNotifierProvider<ServersNotifier, List<Server>>.internal(
-  ServersNotifier.new,
-  name: r'serversNotifierProvider',
-  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-      ? null
-      : _$serversNotifierHash,
-  dependencies: null,
-  allTransitiveDependencies: null,
-);
+      ServersNotifier.new,
+      name: r'serversNotifierProvider',
+      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+          ? null
+          : _$serversNotifierHash,
+      dependencies: null,
+      allTransitiveDependencies: null,
+    );
 
 typedef _$ServersNotifier = AutoDisposeAsyncNotifier<List<Server>>;
 // ignore_for_file: type=lint

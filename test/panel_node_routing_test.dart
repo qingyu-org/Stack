@@ -98,8 +98,20 @@ void main() {
       expect(handled.queryParameters['page'], 1);
     });
 
-    test('omits CurrentNode for the primary node', () async {
+    test('sends CurrentNode=local for the primary node', () async {
       final interceptor = AuthInterceptor('api-key', nodeName: 'local');
+      final options = RequestOptions(path: '/api/v2/dashboard/base/os');
+      final handler = RequestInterceptorHandler();
+
+      interceptor.onRequest(options, handler);
+      final handled = (await handler.future).data as RequestOptions;
+
+      // 1Panel Web 端对主节点同样发送 local；部分 XPack 接口依赖该头。
+      expect(handled.headers['CurrentNode'], 'local');
+    });
+
+    test('omits CurrentNode when no node is known', () async {
+      final interceptor = AuthInterceptor('api-key');
       final options = RequestOptions(path: '/api/v2/dashboard/base/os');
       final handler = RequestInterceptorHandler();
 

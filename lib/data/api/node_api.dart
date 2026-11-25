@@ -4,17 +4,29 @@ import '../../../domain/entities/panel_node.dart';
 
 /// 1Panel 专业版节点与授权相关 API。
 ///
-/// 社区版没有 `/core/nodes/*` 与 `/core/licenses/status`，调用会返回
+/// 社区版没有 `/core/xpack/nodes/*` 与 `/core/licenses/*`，调用会返回
 /// 404/403；调用方应把它当作能力边界而不是致命错误。
 class NodeApi {
   NodeApi(this._client);
 
   final DioClient _client;
 
-  /// POST /api/v2/core/nodes/list
+  /// POST /api/v2/core/xpack/nodes/search
   ///
-  /// `type` 常用 `all` / `free`。返回的 `local` 代表主面板自身。
+  /// 1Panel Pro 的节点管理接口（官方 Web 端使用）。返回的 `local` 代表
+  /// 主面板自身；每个节点都带 `isXpack`，可用来判断该节点是否有 Pro 菜单。
   Future<List<PanelNode>> listNodes({String type = 'all'}) async {
+    try {
+      final resp = await _client.post<Map<String, dynamic>>(
+        '/api/v2/core/xpack/nodes/search',
+        data: {'page': 1, 'pageSize': 100},
+      );
+      final nodes = _parseNodeItems(resp.data ?? const {});
+      if (nodes.isNotEmpty) return nodes;
+    } catch (_) {
+      // 旧版 Pro 或接口权限不足时回退到旧节点接口。
+    }
+
     final resp = await _client.post<Map<String, dynamic>>(
       '/api/v2/core/nodes/list',
       data: {'type': type},
@@ -22,7 +34,27 @@ class NodeApi {
     return ApiResponseParser.list(resp, _nodeFromJson);
   }
 
-  /// GET /api/v2/core/nodes/all
+  /// GET /api/v2/core/xpack/nodes/current
+  ///
+  /// 返回所有节点的实时资源概览（CPU/内存），官方 Web 端节点卡片使用它。
+  Future<List<PanelNode>> listCurrentNodes() async {
+    try {
+      final resp = await _client.get<Map<String, dynamic>>(
+        '/api/v2/core/xpack/nodes/current',
+      );
+      final nodes = ApiResponseParser.list(resp, _nodeFromJson);
+      if (nodes.isNotEmpty) return nodes;
+    } catch (_) {
+      // 旧版接口回退。
+    }
+
+    final resp = await _client.get<Map<String, dynamic>>(
+      '/api/v2/core/nodes/simple/all',
+    );
+    return ApiResponseParser.list(resp, _nodeFromJson);
+  }
+
+  /// GET /api/v2/core/nodes/all（旧版 Pro）
   Future<List<PanelNode>> listAllNodes() async {
     final resp = await _client.get<Map<String, dynamic>>(
       '/api/v2/core/nodes/all',
@@ -30,15 +62,8 @@ class NodeApi {
     return ApiResponseParser.list(resp, _nodeFromJson);
   }
 
-  /// GET /api/v2/core/nodes/simple/all
-  ///
-  /// 返回节点卡片需要的 CPU / 内存概览。
-  Future<List<PanelNode>> listSimpleNodes() async {
-    final resp = await _client.get<Map<String, dynamic>>(
-      '/api/v2/core/nodes/simple/all',
-    );
-    return ApiResponseParser.list(resp, _nodeFromJson);
-  }
+  /// 兼容旧调用名；返回实时资源概览。
+  Future<List<PanelNode>> listSimpleNodes() => listCurrentNodes();
 
   /// GET /api/v2/core/licenses/status
   Future<NodeLicenseStatus> getLicenseStatus() async {
@@ -68,6 +93,26 @@ class NodeApi {
     return PanelNode.fromJson(Map<String, Object?>.from(map));
   }
 
+  static List<PanelNode> _parseNodeItems(Map<String, dynamic> resp) {
+    final data = resp['data'];
+    if (data is List) {
+      return [
+        for (final item in data)
+          if (item is Map) _nodeFromJson(Map<String, dynamic>.from(item)),
+      ];
+    }
+    if (data is Map) {
+      final items = data['items'] ?? data['list'];
+      if (items is List) {
+        return [
+          for (final item in items)
+            if (item is Map) _nodeFromJson(Map<String, dynamic>.from(item)),
+        ];
+      }
+    }
+    return const [];
+  }
+
   static PanelNode _nodeFromJson(Map<String, dynamic> json) {
     return PanelNode.fromJson(Map<String, Object?>.from(json));
   }
@@ -80,7 +125,7 @@ class NodeLicenseStatus {
     this.message = '',
   });
 
-  /// 1Panel 返回 `Bound` 表示专业版授权已绑定。
+  /// 1Panel 返回 `Bound`（或旧版 `Bound`/`bound`）表示专业版授权已绑定。
   final String status;
 
   /// 产品授权到期时间（时间戳字符串），未授权时可能为空。

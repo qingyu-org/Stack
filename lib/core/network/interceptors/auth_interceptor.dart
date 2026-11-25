@@ -53,7 +53,9 @@ class AuthInterceptor extends Interceptor {
     options.queryParameters.remove('operateNode');
 
     final nodeName = _nodeName.trim();
-    if (nodeName.isNotEmpty && nodeName != 'local') {
+    if (nodeName.isNotEmpty) {
+      // 主节点也要显式发送 `local`：1Panel Web 端同样如此，部分 XPack
+      // 接口（WAF 攻击统计等）缺少该头会返回空数据。
       options.headers[_headerNode] = Uri.encodeComponent(nodeName);
     } else {
       options.headers.remove(_headerNode);

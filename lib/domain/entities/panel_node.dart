@@ -7,12 +7,16 @@ class PanelNode {
   const PanelNode({
     required this.id,
     required this.name,
+    this.alias = '',
     this.status = '',
     this.version = '',
     this.isXpack = false,
     this.isBound = false,
     this.isLocal = false,
     this.address = '',
+    this.port = 0,
+    this.nodePort = 0,
+    this.syncStatus = '',
     this.groupId,
     this.groupBelong = '',
     this.isFavorite = false,
@@ -30,6 +34,9 @@ class PanelNode {
   /// 节点名称，也是 `CurrentNode` 头里的值。
   final String name;
 
+  /// 面板里展示的别名（主节点的 alias 通常是用户起的机器名）。
+  final String alias;
+
   /// 1Panel 返回的状态，常见为 `Healthy` / `UnHealthy`。
   final String status;
 
@@ -41,11 +48,14 @@ class PanelNode {
   final bool isLocal;
 
   final String address;
+  final int port;
+  final int nodePort;
+  final String syncStatus;
   final int? groupId;
   final String groupBelong;
   final bool isFavorite;
 
-  /// 以下字段来自 `/core/nodes/simple/all`，用于组卡上的资源概览。
+  /// 以下字段来自 `/core/xpack/nodes/current`，用于组卡上的资源概览。
   final double? cpuUsedPercent;
   final int? cpuTotal;
   final int? memoryTotal;
@@ -67,19 +77,31 @@ class PanelNode {
         normalized.contains('running');
   }
 
-  bool get isPro => isXpack || isBound;
+  /// 只有节点自身绑定了 XPack 授权才展示专业版功能。
+  ///
+  /// 1Panel Pro 的子节点也会返回 `isBound=true`（授权绑定在主面板上），
+  /// 但它们实际是社区版，只有 `isXpack=true` 的节点才有 Pro 菜单。
+  bool get isPro => isXpack;
 
-  String get displayName => name.isEmpty ? id : name;
+  String get displayName {
+    if (alias.trim().isNotEmpty) return alias.trim();
+    if (name.isEmpty) return id;
+    return name;
+  }
 
   PanelNode copyWith({
     String? id,
     String? name,
+    String? alias,
     String? status,
     String? version,
     bool? isXpack,
     bool? isBound,
     bool? isLocal,
     String? address,
+    int? port,
+    int? nodePort,
+    String? syncStatus,
     int? groupId,
     String? groupBelong,
     bool? isFavorite,
@@ -93,12 +115,16 @@ class PanelNode {
     return PanelNode(
       id: id ?? this.id,
       name: name ?? this.name,
+      alias: alias ?? this.alias,
       status: status ?? this.status,
       version: version ?? this.version,
       isXpack: isXpack ?? this.isXpack,
       isBound: isBound ?? this.isBound,
       isLocal: isLocal ?? this.isLocal,
       address: address ?? this.address,
+      port: port ?? this.port,
+      nodePort: nodePort ?? this.nodePort,
+      syncStatus: syncStatus ?? this.syncStatus,
       groupId: groupId ?? this.groupId,
       groupBelong: groupBelong ?? this.groupBelong,
       isFavorite: isFavorite ?? this.isFavorite,
@@ -115,12 +141,16 @@ class PanelNode {
     return {
       'id': id,
       'name': name,
+      'alias': alias,
       'status': status,
       'version': version,
       'isXpack': isXpack,
       'isBound': isBound,
       'isLocal': isLocal,
       'address': address,
+      'port': port,
+      'nodePort': nodePort,
+      'syncStatus': syncStatus,
       'groupId': groupId,
       'groupBelong': groupBelong,
       'isFavorite': isFavorite,
@@ -134,18 +164,22 @@ class PanelNode {
   }
 
   factory PanelNode.fromJson(Map<String, Object?> json) {
+    final name =
+        _stringValue(json['name']) ?? _stringValue(json['nodeName']) ?? '';
     return PanelNode(
-      id: _stringValue(json['id']) ?? localName,
-      name: _stringValue(json['name']) ?? '',
+      id: _stringValue(json['id']) ?? (name.isEmpty ? localName : name),
+      name: name,
+      alias: _stringValue(json['alias']) ?? '',
       status: _stringValue(json['status']) ?? '',
       version: _stringValue(json['version']) ?? '',
       isXpack: json['isXpack'] == true,
       isBound: json['isBound'] == true,
-      isLocal:
-          json['isLocal'] == true ||
-          (_stringValue(json['name']) ?? '').toLowerCase() == localName,
+      isLocal: json['isLocal'] == true || name.toLowerCase() == localName,
       address:
           _stringValue(json['address']) ?? _stringValue(json['addr']) ?? '',
+      port: _intValue(json['port']) ?? 0,
+      nodePort: _intValue(json['nodePort']) ?? 0,
+      syncStatus: _stringValue(json['syncStatus']) ?? '',
       groupId: _intValue(json['groupID'] ?? json['groupId']),
       groupBelong: _stringValue(json['groupBelong']) ?? '',
       isFavorite: json['isFavorite'] == true,

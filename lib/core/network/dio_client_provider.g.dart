@@ -59,21 +59,15 @@ class NodeDioClientFamily extends Family<AsyncValue<DioClient>> {
   /// 其它节点正在使用的客户端，避免中断进行中的上传/长请求。
   ///
   /// Copied from [nodeDioClient].
-  NodeDioClientProvider call(
-    NodeClientKey key,
-  ) {
-    return NodeDioClientProvider(
-      key,
-    );
+  NodeDioClientProvider call(NodeClientKey key) {
+    return NodeDioClientProvider(key);
   }
 
   @override
   NodeDioClientProvider getProviderOverride(
     covariant NodeDioClientProvider provider,
   ) {
-    return call(
-      provider.key,
-    );
+    return call(provider.key);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -104,24 +98,19 @@ class NodeDioClientProvider extends FutureProvider<DioClient> {
   /// 其它节点正在使用的客户端，避免中断进行中的上传/长请求。
   ///
   /// Copied from [nodeDioClient].
-  NodeDioClientProvider(
-    NodeClientKey key,
-  ) : this._internal(
-          (ref) => nodeDioClient(
-            ref as NodeDioClientRef,
-            key,
-          ),
-          from: nodeDioClientProvider,
-          name: r'nodeDioClientProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$nodeDioClientHash,
-          dependencies: NodeDioClientFamily._dependencies,
-          allTransitiveDependencies:
-              NodeDioClientFamily._allTransitiveDependencies,
-          key: key,
-        );
+  NodeDioClientProvider(NodeClientKey key)
+    : this._internal(
+        (ref) => nodeDioClient(ref as NodeDioClientRef, key),
+        from: nodeDioClientProvider,
+        name: r'nodeDioClientProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$nodeDioClientHash,
+        dependencies: NodeDioClientFamily._dependencies,
+        allTransitiveDependencies:
+            NodeDioClientFamily._allTransitiveDependencies,
+        key: key,
+      );
 
   NodeDioClientProvider._internal(
     super._createNotifier, {
@@ -221,21 +210,13 @@ class DioClientFamily extends Family<AsyncValue<DioClient>> {
   /// [nodeDioClientProvider] 持有，供进行中的请求 / 终端继续使用）。
   ///
   /// Copied from [dioClient].
-  DioClientProvider call(
-    int serverId,
-  ) {
-    return DioClientProvider(
-      serverId,
-    );
+  DioClientProvider call(int serverId) {
+    return DioClientProvider(serverId);
   }
 
   @override
-  DioClientProvider getProviderOverride(
-    covariant DioClientProvider provider,
-  ) {
-    return call(
-      provider.serverId,
-    );
+  DioClientProvider getProviderOverride(covariant DioClientProvider provider) {
+    return call(provider.serverId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -268,23 +249,18 @@ class DioClientProvider extends FutureProvider<DioClient> {
   /// [nodeDioClientProvider] 持有，供进行中的请求 / 终端继续使用）。
   ///
   /// Copied from [dioClient].
-  DioClientProvider(
-    int serverId,
-  ) : this._internal(
-          (ref) => dioClient(
-            ref as DioClientRef,
-            serverId,
-          ),
-          from: dioClientProvider,
-          name: r'dioClientProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$dioClientHash,
-          dependencies: DioClientFamily._dependencies,
-          allTransitiveDependencies: DioClientFamily._allTransitiveDependencies,
-          serverId: serverId,
-        );
+  DioClientProvider(int serverId)
+    : this._internal(
+        (ref) => dioClient(ref as DioClientRef, serverId),
+        from: dioClientProvider,
+        name: r'dioClientProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$dioClientHash,
+        dependencies: DioClientFamily._dependencies,
+        allTransitiveDependencies: DioClientFamily._allTransitiveDependencies,
+        serverId: serverId,
+      );
 
   DioClientProvider._internal(
     super._createNotifier, {
@@ -354,9 +330,7 @@ String _$nodeClientRevisionHash() =>
 abstract class _$NodeClientRevision extends BuildlessNotifier<int> {
   late final int serverId;
 
-  int build(
-    int serverId,
-  );
+  int build(int serverId);
 }
 
 /// 服务器配置（地址、API Key、证书）变更时递增。
@@ -389,21 +363,15 @@ class NodeClientRevisionFamily extends Family<int> {
   /// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
   ///
   /// Copied from [NodeClientRevision].
-  NodeClientRevisionProvider call(
-    int serverId,
-  ) {
-    return NodeClientRevisionProvider(
-      serverId,
-    );
+  NodeClientRevisionProvider call(int serverId) {
+    return NodeClientRevisionProvider(serverId);
   }
 
   @override
   NodeClientRevisionProvider getProviderOverride(
     covariant NodeClientRevisionProvider provider,
   ) {
-    return call(
-      provider.serverId,
-    );
+    return call(provider.serverId);
   }
 
   static const Iterable<ProviderOrFamily>? _dependencies = null;
@@ -435,21 +403,19 @@ class NodeClientRevisionProvider
   /// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
   ///
   /// Copied from [NodeClientRevision].
-  NodeClientRevisionProvider(
-    int serverId,
-  ) : this._internal(
-          () => NodeClientRevision()..serverId = serverId,
-          from: nodeClientRevisionProvider,
-          name: r'nodeClientRevisionProvider',
-          debugGetCreateSourceHash:
-              const bool.fromEnvironment('dart.vm.product')
-                  ? null
-                  : _$nodeClientRevisionHash,
-          dependencies: NodeClientRevisionFamily._dependencies,
-          allTransitiveDependencies:
-              NodeClientRevisionFamily._allTransitiveDependencies,
-          serverId: serverId,
-        );
+  NodeClientRevisionProvider(int serverId)
+    : this._internal(
+        () => NodeClientRevision()..serverId = serverId,
+        from: nodeClientRevisionProvider,
+        name: r'nodeClientRevisionProvider',
+        debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+            ? null
+            : _$nodeClientRevisionHash,
+        dependencies: NodeClientRevisionFamily._dependencies,
+        allTransitiveDependencies:
+            NodeClientRevisionFamily._allTransitiveDependencies,
+        serverId: serverId,
+      );
 
   NodeClientRevisionProvider._internal(
     super._createNotifier, {
@@ -464,12 +430,8 @@ class NodeClientRevisionProvider
   final int serverId;
 
   @override
-  int runNotifierBuild(
-    covariant NodeClientRevision notifier,
-  ) {
-    return notifier.build(
-      serverId,
-    );
+  int runNotifierBuild(covariant NodeClientRevision notifier) {
+    return notifier.build(serverId);
   }
 
   @override
