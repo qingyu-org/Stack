@@ -82,87 +82,87 @@ class ProSnapshot {
 }
 
 class ProApi {
-  ProApi(this._client);
+  ProApi(this._client, {this.nodeName = 'local'});
 
   final DioClient _client;
 
+  /// 当前节点名；少数 core 接口（如运维报表 context）需要显式传 node。
+  final String nodeName;
+
   Future<ProSnapshot> loadWaf() {
     return _collect([
+      _safe('status', [ProRequest.get('/api/v2/xpack/waf/status')]),
       _safe('attack', [
         ProRequest.post('/api/v2/xpack/waf/attack/stat', body: {}),
-        ProRequest.get('/api/v2/xpack/waf/attack/stat'),
       ]),
       _safe('relation', [
         ProRequest.post('/api/v2/xpack/waf/relation/stat', body: {}),
-        ProRequest.get('/api/v2/xpack/waf/relation/stat'),
       ]),
+      _safe('stat', [ProRequest.get('/api/v2/xpack/waf/stat')]),
       _safe('websites', [
-        ProRequest.post('/api/v2/xpack/waf/config/website', body: {}),
-        ProRequest.get('/api/v2/xpack/waf/config/website'),
-      ]),
-      _safe('cdn', [
-        ProRequest.post('/api/v2/xpack/waf/cdn', body: {}),
-        ProRequest.get('/api/v2/xpack/waf/cdn'),
+        ProRequest.get('/api/v2/xpack/waf/websites'),
+        ProRequest.post(
+          '/api/v2/xpack/waf/websites/search',
+          body: {'page': 1, 'pageSize': 30},
+        ),
       ]),
       _safe('logs', [
         ProRequest.post(
           '/api/v2/xpack/waf/log/search',
           body: {'page': 1, 'pageSize': 30},
         ),
-        ProRequest.post(
-          '/api/v2/xpack/waf/search',
-          body: {'page': 1, 'pageSize': 30},
-        ),
-        ProRequest.post(
-          '/api/v2/xpack/waf/attack/search',
-          body: {'page': 1, 'pageSize': 30},
-        ),
       ]),
+      _safe('cdn', [ProRequest.post('/api/v2/xpack/waf/cdn', body: {})]),
     ]);
   }
 
   Future<ProSnapshot> loadWebsiteMonitor() {
     return _collect([
-      _safe('stat', [
-        ProRequest.post('/api/v2/xpack/monitor/stat', body: {}),
-        ProRequest.get('/api/v2/xpack/monitor/stat'),
-      ]),
+      _safe('status', [ProRequest.get('/api/v2/xpack/monitor/status')]),
+      _safe('stat', [ProRequest.post('/api/v2/xpack/monitor/stat', body: {})]),
       _safe('visitors', [
         ProRequest.post('/api/v2/xpack/monitor/visitors', body: {}),
-        ProRequest.get('/api/v2/xpack/monitor/visitors'),
       ]),
-      _safe('qps', [
-        ProRequest.post('/api/v2/xpack/monitor/qps', body: {}),
-        ProRequest.get('/api/v2/xpack/monitor/qps'),
+      _safe('locations', [
+        ProRequest.post('/api/v2/xpack/monitor/visitors/loc', body: {}),
       ]),
+      _safe('qps', [ProRequest.post('/api/v2/xpack/monitor/qps', body: {})]),
       _safe('trend', [
         ProRequest.post('/api/v2/xpack/monitor/trend', body: {}),
-        ProRequest.get('/api/v2/xpack/monitor/trend'),
       ]),
-      _safe('rank', [
-        ProRequest.post('/api/v2/xpack/monitor/rank', body: {}),
-        ProRequest.get('/api/v2/xpack/monitor/rank'),
-      ]),
+      _safe('rank', [ProRequest.post('/api/v2/xpack/monitor/rank', body: {})]),
       _safe('websites', [
         ProRequest.post('/api/v2/xpack/monitor/websites', body: {}),
-        ProRequest.get('/api/v2/xpack/monitor/websites'),
+      ]),
+      _safe('logs', [
+        ProRequest.post(
+          '/api/v2/xpack/monitor/logs/search',
+          body: {'page': 1, 'pageSize': 30},
+        ),
+      ]),
+      _safe('logStat', [
+        ProRequest.post('/api/v2/xpack/monitor/logs/stat', body: {}),
       ]),
     ]);
   }
 
   Future<ProSnapshot> loadOpsReport() {
     return _collect([
-      _safe('overview', [
-        ProRequest.get('/api/v2/xpack/ops-report/overview'),
-        ProRequest.post('/api/v2/xpack/ops-report/overview', body: {}),
+      // core 路由不参与节点代理，需在 body 里显式指定 node。
+      _safe('context', [
+        ProRequest.post(
+          '/api/v2/core/ops-report/context',
+          body: {'node': nodeName},
+        ),
       ]),
-      _safe('system', [
-        ProRequest.get('/api/v2/xpack/ops-report/system'),
-        ProRequest.post('/api/v2/xpack/ops-report/system', body: {}),
+      _safe('snapshot', [
+        ProRequest.post('/api/v2/xpack/ops-report/snapshot', body: {}),
       ]),
-      _safe('login', [
-        ProRequest.get('/api/v2/xpack/ops-report/login'),
-        ProRequest.post('/api/v2/xpack/ops-report/login', body: {}),
+      _safe('runs', [
+        ProRequest.post(
+          '/api/v2/xpack/ops-report/runs/search',
+          body: {'page': 1, 'pageSize': 20},
+        ),
       ]),
     ]);
   }
@@ -171,18 +171,29 @@ class ProApi {
     return _collect([
       _safe('templates', [
         ProRequest.post('/api/v2/xpack/tampers/template/list', body: {}),
-        ProRequest.get('/api/v2/xpack/tampers/template/list'),
+        ProRequest.post(
+          '/api/v2/xpack/tampers/template/search',
+          body: {'page': 1, 'PageSize': 20, 'type': ''},
+        ),
       ]),
       _safe('items', [
         ProRequest.post(
           '/api/v2/xpack/tampers/search',
-          body: {'page': 1, 'pageSize': 30},
+          body: {
+            'name': '',
+            'page': 1,
+            'pageSize': 30,
+            'orderBy': 'created_at',
+            'order': 'null',
+            'websiteGroupId': 0,
+          },
         ),
+      ]),
+      _safe('logs', [
         ProRequest.post(
-          '/api/v2/xpack/tampers/list',
-          body: {'page': 1, 'pageSize': 30},
+          '/api/v2/xpack/tampers/search/log',
+          body: {'page': 1, 'pageSize': 20},
         ),
-        ProRequest.get('/api/v2/xpack/tampers/search'),
       ]),
     ]);
   }
@@ -190,20 +201,16 @@ class ProApi {
   Future<ProSnapshot> loadResourceSync() {
     return _collect([
       _safe('file', [
-        ProRequest.post('/api/v2/xpack/sync/file', body: {}),
-        ProRequest.get('/api/v2/xpack/sync/file'),
+        ProRequest.post('/api/v2/core/xpack/exchange/file', body: {}),
       ]),
       _safe('image', [
-        ProRequest.post('/api/v2/xpack/sync/image', body: {}),
-        ProRequest.get('/api/v2/xpack/sync/image'),
+        ProRequest.post('/api/v2/core/xpack/exchange/image', body: {}),
       ]),
       _safe('ssl', [
-        ProRequest.post('/api/v2/xpack/sync/ssl', body: {}),
-        ProRequest.get('/api/v2/xpack/sync/ssl'),
+        ProRequest.post('/api/v2/core/xpack/exchange/ssl', body: {}),
       ]),
       _safe('app', [
-        ProRequest.post('/api/v2/xpack/sync/app', body: {}),
-        ProRequest.get('/api/v2/xpack/sync/app'),
+        ProRequest.post('/api/v2/core/xpack/exchange/app', body: {}),
       ]),
     ]);
   }

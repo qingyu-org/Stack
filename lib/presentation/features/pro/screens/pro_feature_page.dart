@@ -220,13 +220,23 @@ class WafPage extends StatelessWidget {
       feature: ProFeature.waf,
       baseTitle: context.l10n.pro_waf_title,
       sectionTitles: (context) => {
+        'status': proText(context, zh: '运行状态', en: 'Status'),
         'attack': proText(context, zh: '攻击统计', en: 'Attack stats'),
         'relation': proText(context, zh: '拦截关系', en: 'Block relation'),
+        'stat': proText(context, zh: 'WAF 统计', en: 'WAF stats'),
         'websites': proText(context, zh: '站点配置', en: 'Website config'),
         'logs': proText(context, zh: '拦截日志', en: 'Block logs'),
         'cdn': 'CDN',
       },
-      sectionOrder: const ['attack', 'relation', 'websites', 'logs', 'cdn'],
+      sectionOrder: const [
+        'status',
+        'attack',
+        'relation',
+        'stat',
+        'websites',
+        'logs',
+        'cdn',
+      ],
     );
   }
 }
@@ -243,20 +253,28 @@ class WebsiteMonitorPage extends StatelessWidget {
       feature: ProFeature.monitor,
       baseTitle: context.l10n.pro_monitor_title,
       sectionTitles: (context) => {
+        'status': proText(context, zh: '运行状态', en: 'Status'),
         'stat': proText(context, zh: '实时统计', en: 'Live stats'),
         'visitors': proText(context, zh: '访客趋势', en: 'Visitors'),
+        'locations': proText(context, zh: '访客地区', en: 'Locations'),
         'qps': 'QPS',
         'trend': proText(context, zh: '访问趋势', en: 'Traffic trend'),
         'rank': proText(context, zh: '排行', en: 'Ranking'),
         'websites': proText(context, zh: '网站', en: 'Websites'),
+        'logs': proText(context, zh: '请求日志', en: 'Request logs'),
+        'logStat': proText(context, zh: '日志统计', en: 'Log stats'),
       },
       sectionOrder: const [
+        'status',
         'stat',
         'visitors',
+        'locations',
         'qps',
         'trend',
         'rank',
         'websites',
+        'logs',
+        'logStat',
       ],
     );
   }
@@ -274,11 +292,11 @@ class OpsReportPage extends StatelessWidget {
       feature: ProFeature.opsReport,
       baseTitle: context.l10n.pro_opsReport_title,
       sectionTitles: (context) => {
-        'overview': proText(context, zh: '概览', en: 'Overview'),
-        'system': proText(context, zh: '系统', en: 'System'),
-        'login': proText(context, zh: '登录', en: 'Login'),
+        'context': proText(context, zh: '节点状态', en: 'Node context'),
+        'snapshot': proText(context, zh: '当前报表', en: 'Current report'),
+        'runs': proText(context, zh: '历史报表', en: 'Report history'),
       },
-      sectionOrder: const ['overview', 'system', 'login'],
+      sectionOrder: const ['context', 'snapshot', 'runs'],
     );
   }
 }
@@ -297,8 +315,9 @@ class TamperPage extends StatelessWidget {
       sectionTitles: (context) => {
         'templates': proText(context, zh: '防护模板', en: 'Templates'),
         'items': proText(context, zh: '防护项', en: 'Protected items'),
+        'logs': proText(context, zh: '防篡改日志', en: 'Tamper logs'),
       },
-      sectionOrder: const ['templates', 'items'],
+      sectionOrder: const ['templates', 'items', 'logs'],
     );
   }
 }
@@ -320,7 +339,7 @@ class ResourceSyncPage extends StatelessWidget {
         'ssl': proText(context, zh: '证书', en: 'Certificates'),
         'app': proText(context, zh: '应用', en: 'Apps'),
       },
-      sectionOrder: const ['file', 'image', 'ssl', 'app'],
+      sectionOrder: const ['file', 'image', 'app', 'ssl'],
     );
   }
 }
