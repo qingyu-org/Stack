@@ -1704,39 +1704,6 @@ class AppLocalizationsEn extends AppLocalizations {
   }
 
   @override
-  String purchases_serverLimitReached(int freeServerLimit, int serverCount) {
-    return 'The free version can add up to $freeServerLimit panel(s). You already have $serverCount.';
-  }
-
-  @override
-  String get purchases_offlineUnlocked =>
-      'Unlocked offline using this device\'s purchase receipt';
-
-  @override
-  String get purchases_apiKeyMissing =>
-      'RevenueCat API Key is not configured for this build';
-
-  @override
-  String get purchases_serviceUnavailableOfflineUnlocked =>
-      'Purchase service is temporarily unavailable. Unlocked offline using this device\'s purchase receipt.';
-
-  @override
-  String get purchases_serviceUnavailableNetwork =>
-      'Purchase service is temporarily unavailable. Allow this app to use the network, then try again.';
-
-  @override
-  String get purchases_noPackageAvailable =>
-      'No purchasable package is available in the current RevenueCat Offering';
-
-  @override
-  String get purchases_packageLoadFailed =>
-      'Purchase packages cannot be loaded right now. Please try again later.';
-
-  @override
-  String get purchases_serviceNotInitialized =>
-      'Purchase service has not been initialized';
-
-  @override
   String get log_hubTitle => 'Log Audit';
 
   @override
@@ -2068,100 +2035,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get servers_retry => 'Retry';
 
   @override
-  String get premium_heroSubtitle =>
-      'One purchase, lifetime access to all features';
-
-  @override
-  String get premium_unlimitedTitle => 'Unlimited Panel Management';
-
-  @override
-  String get premium_unlimitedDescription =>
-      'Remove the 1-panel limit and add any number of 1Panel instances.';
-
-  @override
-  String premium_currentServerCount(int serverCount) {
-    return ' (you currently have $serverCount panels)';
-  }
-
-  @override
-  String get premium_moreFeaturesTitle => 'More Advanced Features';
-
-  @override
-  String get premium_desktopWidgetsFeature => 'Desktop widgets';
-
-  @override
-  String get premium_desktopWidgetsFreeHint => ' (now free)';
-
-  @override
-  String get premium_moreFeaturesDescription =>
-      ', multi-device sync, and more advanced features are in development.';
-
-  @override
-  String get premium_testflightTitle => 'TestFlight Beta';
-
-  @override
-  String get premium_testflightDescription =>
-      'Try new features early. You can also leave your contact via in-app feedback — we\'ll send a TestFlight invite.';
-
-  @override
-  String get premium_testflightApplyHint => ' Apply';
-
-  @override
-  String get premium_supportTitle => 'Support Open Source';
-
-  @override
-  String get premium_supportDescription =>
-      'Mono Dash is open source on GitHub. Your support helps keep the project maintained and new features moving forward.';
-
-  @override
-  String get premium_loading => 'Loading...';
-
-  @override
-  String premium_unlockNow(String price) {
-    return 'Unlock Now $price';
-  }
-
-  @override
-  String get premium_oneTime => 'One-time payment, lifetime access';
-
-  @override
-  String get premium_restore => 'Restore Purchases';
-
-  @override
-  String get premium_unlockedTitle => 'Premium Unlocked';
-
-  @override
-  String premium_unlockedDescription(int serverCount) {
-    return 'Thanks for your support. You currently have $serverCount panels.';
-  }
-
-  @override
   String get premium_terms => 'Terms of Use';
 
   @override
   String get premium_privacy => 'Privacy Policy';
-
-  @override
-  String get premium_legalAgreement =>
-      'By purchasing, you agree to the terms and privacy policy above.';
-
-  @override
-  String get premium_unlockedToast => 'Unlimited panels unlocked';
-
-  @override
-  String get premium_purchaseIncomplete => 'Purchase was not completed';
-
-  @override
-  String get premium_purchaseFailed => 'Purchase failed';
-
-  @override
-  String get premium_restoredToast => 'Purchases restored';
-
-  @override
-  String get premium_restoreNotFound => 'No restorable purchase found';
-
-  @override
-  String get premium_restoreFailed => 'Restore failed';
 
   @override
   String get serverDetail_searchFilesPlaceholder => 'Search files...';

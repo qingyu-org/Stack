@@ -1671,33 +1671,6 @@ class AppLocalizationsZh extends AppLocalizations {
   }
 
   @override
-  String purchases_serverLimitReached(int freeServerLimit, int serverCount) {
-    return '免费版最多添加 $freeServerLimit 个面板，当前已有 $serverCount 个';
-  }
-
-  @override
-  String get purchases_offlineUnlocked => '已使用本机购买凭证离线解锁';
-
-  @override
-  String get purchases_apiKeyMissing => '当前构建未配置 RevenueCat API Key';
-
-  @override
-  String get purchases_serviceUnavailableOfflineUnlocked =>
-      '购买服务暂不可用，已使用本机购买凭证离线解锁';
-
-  @override
-  String get purchases_serviceUnavailableNetwork => '购买服务暂不可用，请允许 App 使用网络后重试';
-
-  @override
-  String get purchases_noPackageAvailable => 'RevenueCat 当前 Offering 中没有可购买套餐';
-
-  @override
-  String get purchases_packageLoadFailed => '购买套餐暂时无法加载，请稍后再试';
-
-  @override
-  String get purchases_serviceNotInitialized => '购买服务尚未初始化';
-
-  @override
   String get log_hubTitle => '日志审计';
 
   @override
@@ -2013,96 +1986,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get servers_retry => '重试';
 
   @override
-  String get premium_heroSubtitle => '一次购买，永久解锁全部功能';
-
-  @override
-  String get premium_unlimitedTitle => '无限面板管理';
-
-  @override
-  String get premium_unlimitedDescription => '不再受 1 个面板的限制，添加任意数量的 1Panel 实例。';
-
-  @override
-  String premium_currentServerCount(int serverCount) {
-    return ' (您当前已添加 $serverCount 个面板)';
-  }
-
-  @override
-  String get premium_moreFeaturesTitle => '更多高级功能';
-
-  @override
-  String get premium_desktopWidgetsFeature => '桌面小组件';
-
-  @override
-  String get premium_desktopWidgetsFreeHint => '（已免费开放）';
-
-  @override
-  String get premium_moreFeaturesDescription => '、多端同步等更多高级功能正在开发中，敬请期待。';
-
-  @override
-  String get premium_testflightTitle => 'TestFlight 内测';
-
-  @override
-  String get premium_testflightDescription =>
-      '提前体验新功能。有 bug 或建议时，也可通过反馈留下联系方式，我们会发送 TestFlight 邀请。';
-
-  @override
-  String get premium_testflightApplyHint => ' 去申请';
-
-  @override
-  String get premium_supportTitle => '支持开源项目';
-
-  @override
-  String get premium_supportDescription =>
-      'Mono Dash 是托管在 GitHub 上的开源项目。您的支持会帮助项目持续维护和推进新功能。';
-
-  @override
-  String get premium_loading => '加载中...';
-
-  @override
-  String premium_unlockNow(String price) {
-    return '立即解锁 $price';
-  }
-
-  @override
-  String get premium_oneTime => '一次性付费，永久有效';
-
-  @override
-  String get premium_restore => '恢复购买';
-
-  @override
-  String get premium_unlockedTitle => '已解锁高级版';
-
-  @override
-  String premium_unlockedDescription(int serverCount) {
-    return '感谢您的支持！当前已添加 $serverCount 个面板。';
-  }
-
-  @override
   String get premium_terms => '使用条款';
 
   @override
   String get premium_privacy => '隐私政策';
-
-  @override
-  String get premium_legalAgreement => '购买即表示您同意上述条款与政策。';
-
-  @override
-  String get premium_unlockedToast => '已解锁无限面板';
-
-  @override
-  String get premium_purchaseIncomplete => '购买未完成';
-
-  @override
-  String get premium_purchaseFailed => '购买失败';
-
-  @override
-  String get premium_restoredToast => '已恢复购买';
-
-  @override
-  String get premium_restoreNotFound => '未找到可恢复的购买';
-
-  @override
-  String get premium_restoreFailed => '恢复失败';
 
   @override
   String get serverDetail_searchFilesPlaceholder => '搜索文件...';
