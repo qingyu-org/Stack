@@ -21,6 +21,13 @@ class AppIconSettingsPage extends ConsumerWidget {
         settingsAsync.valueOrNull?.appIconVariant ?? AppIconVariant.defaultIcon;
     final l10n = context.l10n;
     final brightness = CupertinoTheme.brightnessOf(context);
+    // Android 通过 activity-alias 切换图标，但「自适应」与默认图标相同，
+    // 不单独展示，避免出现两个看起来一样的选项。
+    final variants = Platform.isAndroid
+        ? AppIconVariant.values
+              .where((variant) => variant != AppIconVariant.adaptive)
+              .toList(growable: false)
+        : AppIconVariant.values;
 
     return FrostedScaffold(
       title: l10n.settings_appearance_appIconTitle,
@@ -40,7 +47,7 @@ class AppIconSettingsPage extends ConsumerWidget {
               delegate: SliverChildListDelegate([
                 SubMenuCard(
                   title: l10n.settings_appIcon_selectTitle,
-                  children: AppIconVariant.values.map((variant) {
+                  children: variants.map((variant) {
                     final isSelected = variant == selectedVariant;
                     return CupertinoButton(
                       padding: EdgeInsets.zero,
@@ -141,23 +148,6 @@ class AppIconSettingsPage extends ConsumerWidget {
     final iconName = variant.effectiveAlternateIconName(
       CupertinoTheme.brightnessOf(context),
     );
-
-    if (Platform.isAndroid && variant != AppIconVariant.defaultIcon) {
-      showCupertinoDialog<void>(
-        context: context,
-        builder: (context) => CupertinoAlertDialog(
-          title: Text(failedTitle),
-          content: Text(unsupportedMessage),
-          actions: [
-            CupertinoDialogAction(
-              onPressed: () => Navigator.of(context).pop(),
-              child: Text(okLabel),
-            ),
-          ],
-        ),
-      );
-      return;
-    }
 
     await controller.setAppIconVariant(variant);
 
