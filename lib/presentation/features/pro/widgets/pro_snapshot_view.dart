@@ -188,7 +188,7 @@ class ProDataValue extends StatelessWidget {
         if (value is num) {
           if (_isMetaKey(entry.key)) continue;
           final label = proMetricLabel(context, entry.key);
-          metrics[label] = (metrics[label] ?? 0) + value;
+          metrics[label] = value;
         } else if (value is String || value is bool) {
           if (info.length >= 6) continue;
           final text = value.toString().trim();
@@ -233,12 +233,19 @@ class ProDataValue extends StatelessWidget {
 
   bool _isMetaKey(String key) {
     final normalized = key.toLowerCase().replaceAll('_', '');
-    return normalized == 'id' ||
-        normalized == 'code' ||
-        normalized == 'page' ||
-        normalized == 'pagesize' ||
-        normalized.endsWith('id') ||
-        normalized == 'statuscode';
+    return const {
+      'id',
+      'code',
+      'page',
+      'pagesize',
+      'statuscode',
+      'websiteid',
+      'nodeid',
+      'groupid',
+      'websitegroupid',
+      'appid',
+      'databaseid',
+    }.contains(normalized);
   }
 }
 
