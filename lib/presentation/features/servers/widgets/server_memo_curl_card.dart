@@ -27,6 +27,7 @@ class ServerMemoCurlCard extends ConsumerStatefulWidget {
     this.onTap,
     this.isSelected = false,
     this.enabled = true,
+    this.frontChild,
   });
 
   final Server server;
@@ -34,6 +35,9 @@ class ServerMemoCurlCard extends ConsumerStatefulWidget {
   final VoidCallback? onTap;
   final bool isSelected;
   final bool enabled;
+
+  /// 自定义卡片正面（例如专业版多机组卡）。为空时使用普通 [ServerCard]。
+  final Widget? frontChild;
 
   @override
   ConsumerState<ServerMemoCurlCard> createState() => _ServerMemoCurlCardState();
@@ -49,12 +53,14 @@ class _ServerMemoCurlCardState extends ConsumerState<ServerMemoCurlCard> {
   @override
   Widget build(BuildContext context) {
     final memoAsync = ref.watch(serverMemoControllerProvider(widget.server.id));
-    final frontCard = ServerCard(
-      server: widget.server,
-      style: widget.style,
-      onTap: widget.onTap,
-      isSelected: widget.isSelected,
-    );
+    final frontCard =
+        widget.frontChild ??
+        ServerCard(
+          server: widget.server,
+          style: widget.style,
+          onTap: widget.onTap,
+          isSelected: widget.isSelected,
+        );
 
     if (!widget.enabled) return frontCard;
 

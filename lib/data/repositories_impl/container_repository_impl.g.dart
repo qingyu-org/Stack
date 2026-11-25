@@ -7,7 +7,7 @@ part of 'container_repository_impl.dart';
 // **************************************************************************
 
 String _$containerRepositoryHash() =>
-    r'ddb49c85d1edaa6a1884022e7e6d54f33d88e6b1';
+    r'501140c22b92863404dcc867f87009799cb4e569';
 
 /// 基于当前激活服务器的容器仓库 Provider。
 ///

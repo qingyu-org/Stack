@@ -7,6 +7,7 @@ import 'package:flutter_secure_storage/flutter_secure_storage.dart';
 import 'package:path_provider/path_provider.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
+import '../../domain/entities/panel_node.dart';
 import '../../domain/entities/server.dart';
 
 import 'icloud_key_value_bridge.dart';
@@ -193,7 +194,29 @@ class StorageService {
       await deleteApiKey(id, sync: false);
     }
     await deleteServerMemo(id);
+    await deleteActiveNodeName(id);
   }
+
+  // --- Active node (Per panel, local UI state) ---
+
+  String activeNodeName(int serverId) {
+    return _prefs.getString(_activeNodeKey(serverId)) ?? PanelNode.localName;
+  }
+
+  Future<void> setActiveNodeName(int serverId, String nodeName) async {
+    final name = nodeName.trim();
+    if (name.isEmpty || name == PanelNode.localName) {
+      await _prefs.remove(_activeNodeKey(serverId));
+      return;
+    }
+    await _prefs.setString(_activeNodeKey(serverId), name);
+  }
+
+  Future<void> deleteActiveNodeName(int serverId) async {
+    await _prefs.remove(_activeNodeKey(serverId));
+  }
+
+  String _activeNodeKey(int serverId) => 'active_node_v1_$serverId';
 
   Future<String> getServerMemo(int serverId) async {
     return _prefs.getString('$_serverMemoPrefix$serverId') ?? '';

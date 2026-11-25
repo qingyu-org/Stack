@@ -6,7 +6,7 @@ part of 'runtime_repository_impl.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$runtimeRepositoryHash() => r'a4b10de4016b4121bc4bf8631f1600ccbf305d77';
+String _$runtimeRepositoryHash() => r'51e7ffc8a6a55e12c734d37d17046e52f866e3e6';
 
 /// 基于当前激活服务器的仓库 Provider。
 ///

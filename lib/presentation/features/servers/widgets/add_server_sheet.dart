@@ -8,13 +8,12 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/server_host_normalizer.dart';
 import '../../../../data/repositories_impl/server_repository_impl.dart';
+import '../../../../domain/entities/panel_probe_result.dart';
 import '../../../../domain/entities/server.dart';
 import '../../../common/app_toast.dart';
 import '../../../common/components/action_sheet_launcher.dart';
 import '../../../common/components/action_sheet_scaffold.dart';
 import '../../../common/components/cupertino_grouped_form.dart';
-import '../../purchases/providers/purchase_provider.dart';
-import '../../purchases/widgets/purchase_prompt.dart';
 import '../providers/servers_provider.dart';
 
 class AddServerSheet extends ConsumerStatefulWidget {
@@ -58,6 +57,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
   bool _obscureApiKey = true;
   bool _isLoading = false;
   bool _isApiKeyLoading = false;
+  PanelEditionOverride _editionOverride = PanelEditionOverride.auto;
 
   bool get _isEditing => widget.server != null;
 
@@ -72,6 +72,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
     _portController.text = server.port.toString();
     _isHttps = server.isHttps;
     _allowInsecureConnections = server.allowInsecureConnections;
+    _editionOverride = server.editionOverride;
     _loadApiKey(server.id);
   }
 
@@ -160,8 +161,9 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
       final port = int.tryParse(_portController.text) ?? 10000;
       final apiKey = _apiKeyController.text;
       final shouldTestConnection = !_isEditing || apiKey.isNotEmpty;
+      PanelProbeResult? probe;
       if (shouldTestConnection) {
-        await ref
+        probe = await ref
             .read(serversNotifierProvider.notifier)
             .testConnection(
               host: host,
@@ -185,6 +187,8 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
           apiKey: apiKey,
           isHttps: _isHttps,
           allowInsecureConnections: _allowInsecureConnections,
+          probe: probe,
+          editionOverride: _editionOverride,
         );
       } else {
         await notifier.addServer(
@@ -194,6 +198,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
           apiKey: apiKey,
           isHttps: _isHttps,
           allowInsecureConnections: _allowInsecureConnections,
+          probe: probe,
         );
       }
 
@@ -203,14 +208,6 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
           _isEditing ? l10n.servers_saved : l10n.servers_added,
         );
         Navigator.of(context).pop();
-      }
-    } on ServerLimitReachedException catch (error) {
-      if (mounted) {
-        await showUnlimitedServersPurchasePrompt(
-          context,
-          ref,
-          serverCount: error.serverCount,
-        );
       }
     } catch (e) {
       if (cancelToken.isCancelled) return;
@@ -380,8 +377,58 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
             ),
           ),
 
+          if (_isEditing) ...[
+            const SizedBox(height: 24),
+            AppCupertinoSectionHeader(title: l10n.serverEdition_title),
+            AppCupertinoGroupedBox(children: [_buildEditionSelector()]),
+            Padding(
+              padding: const EdgeInsets.fromLTRB(20, 6, 20, 0),
+              child: Text(
+                l10n.serverEdition_hint,
+                style: TextStyle(
+                  fontSize: 12,
+                  height: 1.4,
+                  color: AppColors.tertiaryLabel(context),
+                ),
+              ),
+            ),
+          ],
+
           const SizedBox(height: 32),
         ],
+      ),
+    );
+  }
+
+  Widget _buildEditionSelector() {
+    final l10n = context.l10n;
+    final style = TextStyle(
+      fontSize: 12,
+      fontWeight: FontWeight.w500,
+      color: AppColors.label(context),
+    );
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 10, 12, 12),
+      child: CupertinoSlidingSegmentedControl<PanelEditionOverride>(
+        groupValue: _editionOverride,
+        onValueChanged: (value) {
+          if (value == null) return;
+          setState(() => _editionOverride = value);
+        },
+        children: {
+          PanelEditionOverride.auto: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Text(l10n.serverEdition_auto, style: style),
+          ),
+          PanelEditionOverride.community: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Text(l10n.serverEdition_community, style: style),
+          ),
+          PanelEditionOverride.pro: Padding(
+            padding: const EdgeInsets.symmetric(vertical: 6),
+            child: Text(l10n.serverEdition_pro, style: style),
+          ),
+        },
       ),
     );
   }

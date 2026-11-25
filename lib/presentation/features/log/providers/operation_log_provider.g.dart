@@ -7,7 +7,7 @@ part of 'operation_log_provider.dart';
 // **************************************************************************
 
 String _$operationLogControllerHash() =>
-    r'de3fcfde4ed3f05fd39e3c8147e9f0d2c2e139fd';
+    r'2c514311351c1fea9f4750d422c29ad57923fb76';
 
 /// See also [OperationLogController].
 @ProviderFor(OperationLogController)

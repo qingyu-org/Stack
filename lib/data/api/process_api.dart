@@ -44,23 +44,27 @@ class ProcessApi {
     bool allowInsecureConnections = false,
     String? operateNode = 'local',
   }) async {
+    final nodeName = operateNode == null || operateNode.isEmpty
+        ? 'local'
+        : operateNode;
     final uri = Uri.parse(baseUrl);
     final wsUrl = Uri(
       scheme: uri.scheme == 'https' ? 'wss' : 'ws',
       host: uri.host,
       port: uri.port,
       path: '${uri.path}/api/v2/process/ws'.replaceAll('//', '/'),
-      queryParameters: operateNode == null
-          ? null
-          : {'operateNode': operateNode},
+      queryParameters: {'operateNode': nodeName},
     );
-    final headers = await OnePanelAuth.signedHeaders(apiKey);
+    final headers = await OnePanelAuth.signedHeaders(
+      apiKey,
+      nodeName: nodeName,
+    );
 
     await checkAppWebSocketAuth(
       wsUrl,
       headers: headers,
       allowInsecureConnections: allowInsecureConnections,
-      currentNode: operateNode,
+      currentNode: nodeName,
     );
     return connectAppWebSocket(
       wsUrl,

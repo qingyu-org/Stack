@@ -3,10 +3,14 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../domain/entities/server.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/sub_menu_page.dart';
 import '../../../common/components/terminal/app_terminal.dart';
 import '../../server_detail/providers/active_server_provider.dart';
+import '../../servers/providers/servers_provider.dart';
+import '../../pro/screens/node_management_page.dart';
+import '../../pro/screens/pro_feature_page.dart';
 import '../../app_store/screens/app_store_page.dart';
 import '../../databases/screens/database_page.dart';
 import '../../websites/screens/ssl_manage_page.dart';
@@ -28,6 +32,8 @@ class MorePage extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final l10n = context.l10n;
     final serverId = ref.watch(activeServerIdProvider);
+    final activeServer = _findServer(ref, serverId);
+    final isPro = activeServer?.isProActive ?? false;
     return CustomScrollView(
       physics: const AlwaysScrollableScrollPhysics(
         parent: BouncingScrollPhysics(),
@@ -164,6 +170,82 @@ class MorePage extends ConsumerWidget {
                   ),
                 ],
               ),
+              if (isPro) ...[
+                const SizedBox(height: 12),
+                SubMenuCard(
+                  title: l10n.pro_sectionTitle,
+                  children: [
+                    SubMenuRow(
+                      icon: TablerIcons.sitemap,
+                      iconColor: CupertinoColors.activeBlue,
+                      title: l10n.nodes_management,
+                      subtitle: l10n.nodes_managementSubtitle,
+                      onTap: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) =>
+                              NodeManagementPage(serverId: serverId),
+                        ),
+                      ),
+                    ),
+                    SubMenuRow(
+                      icon: TablerIcons.shield_lock,
+                      iconColor: CupertinoColors.systemRed,
+                      title: l10n.pro_waf_title,
+                      subtitle: l10n.pro_waf_subtitle,
+                      onTap: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => WafPage(serverId: serverId),
+                        ),
+                      ),
+                    ),
+                    SubMenuRow(
+                      icon: TablerIcons.chart_line,
+                      iconColor: CupertinoColors.systemGreen,
+                      title: l10n.pro_monitor_title,
+                      subtitle: l10n.pro_monitor_subtitle,
+                      onTap: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) =>
+                              WebsiteMonitorPage(serverId: serverId),
+                        ),
+                      ),
+                    ),
+                    SubMenuRow(
+                      icon: TablerIcons.report_analytics,
+                      iconColor: CupertinoColors.systemPurple,
+                      title: l10n.pro_opsReport_title,
+                      subtitle: l10n.pro_opsReport_subtitle,
+                      onTap: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => OpsReportPage(serverId: serverId),
+                        ),
+                      ),
+                    ),
+                    SubMenuRow(
+                      icon: TablerIcons.lock,
+                      iconColor: CupertinoColors.systemOrange,
+                      title: l10n.pro_tamper_title,
+                      subtitle: l10n.pro_tamper_subtitle,
+                      onTap: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => TamperPage(serverId: serverId),
+                        ),
+                      ),
+                    ),
+                    SubMenuRow(
+                      icon: TablerIcons.refresh_dot,
+                      iconColor: CupertinoColors.systemTeal,
+                      title: l10n.pro_sync_title,
+                      subtitle: l10n.pro_sync_subtitle,
+                      onTap: () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => ResourceSyncPage(serverId: serverId),
+                        ),
+                      ),
+                    ),
+                  ],
+                ),
+              ],
               const SizedBox(height: 12),
               SubMenuCard(
                 title: l10n.more_system,
@@ -226,5 +308,14 @@ class MorePage extends ConsumerWidget {
         ),
       ],
     );
+  }
+
+  Server? _findServer(WidgetRef ref, int serverId) {
+    final servers = ref.watch(serversNotifierProvider).valueOrNull;
+    if (servers == null) return null;
+    for (final server in servers) {
+      if (server.id == serverId) return server;
+    }
+    return null;
   }
 }

@@ -13,11 +13,14 @@ import '../../../../core/widgets/ios_server_widget_bridge.dart';
 import '../../../../data/api/dashboard_api.dart';
 import '../../../../data/api/setting_api.dart';
 import '../../../../data/repositories_impl/server_repository_impl.dart';
+import '../../../../data/services/panel_probe_service.dart';
 import '../../../../domain/entities/dashboard.dart';
+import '../../../../domain/entities/panel_node.dart';
+import '../../../../domain/entities/panel_probe_result.dart';
 import '../../../../domain/entities/server.dart';
 import '../../../../domain/repositories/server_repository.dart';
-import '../../purchases/providers/purchase_provider.dart';
 import '../../settings/providers/app_settings_provider.dart';
+import 'node_selection_provider.dart';
 
 part 'servers_provider.g.dart';
 
@@ -42,7 +45,9 @@ class ServersNotifier extends _$ServersNotifier {
   }
 
   /// Probes authentication with candidate settings before adding a panel.
-  Future<void> testConnection({
+  ///
+  /// 同时探测专业版节点信息；探测失败不会让添加流程失败。
+  Future<PanelProbeResult> testConnection({
     required String host,
     required int port,
     required String apiKey,
@@ -60,8 +65,10 @@ class ServersNotifier extends _$ServersNotifier {
       customHeaders: settings.customHeaders,
       allowInsecureConnections: allowInsecureConnections,
     );
+    final probeFuture = PanelProbeService.detect(client);
     try {
       await DashboardApi(client).getOsInfo(cancelToken: cancelToken);
+      return await probeFuture;
     } finally {
       client.dispose();
     }
@@ -74,21 +81,9 @@ class ServersNotifier extends _$ServersNotifier {
     required String apiKey,
     bool isHttps = false,
     bool allowInsecureConnections = false,
+    PanelProbeResult? probe,
   }) async {
     final repo = ref.read(serverRepositoryProvider);
-    final currentServers = await repo.list();
-    final purchaseState = await ref.read(purchaseControllerProvider.future);
-    if (!purchaseState.canAddServer(currentServers.length)) {
-      final l10n = ref.read(appLocalizationsProvider);
-      throw ServerLimitReachedException(
-        serverCount: currentServers.length,
-        freeServerLimit: purchaseState.freeServerLimit,
-        message: l10n.purchases_serverLimitReached(
-          purchaseState.freeServerLimit,
-          currentServers.length,
-        ),
-      );
-    }
 
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -99,6 +94,7 @@ class ServersNotifier extends _$ServersNotifier {
         isHttps: isHttps,
         allowInsecureConnections: allowInsecureConnections,
         apiKey: apiKey,
+        probe: probe,
       );
       final servers = await repo.list();
       unawaited(_syncServerWidgetData(repo, servers));
@@ -110,6 +106,8 @@ class ServersNotifier extends _$ServersNotifier {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
       final repo = ref.read(serverRepositoryProvider);
+      final removed = await repo.find(id);
+      _invalidateNodeClients(id, removed?.nodes ?? const []);
       await repo.remove(id);
       final servers = await repo.list();
       unawaited(IosServerWidgetBridge.removeServer(id));
@@ -126,6 +124,8 @@ class ServersNotifier extends _$ServersNotifier {
     required bool isHttps,
     required bool allowInsecureConnections,
     String? apiKey,
+    PanelProbeResult? probe,
+    PanelEditionOverride? editionOverride,
   }) async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
@@ -136,18 +136,33 @@ class ServersNotifier extends _$ServersNotifier {
           ref.read(appLocalizationsProvider).common_serverNotFound,
         );
       }
+      final oldNodeNames = [for (final node in server.nodes) node.name];
       server
         ..name = name.isEmpty ? null : name
         ..host = host
         ..port = port
         ..isHttps = isHttps
         ..allowInsecureConnections = allowInsecureConnections;
+      if (editionOverride != null) {
+        server.editionOverride = editionOverride;
+      }
+      if (probe != null) {
+        server
+          ..isPro = probe.isPro
+          ..nodes = probe.nodes
+          ..proCheckedAt = DateTime.now();
+      }
       await repo.update(
         server,
         apiKey: apiKey != null && apiKey.isNotEmpty ? apiKey : null,
       );
-      ref.invalidate(dioClientProvider(id));
+      _invalidateNodeClients(id, [
+        for (final nodeName in oldNodeNames)
+          PanelNode(id: nodeName, name: nodeName),
+        ...server.nodes,
+      ]);
       ref.invalidate(serverDashboardSnapshotProvider(id));
+      ref.invalidate(activeNodeControllerProvider(id));
       final servers = await repo.list();
       unawaited(_syncServerWidgetData(repo, servers));
       return servers;
@@ -170,6 +185,17 @@ class ServersNotifier extends _$ServersNotifier {
       unawaited(_syncServerWidgetData(repo, servers));
       return servers;
     });
+  }
+
+  void _invalidateNodeClients(int serverId, Iterable<PanelNode> nodes) {
+    final names = <String>{
+      PanelNode.localName,
+      for (final node in nodes) node.name,
+    };
+    for (final name in names) {
+      ref.invalidate(nodeDioClientProvider(NodeClientKey(serverId, name)));
+    }
+    ref.invalidate(dioClientProvider(serverId));
   }
 
   Future<void> _syncServerWidgetData(

@@ -7,7 +7,7 @@ part of 'firewall_repository_impl.dart';
 // **************************************************************************
 
 String _$firewallRepositoryHash() =>
-    r'84f0327240dfcc042e8bdb11d31d93b5754b7534';
+    r'a7bbf8906c0d63a60e57103f26dddc5d21e9378d';
 
 /// See also [firewallRepository].
 @ProviderFor(firewallRepository)

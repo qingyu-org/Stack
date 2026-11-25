@@ -2,6 +2,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../../core/storage/storage_service.dart';
+import '../../domain/entities/panel_node.dart';
+import '../../domain/entities/panel_probe_result.dart';
 import '../../domain/entities/server.dart';
 import '../../domain/repositories/server_repository.dart';
 
@@ -30,15 +32,20 @@ class ServerRepositoryImpl implements ServerRepository {
     required bool isHttps,
     required bool allowInsecureConnections,
     required String apiKey,
+    PanelProbeResult? probe,
   }) async {
     final existing = await _storage.getServers();
+    final now = DateTime.now();
     final server = Server()
       ..name = name
       ..host = host
       ..port = port
       ..isHttps = isHttps
       ..allowInsecureConnections = allowInsecureConnections
-      ..createdAt = DateTime.now()
+      ..isPro = probe?.isPro ?? false
+      ..nodes = probe?.nodes ?? [PanelNode.local()]
+      ..proCheckedAt = probe == null ? null : now
+      ..createdAt = now
       ..sortIndex = existing.length;
 
     await _storage.saveServer(server);

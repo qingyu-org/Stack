@@ -8,7 +8,10 @@ import 'app_user_agent.dart';
 class OnePanelAuth {
   const OnePanelAuth._();
 
-  static Future<Map<String, String>> signedHeaders(String apiKey) async {
+  static Future<Map<String, String>> signedHeaders(
+    String apiKey, {
+    String nodeName = '',
+  }) async {
     final timestamp = (DateTime.now().millisecondsSinceEpoch ~/ 1000)
         .toString();
     final token = sign(apiKey, timestamp);
@@ -16,6 +19,8 @@ class OnePanelAuth {
     return {
       '1Panel-Token': token,
       '1Panel-Timestamp': timestamp,
+      if (nodeName.trim().isNotEmpty && nodeName.trim() != 'local')
+        'CurrentNode': Uri.encodeComponent(nodeName.trim()),
       HttpHeaders.userAgentHeader: userAgent,
     };
   }

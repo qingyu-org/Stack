@@ -6,7 +6,7 @@ part of 'active_server_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$activeServerIdHash() => r'4756066804bad97db41795475290f9dc6248b647';
+String _$activeServerIdHash() => r'3ffa34446a918e7ec9f5039d9a28529d3a5f55b1';
 
 /// 当前激活服务器的 id。
 ///

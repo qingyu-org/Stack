@@ -21,6 +21,7 @@ import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/more_info_card.dart';
 import '../../../common/utils/display_utils.dart';
 import '../../server_detail/providers/active_server_provider.dart';
+import '../../servers/providers/node_selection_provider.dart';
 import '../widgets/network_item.dart';
 import '../widgets/process_detail_sheet.dart';
 import '../widgets/process_item.dart';
@@ -97,6 +98,9 @@ class _ProcessContentState extends ConsumerState<_ProcessContent> {
         baseUrl: server.baseUrl.toString(),
         apiKey: apiKey,
         allowInsecureConnections: server.allowInsecureConnections,
+        operateNode: await ref.read(
+          activeNodeControllerProvider(serverId).future,
+        ),
       );
       _subscription = _channel!.stream.listen(
         (event) {

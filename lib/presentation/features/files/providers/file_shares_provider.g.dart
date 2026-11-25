@@ -7,31 +7,28 @@ part of 'file_shares_provider.dart';
 // **************************************************************************
 
 String _$fileSharesControllerHash() =>
-    r'c656ee2e19a06b383b2ed3bcaf7bc559702a27fe';
+    r'c8e52700b14f6fb49c1858e7973f724891e1940b';
 
 /// See also [FileSharesController].
 @ProviderFor(FileSharesController)
-final fileSharesControllerProvider =
-    AutoDisposeAsyncNotifierProvider<
-      FileSharesController,
-      List<FileShareDto>
-    >.internal(
-      FileSharesController.new,
-      name: r'fileSharesControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$fileSharesControllerHash,
-      dependencies: <ProviderOrFamily>[
-        fileRepositoryProvider,
-        appLocalizationsProvider,
-      ],
-      allTransitiveDependencies: <ProviderOrFamily>{
-        fileRepositoryProvider,
-        ...?fileRepositoryProvider.allTransitiveDependencies,
-        appLocalizationsProvider,
-        ...?appLocalizationsProvider.allTransitiveDependencies,
-      },
-    );
+final fileSharesControllerProvider = AutoDisposeAsyncNotifierProvider<
+    FileSharesController, List<FileShareDto>>.internal(
+  FileSharesController.new,
+  name: r'fileSharesControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$fileSharesControllerHash,
+  dependencies: <ProviderOrFamily>[
+    fileRepositoryProvider,
+    appLocalizationsProvider
+  ],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    fileRepositoryProvider,
+    ...?fileRepositoryProvider.allTransitiveDependencies,
+    appLocalizationsProvider,
+    ...?appLocalizationsProvider.allTransitiveDependencies
+  },
+);
 
 typedef _$FileSharesController = AutoDisposeAsyncNotifier<List<FileShareDto>>;
 // ignore_for_file: type=lint

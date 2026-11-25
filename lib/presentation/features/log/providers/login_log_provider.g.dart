@@ -7,7 +7,7 @@ part of 'login_log_provider.dart';
 // **************************************************************************
 
 String _$loginLogControllerHash() =>
-    r'648fb0da3dffac7755b32e779ab37178b67a30c5';
+    r'73b94bef8d411185e6db31193f736facfd5a5ce0';
 
 /// See also [LoginLogController].
 @ProviderFor(LoginLogController)

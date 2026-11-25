@@ -306,7 +306,7 @@ class _FileCreateSheetState extends ConsumerState<FileCreateSheet> {
               color: AppColors.label(context),
             ),
           ),
-          if (trailing != null) trailing,
+          if (trailing != null) trailing!,
         ],
       ),
     );

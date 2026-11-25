@@ -6,20 +6,8 @@ Mono Dash 是一个开源的 1Panel 第三方移动端管理客户端。
 
 你可以连接自己拥有或有权管理的 1Panel 服务器，并在手机上通过更聚焦的原生界面完成日常运维操作。
 
-[![Download on the App Store](https://img.shields.io/badge/Download_on_the-App_Store-0D0D0D?style=for-the-badge&logo=apple&logoColor=white)](https://apps.apple.com/app/mono-dash-made-for-1panel/id6766814493)
-[![Get it on Google Play](https://img.shields.io/badge/Get_it_on-Google_Play-0D0D0D?style=for-the-badge&logo=googleplay&logoColor=white)](https://play.google.com/store/apps/details?id=cc.boring_lab.monodash)
-
 > Mono Dash 是独立的第三方客户端，不是 1Panel 官方产品，也不隶属于、
 > 不代表、不受 1Panel 认可或赞助。
-
-<p>
-  <img src="store_assets/Appstore/app-store-poster-1284x2778_zh.png" width="160" alt="Mono Dash App Store 截图">
-  <img src="store_assets/Appstore/mobile-1panel-poster-1284x2778_zh.png" width="160" alt="移动端 1Panel 管理截图">
-  <img src="store_assets/Appstore/multi-server-poster-1284x2778_zh.png" width="160" alt="多服务器管理截图">
-  <img src="store_assets/Appstore/server-files-poster-1284x2778_zh.png" width="160" alt="服务器文件管理截图">
-  <img src="store_assets/Appstore/docker-containers-poster-1284x2778_zh.png" width="160" alt="Docker 容器管理截图">
-  <img src="store_assets/Appstore/feature-map-poster-1284x2778_zh.png" width="160" alt="功能地图截图">
-</p>
 
 ## 功能特性
 
@@ -30,26 +18,30 @@ Mono Dash 是一个开源的 1Panel 第三方移动端管理客户端。
 - 查看系统日志、登录日志、操作日志、SSH 日志、网站日志、容器日志和任务日志
 - 打开终端会话，并管理 SSH 相关设置
 - 管理备份、快照、计划任务、防火墙规则、进程、运行环境和工具箱任务
-- 添加多个 1Panel 服务器，并通过移动端优先的界面快速切换
+- 无限制添加 1Panel 服务器，并通过移动端优先的界面快速切换
+- **1Panel 专业版多机管理**：添加专业版面板后自动识别授权并拉取子节点，
+  以“面板组”卡片展示；所有请求通过 1Panel 的 `CurrentNode` 请求头路由到
+  当前节点
+- **专业版只读看板**：WAF、网站监控、运维报表、网站防篡改、资源同步
+  （面板开放对应接口时显示）
+- 在面板编辑页可手动覆盖“自动检测 / 社区版 / 专业版”
 
 ## 开源
 
 Mono Dash 作为开源项目开发。你可以在本仓库查看源码、关注开发进度、提交 Issue 或参与贡献。
 
-- 源代码：<https://github.com/bin64/Mono-Dash>
-- 问题反馈：<https://github.com/bin64/Mono-Dash/issues>
+- 源代码：<https://github.com/willow-god/Mono-Dash>
+- 上游仓库：<https://github.com/nowubh/Mono-Dash>
 
-## 免费版与应用内购买
+## 无限制服务器
 
-免费版可以添加并管理一个 1Panel 服务器。
-
-Mono Dash Unlimited 是可选的一次性应用内购买项目，用于解锁无限服务器管理，以及在可用情况下解锁未来的高级功能。购买由 App Store 或 Google Play 等适用平台处理，并可在 App 内恢复购买。
+本分支移除了上游的“单台服务器”限制与应用内购买流程。无需账号、激活码或
+购买授权即可添加任意数量的服务器，并使用专业版功能入口。能否真正调用
+1Panel 专业版接口，仍取决于所连接面板自身的授权与权限。
 
 ## 隐私与数据
 
 Mono Dash 会将服务器连接设置保存在你的设备本地，并直接连接你配置的 1Panel 服务器。Mono Dash 不运营用于收集你的 1Panel 服务器数据的后端服务。
-
-根据平台和分发渠道，购买状态可能会通过 Apple、Google Play 和 RevenueCat 处理，用于权益管理。
 
 请阅读完整政策：
 
@@ -88,9 +80,10 @@ flutter test
 
 ## 项目链接
 
-- 仓库：<https://github.com/bin64/Mono-Dash>
-- 隐私政策：<https://github.com/bin64/Mono-Dash/blob/main/PRIVACY.md>
-- 使用条款：<https://github.com/bin64/Mono-Dash/blob/main/TERMS.md>
+- 仓库：<https://github.com/willow-god/Mono-Dash>
+- 上游仓库：<https://github.com/nowubh/Mono-Dash>
+- 隐私政策：<https://github.com/willow-god/Mono-Dash/blob/main/PRIVACY.md>
+- 使用条款：<https://github.com/willow-god/Mono-Dash/blob/main/TERMS.md>
 - 1Panel：<https://github.com/1Panel-dev/1Panel>
 
 ## 许可证

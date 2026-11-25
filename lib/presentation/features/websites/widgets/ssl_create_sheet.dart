@@ -403,7 +403,7 @@ class _SslCreateSheetState extends State<_SslCreateSheet> {
                   ),
                 ),
               ),
-              ?trailing,
+              if (trailing != null) trailing!,
             ],
           ),
           const SizedBox(height: 8),

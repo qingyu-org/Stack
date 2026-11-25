@@ -7,7 +7,7 @@ part of 'app_settings_provider.dart';
 // **************************************************************************
 
 String _$appSettingsControllerHash() =>
-    r'0dbc97f01c1b83b241953773f27835f5e0401960';
+    r'4d162508bcab43fd2b423e0fafaaec20ef5d8fef';
 
 /// See also [AppSettingsController].
 @ProviderFor(AppSettingsController)

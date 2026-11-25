@@ -22218,6 +22218,264 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'The application service is temporarily unavailable. Try again later.'**
   String get testflight_serviceUnavailable;
+
+  /// Panel edition selector section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel edition'**
+  String get serverEdition_title;
+
+  /// Panel edition option: detect automatically.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-detect'**
+  String get serverEdition_auto;
+
+  /// Panel edition option: force community edition.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get serverEdition_community;
+
+  /// Panel edition option: force professional edition.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional'**
+  String get serverEdition_pro;
+
+  /// Explanation of the panel edition override.
+  ///
+  /// In en, this message translates to:
+  /// **'Auto-detect reads the license and node list. Choose manually if detection is wrong; unavailable Pro APIs will show an explicit notice.'**
+  String get serverEdition_hint;
+
+  /// Node section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Nodes'**
+  String get nodes_title;
+
+  /// Label for the local/master node.
+  ///
+  /// In en, this message translates to:
+  /// **'Primary'**
+  String get nodes_local;
+
+  /// Node picker sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch node'**
+  String get nodes_switchTitle;
+
+  /// Label for the currently selected node.
+  ///
+  /// In en, this message translates to:
+  /// **'Current node'**
+  String get nodes_current;
+
+  /// Node online status.
+  ///
+  /// In en, this message translates to:
+  /// **'Online'**
+  String get nodes_online;
+
+  /// Node offline status.
+  ///
+  /// In en, this message translates to:
+  /// **'Offline'**
+  String get nodes_offline;
+
+  /// Empty node list message.
+  ///
+  /// In en, this message translates to:
+  /// **'No nodes'**
+  String get nodes_empty;
+
+  /// Node management entry title.
+  ///
+  /// In en, this message translates to:
+  /// **'Node management'**
+  String get nodes_management;
+
+  /// Node management entry subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'All machines in this panel group'**
+  String get nodes_managementSubtitle;
+
+  /// Node loading message.
+  ///
+  /// In en, this message translates to:
+  /// **'Loading nodes...'**
+  String get nodes_loading;
+
+  /// Node loading failure title.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load nodes'**
+  String get nodes_loadFailed;
+
+  /// Retry button label.
+  ///
+  /// In en, this message translates to:
+  /// **'Retry'**
+  String get nodes_retry;
+
+  /// Professional edition badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Pro'**
+  String get nodes_pro;
+
+  /// Node version label.
+  ///
+  /// In en, this message translates to:
+  /// **'Version {version}'**
+  String nodes_version(String version);
+
+  /// Professional feature section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional features'**
+  String get pro_sectionTitle;
+
+  /// Read-only feature badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only'**
+  String get pro_readOnly;
+
+  /// WAF feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'WAF'**
+  String get pro_waf_title;
+
+  /// WAF feature subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Attacks and blocked requests (view only)'**
+  String get pro_waf_subtitle;
+
+  /// Website monitoring feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Website monitoring'**
+  String get pro_monitor_title;
+
+  /// Website monitoring feature subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Visitors, QPS and trends (view only)'**
+  String get pro_monitor_subtitle;
+
+  /// Operations report feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Operations report'**
+  String get pro_opsReport_title;
+
+  /// Operations report feature subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'System and login report'**
+  String get pro_opsReport_subtitle;
+
+  /// Tamper protection feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Tamper protection'**
+  String get pro_tamper_title;
+
+  /// Tamper protection feature subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Protected directories and templates'**
+  String get pro_tamper_subtitle;
+
+  /// Resource sync feature title.
+  ///
+  /// In en, this message translates to:
+  /// **'Resource sync'**
+  String get pro_sync_title;
+
+  /// Resource sync feature subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Sync files, images, SSL and apps between nodes'**
+  String get pro_sync_subtitle;
+
+  /// Title shown when a Pro API is unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Professional feature unavailable'**
+  String get pro_unavailableTitle;
+
+  /// Explanation shown when a Pro API is unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'This panel or current node does not expose the API, or the license is not bound. Enable Professional manually in the panel editor if you are sure.'**
+  String get pro_unavailableDescription;
+
+  /// Hint to switch nodes when a Pro feature is unavailable.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to a node that supports this feature.'**
+  String get pro_unsupportedNode;
+
+  /// Requests metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Requests'**
+  String get pro_metric_requests;
+
+  /// Attacks metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Attacks'**
+  String get pro_metric_attacks;
+
+  /// Blocked requests metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Blocked'**
+  String get pro_metric_blocked;
+
+  /// Visitors metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Visitors'**
+  String get pro_metric_visitors;
+
+  /// QPS metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'QPS'**
+  String get pro_metric_qps;
+
+  /// Bandwidth metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Bandwidth'**
+  String get pro_metric_bandwidth;
+
+  /// Today metric label.
+  ///
+  /// In en, this message translates to:
+  /// **'Today'**
+  String get pro_metric_today;
+
+  /// Empty state for Pro feature pages.
+  ///
+  /// In en, this message translates to:
+  /// **'No data returned'**
+  String get pro_empty;
+
+  /// Error state for Pro feature pages.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load professional data'**
+  String get pro_error;
 }
 
 class _AppLocalizationsDelegate

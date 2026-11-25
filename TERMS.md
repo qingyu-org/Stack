@@ -31,7 +31,7 @@ You must not use the App to:
 - Access systems without authorization
 - Interfere with, damage, or disrupt servers, networks, applications, or data that you do not own or control
 - Violate applicable laws or third-party rights
-- Reverse engineer, tamper with, or misuse purchase, entitlement, or security features
+- Reverse engineer, tamper with, or misuse security features
 - Use the App in a way that could harm other users, infrastructure, or services
 
 ## 3. Server Administration Risks
@@ -52,15 +52,11 @@ You are responsible for verifying commands, settings, paths, targets, and confir
 
 Mono Dash connects to 1Panel servers that you configure. We do not operate, control, or monitor those servers.
 
-Your use of 1Panel, your server provider, app stores, payment providers, RevenueCat, and any other third-party services may be subject to their own terms and policies. We are not responsible for third-party services, servers, software, content, outages, security incidents, or data handling practices.
+Your use of 1Panel, your server provider, app stores, and any other third-party services may be subject to their own terms and policies. We are not responsible for third-party services, servers, software, content, outages, security incidents, or data handling practices.
 
 ## 5. Purchases
 
-Mono Dash may include free and paid features. Where in-app purchases are available, purchases are processed by the App Store or Google Play and may use RevenueCat for entitlement management.
-
-Prices, taxes, refunds, family sharing, payment methods, and purchase availability may be controlled by Apple, Google, RevenueCat, or other applicable providers. Refund requests should be handled through the platform where the purchase was made, unless otherwise required by law.
-
-We may change free limits, pricing, or purchase availability for future purchases or future versions, subject to applicable platform rules, existing entitlements, and consumer protection laws.
+This build does not include in-app purchases, subscriptions, activation codes, or paid feature limits. You may add any number of 1Panel servers without a purchase. Access to 1Panel Professional APIs still depends on the license and permissions of the panel you connect to.
 
 ## 6. Privacy
 
@@ -68,7 +64,7 @@ Your use of Mono Dash is also governed by our Privacy Policy:
 
 [Privacy Policy](./PRIVACY.md)
 
-Please review it to understand how the App handles local data, 1Panel server data, file access, network access, purchases, and third-party services.
+Please review it to understand how the App handles local data, 1Panel server data, file access, network access, and third-party services.
 
 ## 7. Updates and Availability
 
@@ -123,4 +119,4 @@ Your continued use of the App after changes become effective means you accept th
 
 For questions about these Terms, open an issue in the Mono Dash GitHub repository:
 
-https://github.com/bin64/Mono-Dash/issues
+https://github.com/willow-god/Mono-Dash/issues

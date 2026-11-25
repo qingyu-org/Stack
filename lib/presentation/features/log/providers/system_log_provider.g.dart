@@ -7,7 +7,7 @@ part of 'system_log_provider.dart';
 // **************************************************************************
 
 String _$systemLogControllerHash() =>
-    r'7b20b32442a6098cfee90c940790c539818eb79a';
+    r'3bb935a0b00139efe9491731141953a1734b45ad';
 
 /// See also [SystemLogController].
 @ProviderFor(SystemLogController)

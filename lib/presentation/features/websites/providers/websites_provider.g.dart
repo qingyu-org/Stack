@@ -7,7 +7,7 @@ part of 'websites_provider.dart';
 // **************************************************************************
 
 String _$websitesControllerHash() =>
-    r'fab1b42b7e01fa52ec908f77dbb9cd000d996138';
+    r'02b4b21d83dba3319785b59db477354d073af632';
 
 /// See also [WebsitesController].
 @ProviderFor(WebsitesController)

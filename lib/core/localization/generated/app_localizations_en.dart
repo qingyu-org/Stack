@@ -12202,4 +12202,139 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get testflight_serviceUnavailable =>
       'The application service is temporarily unavailable. Try again later.';
+
+  @override
+  String get serverEdition_title => 'Panel edition';
+
+  @override
+  String get serverEdition_auto => 'Auto-detect';
+
+  @override
+  String get serverEdition_community => 'Community';
+
+  @override
+  String get serverEdition_pro => 'Professional';
+
+  @override
+  String get serverEdition_hint =>
+      'Auto-detect reads the license and node list. Choose manually if detection is wrong; unavailable Pro APIs will show an explicit notice.';
+
+  @override
+  String get nodes_title => 'Nodes';
+
+  @override
+  String get nodes_local => 'Primary';
+
+  @override
+  String get nodes_switchTitle => 'Switch node';
+
+  @override
+  String get nodes_current => 'Current node';
+
+  @override
+  String get nodes_online => 'Online';
+
+  @override
+  String get nodes_offline => 'Offline';
+
+  @override
+  String get nodes_empty => 'No nodes';
+
+  @override
+  String get nodes_management => 'Node management';
+
+  @override
+  String get nodes_managementSubtitle => 'All machines in this panel group';
+
+  @override
+  String get nodes_loading => 'Loading nodes...';
+
+  @override
+  String get nodes_loadFailed => 'Failed to load nodes';
+
+  @override
+  String get nodes_retry => 'Retry';
+
+  @override
+  String get nodes_pro => 'Pro';
+
+  @override
+  String nodes_version(String version) {
+    return 'Version $version';
+  }
+
+  @override
+  String get pro_sectionTitle => 'Professional features';
+
+  @override
+  String get pro_readOnly => 'Read-only';
+
+  @override
+  String get pro_waf_title => 'WAF';
+
+  @override
+  String get pro_waf_subtitle => 'Attacks and blocked requests (view only)';
+
+  @override
+  String get pro_monitor_title => 'Website monitoring';
+
+  @override
+  String get pro_monitor_subtitle => 'Visitors, QPS and trends (view only)';
+
+  @override
+  String get pro_opsReport_title => 'Operations report';
+
+  @override
+  String get pro_opsReport_subtitle => 'System and login report';
+
+  @override
+  String get pro_tamper_title => 'Tamper protection';
+
+  @override
+  String get pro_tamper_subtitle => 'Protected directories and templates';
+
+  @override
+  String get pro_sync_title => 'Resource sync';
+
+  @override
+  String get pro_sync_subtitle =>
+      'Sync files, images, SSL and apps between nodes';
+
+  @override
+  String get pro_unavailableTitle => 'Professional feature unavailable';
+
+  @override
+  String get pro_unavailableDescription =>
+      'This panel or current node does not expose the API, or the license is not bound. Enable Professional manually in the panel editor if you are sure.';
+
+  @override
+  String get pro_unsupportedNode =>
+      'Switch to a node that supports this feature.';
+
+  @override
+  String get pro_metric_requests => 'Requests';
+
+  @override
+  String get pro_metric_attacks => 'Attacks';
+
+  @override
+  String get pro_metric_blocked => 'Blocked';
+
+  @override
+  String get pro_metric_visitors => 'Visitors';
+
+  @override
+  String get pro_metric_qps => 'QPS';
+
+  @override
+  String get pro_metric_bandwidth => 'Bandwidth';
+
+  @override
+  String get pro_metric_today => 'Today';
+
+  @override
+  String get pro_empty => 'No data returned';
+
+  @override
+  String get pro_error => 'Failed to load professional data';
 }

@@ -16,7 +16,7 @@ Mono Dash 不运营任何用于用户账户、数据分析、行为跟踪、日�
 
 你的服务器列表、App 设置和 1Panel 连接信息保存在你的设备本地。你的所有 1Panel 操作均由你的设备发起，并直接连接到你自己配置的 1Panel 服务器。
 
-如果当前版本启用了应用内购买功能，Apple、Google Play 和 RevenueCat 可能会用于处理购买和同步购买状态。这些购买服务与 1Panel 服务器数据相互独立。
+本构建不包含账号、应用内购买、订阅或激活码，也不集成 RevenueCat 或支付 SDK。
 
 ## 无分析和跟踪
 
@@ -28,7 +28,7 @@ Mono Dash 不包含由 Mono Dash 运营的分析服务、跟踪 SDK、广告 SDK
 
 Mono Dash 的开发者和维护者可通过 GitHub 仓库联系：
 
-https://github.com/bin64/Mono-Dash/issues
+https://github.com/willow-god/Mono-Dash/issues
 
 ## 相关文档
 
@@ -82,15 +82,7 @@ Mono Dash 不会将你的 1Panel API Key 发送到任何 Mono Dash 后端。
 
 ### 购买信息
 
-如果当前版本启用了应用内购买，购买将由 App Store 或 Google Play 处理。Mono Dash 可能会使用 RevenueCat 加载商品、处理购买流程、恢复购买和同步权益状态。
-
-购买相关信息可能包括购买状态、商品标识、权益标识、收据、交易信息、购买服务使用的设备或 App 标识，以及相关诊断信息。支付卡信息由 Apple 或 Google 处理，Mono Dash 不会收到支付卡信息。购买服务不会从 Mono Dash 收到你的 1Panel 服务器数据。
-
-更多信息请查看相关服务的隐私政策：
-
-- Apple 隐私政策：https://www.apple.com/legal/privacy/
-- Google 隐私权政策：https://policies.google.com/privacy
-- RevenueCat 隐私政策：https://www.revenuecat.com/privacy
+本构建不包含应用内购买、订阅或权益校验，不会为了处理购买而联系 Apple、Google Play 或 RevenueCat。
 
 ### 设备和 App 信息
 
@@ -109,7 +101,6 @@ Mono Dash 在你的设备本地处理信息，用于：
 - 对发送给你配置的 1Panel 服务器的请求进行认证
 - 在你请求时上传、下载、查看、编辑或分享文件
 - 展示服务器状态、日志、终端会话、网站、数据库、容器和其他 1Panel 资源
-- 处理、验证、恢复和同步购买状态
 
 
 ## 信息如何离开你的设备
@@ -119,7 +110,6 @@ Mono Dash 不出售你的个人信息，也不会将你的 1Panel 数据分享�
 信息仅可能在以下情况下离开你的设备：
 
 - 在你执行相关操作时，发送到你配置的 1Panel 服务器
-- 如果启用了购买功能，发送到 Apple、Google Play 和 RevenueCat，用于处理购买和同步购买状态
 - 当你通过系统分享功能主动选择分享给其他 App 或服务时
 
 由于我们不运营用于 App 使用数据的后端，我们通常没有用户操作记录、1Panel 数据、API Key、文件或分析数据可供披露。
@@ -138,7 +128,6 @@ Mono Dash 会将本地保存的信息保留在你的设备上，直到你删除�
 
 下载的文件会保留在你的设备上，直到你删除它们。存储在 1Panel 服务器上的文件和日志由该服务器及你自己的服务器保留策略控制。
 
-购买记录可能会由 Apple、Google Play、RevenueCat 和相关支付服务根据其政策和法律义务保留。
 
 ## 删除你的数据
 
@@ -148,15 +137,12 @@ Mono Dash 会将本地保存的信息保留在你的设备上，直到你删除�
 
 如需删除存储在 1Panel 服务器上的数据，请使用 1Panel、Mono Dash 中作用于该服务器的功能，或你的服务器管理工具。Mono Dash 不控制你运营或连接的 1Panel 实例的服务端数据保留。
 
-如需处理购买相关的删除或隐私请求，请联系 Apple、Google 或 RevenueCat。
 
 ## 第三方服务
 
 Mono Dash 可能会与以下第三方服务或组件交互：
 
 - 你自行配置的 1Panel 服务器
-- 用于购买和分发的 Apple App Store 和 Google Play
-- 用于购买权益管理的 RevenueCat
 - 操作系统服务，例如安全存储、文件选择器、分享、WebView 和局域网权限提示
 
 这些服务可能会根据各自的隐私政策处理数据。
@@ -177,4 +163,4 @@ Mono Dash 面向服务器管理场景，并非面向儿童。我们不会有意�
 
 如有隐私相关问题，请在 Mono Dash GitHub 仓库中提交 Issue：
 
-https://github.com/bin64/Mono-Dash/issues
+https://github.com/willow-god/Mono-Dash/issues

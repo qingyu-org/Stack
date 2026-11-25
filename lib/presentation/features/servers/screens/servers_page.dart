@@ -7,17 +7,18 @@ import 'package:go_router/go_router.dart';
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../domain/entities/panel_node.dart';
 import '../../../../domain/entities/server.dart';
 import '../../../common/components/floating_tab_bar.dart';
 import '../../../common/components/frosted_action_button.dart';
 import '../../../common/components/frosted_scaffold.dart';
-import '../../purchases/providers/purchase_provider.dart';
-import '../../purchases/widgets/purchase_prompt.dart';
 import '../../settings/providers/app_settings_provider.dart';
+import '../providers/node_providers.dart';
+import '../providers/node_selection_provider.dart';
 import '../providers/servers_provider.dart';
 import '../widgets/add_server_sheet.dart';
-import '../widgets/server_card.dart';
 import '../widgets/server_context_menu.dart';
+import '../widgets/server_group_card.dart';
 import '../widgets/server_memo_curl_card.dart';
 import 'servers_settings_tab.dart';
 
@@ -128,6 +129,9 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
     if (servers == null || servers.isEmpty) return;
     for (final server in servers) {
       ref.invalidate(serverDashboardSnapshotProvider(server.id));
+      if (server.isProActive) {
+        ref.invalidate(serverNodesProvider(server.id));
+      }
     }
   }
 
@@ -162,21 +166,7 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   }
 
   Future<void> _handleAddServer() async {
-    final servers = ref.read(serversNotifierProvider).valueOrNull ?? const [];
-    final serverCount = servers.length;
-    final purchaseState = await ref.read(purchaseControllerProvider.future);
-    if (!mounted) return;
-
-    if (serverCount == 0 || purchaseState.canAddServer(serverCount)) {
-      await AddServerSheet.show(context);
-      return;
-    }
-
-    await showUnlimitedServersPurchasePrompt(
-      context,
-      ref,
-      serverCount: serverCount,
-    );
+    await AddServerSheet.show(context);
   }
 }
 
@@ -317,16 +307,16 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
                             child: _isSorting
                                 ? ReorderableDragStartListener(
                                     index: index,
-                                    child: ServerCard(
-                                      server: server,
-                                      style: cardStyle,
+                                    child: _buildServerCard(
+                                      server,
+                                      cardStyle,
+                                      interactive: false,
                                     ),
                                   )
-                                : ServerMemoCurlCard(
-                                    server: server,
-                                    style: cardStyle,
-                                    onTap: () =>
-                                        context.push('/server/${server.id}'),
+                                : _buildServerCard(
+                                    server,
+                                    cardStyle,
+                                    interactive: true,
                                   ),
                           ),
                         );
@@ -365,6 +355,49 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
     );
   }
 
+  Widget _buildServerCard(
+    Server server,
+    ServerCardStyle cardStyle, {
+    required bool interactive,
+  }) {
+    if (server.isProActive && server.hasChildNodes) {
+      final groupCard = ServerGroupCard(
+        server: server,
+        onOpenNode: interactive
+            ? (nodeName) => _openNode(server, nodeName)
+            : (_) {},
+        onLongPress: interactive
+            ? () => _showServerMenu(context, server, cardStyle)
+            : null,
+      );
+      if (!interactive) return groupCard;
+      return ServerMemoCurlCard(
+        server: server,
+        style: cardStyle,
+        frontChild: groupCard,
+      );
+    }
+    return ServerMemoCurlCard(
+      server: server,
+      style: cardStyle,
+      onTap: interactive
+          ? () => _openServer(server, PanelNode.localName)
+          : null,
+    );
+  }
+
+  Future<void> _openServer(Server server, String nodeName) async {
+    await ref
+        .read(activeNodeControllerProvider(server.id).notifier)
+        .select(nodeName);
+    if (!mounted) return;
+    context.push('/server/${server.id}');
+  }
+
+  Future<void> _openNode(Server server, String nodeName) {
+    return _openServer(server, nodeName);
+  }
+
   Future<void> _confirmDelete(Server server) async {
     final confirmed = await showCupertinoDialog<bool>(
       context: context,
@@ -399,7 +432,10 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
 
     final latestById = {for (final server in servers) server.id: server};
     final orderedIds = [for (final server in _orderedServers!) server.id];
-    _orderedServers = [for (final id in orderedIds) ?latestById[id]];
+    _orderedServers = [
+      for (final id in orderedIds)
+        if (latestById.containsKey(id)) latestById[id]!,
+    ];
     return _orderedServers!;
   }
 

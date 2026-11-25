@@ -1545,7 +1545,7 @@ class _CompactInput extends StatelessWidget {
               padding: const EdgeInsets.symmetric(vertical: 8),
             ),
           ),
-          ?trailing,
+          if (trailing != null) trailing!,
         ],
       ),
     );

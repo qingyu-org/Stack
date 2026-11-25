@@ -16,7 +16,7 @@ Mono Dash does not operate any backend server for user accounts, analytics, beha
 
 Your server list, app settings, and 1Panel connection information are stored locally on your device. Your operations are performed from your device to the 1Panel servers that you configure.
 
-Some app store purchase features may use Apple, Google Play, and RevenueCat to process purchases and synchronize purchase status. These purchase services are separate from any 1Panel server data.
+Mono Dash does not include accounts, in-app purchases, subscriptions, or activation codes in this build. No RevenueCat or payment SDK is bundled.
 
 ## No Analytics or Tracking
 
@@ -28,7 +28,7 @@ We do not record what panels you add, what pages you open, what operations you p
 
 The developer and maintainer contact for Mono Dash is the Mono Dash project maintainer through the GitHub repository:
 
-https://github.com/bin64/Mono-Dash/issues
+https://github.com/willow-god/Mono-Dash/issues
 
 ## Related Documents
 
@@ -80,17 +80,9 @@ Files selected for upload may be sent to the 1Panel server you choose. Files dow
 
 On platforms that require permission, the App may request local network access so it can connect to 1Panel services and website resources on your local network.
 
-### Purchase information
+### Purchases
 
-If in-app purchases are enabled in your build, purchases are processed by the App Store or Google Play. Mono Dash may use RevenueCat to load products, process purchase flows, restore purchases, and synchronize purchase entitlement status.
-
-Purchase-related information may include purchase status, product identifiers, entitlement identifiers, receipts, transaction information, device or app identifiers used by the purchase provider, and related diagnostic information. Payment card details are handled by Apple or Google and are not received by Mono Dash. Purchase services do not receive your 1Panel server data from Mono Dash.
-
-For more information, review the privacy policies of the relevant providers:
-
-- Apple Privacy Policy: https://www.apple.com/legal/privacy/
-- Google Privacy Policy: https://policies.google.com/privacy
-- RevenueCat Privacy Policy: https://www.revenuecat.com/privacy
+This build does not contain in-app purchases, subscriptions, or entitlement checks. Mono Dash does not contact Apple, Google Play, or RevenueCat for purchase processing.
 
 ### Device and app information
 
@@ -109,7 +101,6 @@ Mono Dash processes information locally on your device to:
 - Authenticate requests to your configured 1Panel servers
 - Upload, download, view, edit, or share files when you request those actions
 - Display server status, logs, terminal sessions, websites, databases, containers, and other 1Panel resources
-- Process, verify, restore, and synchronize purchases
 
 We do not operate a Mono Dash backend that receives your server list, API keys, panel data, operation history, terminal input, logs, files, analytics events, or usage behavior.
 
@@ -120,7 +111,6 @@ Mono Dash does not sell your personal information and does not share your 1Panel
 Information may leave your device only in the following situations:
 
 - To your configured 1Panel servers, when required for the operation you perform
-- To Apple, Google Play, and RevenueCat for purchase processing and purchase status synchronization, if purchases are enabled
 - To the apps or services you choose through system sharing features
 
 Because we do not operate a backend for App usage data, we generally do not have user operation records, 1Panel data, API keys, files, or analytics data to disclose.
@@ -139,8 +129,6 @@ Mono Dash keeps locally stored information on your device until you delete it, r
 
 Downloaded files remain on your device until you delete them. Files and logs stored on your 1Panel server are controlled by that server and by your own server retention settings.
 
-Purchase records may be retained by Apple, Google Play, RevenueCat, and applicable payment providers according to their own policies and legal obligations.
-
 ## Deleting Your Data
 
 You can delete locally stored panel connection information by removing the server from the App. This also removes the locally stored API key associated with that server.
@@ -149,15 +137,11 @@ You can delete downloaded files from your device using the App's download manage
 
 To delete data stored on a 1Panel server, use 1Panel, Mono Dash features that operate on that server, or your server administration tools. Mono Dash does not control server-side retention for 1Panel instances that you operate or connect to.
 
-For purchase-related deletion or privacy requests, contact Apple, Google, or RevenueCat as applicable.
-
 ## Third-Party Services
 
 Mono Dash may interact with third-party services or components, including:
 
 - 1Panel servers configured by you
-- Apple App Store and Google Play for purchases and distribution
-- RevenueCat for purchase entitlement management
 - Operating system services such as secure storage, file pickers, sharing, web views, and local network permission prompts
 
 These services may process data under their own privacy policies.
@@ -178,4 +162,4 @@ We may update this Privacy Policy from time to time. Changes will be posted in t
 
 For privacy questions, open an issue in the Mono Dash GitHub repository:
 
-https://github.com/bin64/Mono-Dash/issues
+https://github.com/willow-god/Mono-Dash/issues

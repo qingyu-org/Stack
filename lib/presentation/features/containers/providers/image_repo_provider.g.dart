@@ -7,7 +7,7 @@ part of 'image_repo_provider.dart';
 // **************************************************************************
 
 String _$imageRepoControllerHash() =>
-    r'69cde32428bcf7092ab0337aecf3bd039fd931eb';
+    r'5af705c0998014fdfed89d4ae0dd2aa26cb5cf21';
 
 /// See also [ImageRepoController].
 @ProviderFor(ImageRepoController)

@@ -395,7 +395,7 @@ class _FormSection extends StatelessWidget {
                   ),
                 ),
               ),
-              ?trailing,
+              if (trailing != null) trailing!,
             ],
           ),
           const SizedBox(height: 12),

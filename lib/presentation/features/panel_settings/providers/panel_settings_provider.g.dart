@@ -7,7 +7,7 @@ part of 'panel_settings_provider.dart';
 // **************************************************************************
 
 String _$panelSettingsControllerHash() =>
-    r'44e4bb310f25a43feb4115924e71ba4d7ba961c6';
+    r'bf033b593c59449040b0fedd86faecc1fe5a0c53';
 
 /// See also [PanelSettingsController].
 @ProviderFor(PanelSettingsController)

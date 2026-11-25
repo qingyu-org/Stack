@@ -7,7 +7,7 @@ part of 'database_repository_impl.dart';
 // **************************************************************************
 
 String _$databaseRepositoryHash() =>
-    r'6693c5b033942926b80d8aeff5c1dcf9a9cd45a3';
+    r'26bc1bc656f66e4bc6dc99519cad9206fd6e63b1';
 
 /// 基于当前激活服务器的仓库 Provider。
 ///

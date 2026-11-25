@@ -6,7 +6,10 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/network/dio_client_provider.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../../domain/entities/panel_node.dart';
+import '../../../../domain/entities/server.dart';
 import '../../../common/components/floating_tab_bar.dart';
 import '../../../common/components/frosted_header.dart';
 import '../../containers/providers/container_overview_provider.dart';
@@ -16,6 +19,8 @@ import '../../dashboard/screens/dashboard_page.dart';
 import '../../files/screens/files_page.dart';
 import '../../more/screens/more_page.dart';
 import '../../servers/providers/servers_provider.dart';
+import '../../servers/providers/node_providers.dart';
+import '../../servers/providers/node_selection_provider.dart';
 import '../../websites/providers/websites_provider.dart';
 import '../../websites/screens/websites_page.dart';
 import '../../../common/components/app_header_search_field.dart';
@@ -172,15 +177,33 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
     final tabItems = _tabItems(context);
     final activeServerId = ref.watch(activeServerIdProvider);
     final serversAsync = ref.watch(serversNotifierProvider);
-    final title = serversAsync.maybeWhen(
+    Server? activeServer;
+    final baseTitle = serversAsync.maybeWhen(
       data: (servers) {
         for (final server in servers) {
-          if (server.id == activeServerId) return server.displayName;
+          if (server.id == activeServerId) {
+            activeServer = server;
+            return server.displayName;
+          }
         }
         return l10n.serverDetail_title;
       },
       orElse: () => l10n.serverDetail_title,
     );
+    final isProPanel = activeServer?.isProActive == true;
+    final activeNodeName =
+        ref.watch(activeNodeControllerProvider(activeServerId)).valueOrNull ??
+        PanelNode.localName;
+    final nodesAsync = isProPanel
+        ? ref.watch(serverNodesProvider(activeServerId))
+        : null;
+    final nodes =
+        nodesAsync?.valueOrNull ?? activeServer?.nodes ?? const <PanelNode>[];
+    final showNodeSwitcher = isProPanel && nodes.length > 1;
+    final nodeLabel = activeNodeName == PanelNode.localName
+        ? l10n.nodes_local
+        : activeNodeName;
+    final title = isProPanel ? '$baseTitle · $nodeLabel' : baseTitle;
     final currentScroll = _scrollOffsets[_selectedIndex] ?? 0;
     final isOverlapping = currentScroll > 20;
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
@@ -212,7 +235,12 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
               isOverlapping: isOverlapping,
               onBack: _isSearchMode ? null : () => Navigator.of(context).pop(),
               fadeOutDistance: 24,
-              trailingBuilder: _buildTrailingBuilder(),
+              trailingBuilder: _buildTrailingBuilder(
+                activeServer,
+                nodes,
+                activeNodeName,
+                showNodeSwitcher,
+              ),
             ),
           ),
           AnimatedPositioned(
@@ -256,17 +284,130 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
     );
   }
 
-  Widget Function(bool isDark, bool isOverlapping)? _buildTrailingBuilder() {
-    switch (_selectedIndex) {
-      case 0:
-        return null;
-      case 1:
-        return _buildWebsitesMenu;
-      case 2:
-        return _buildFilesTrailing;
-      default:
-        return null;
-    }
+  Widget Function(bool isDark, bool isOverlapping)? _buildTrailingBuilder(
+    Server? server,
+    List<PanelNode> nodes,
+    String activeNode,
+    bool showNodeSwitcher,
+  ) {
+    final Widget Function(bool isDark, bool isOverlapping)? base =
+        switch (_selectedIndex) {
+          1 => _buildWebsitesMenu,
+          2 => _buildFilesTrailing,
+          _ => null,
+        };
+
+    if (!showNodeSwitcher || server == null) return base;
+    return (isDark, isOverlapping) {
+      // 搜索框需要占满整行，搜索模式下先隐藏节点胶囊。
+      final chip = _buildNodeChip(server, nodes, activeNode);
+      final trailing =
+          (_selectedIndex == 1 || _selectedIndex == 2) && _isSearchMode
+          ? null
+          : base?.call(isDark, isOverlapping);
+      if (trailing == null) return chip;
+      return Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [chip, const SizedBox(width: 8), trailing],
+      );
+    };
+  }
+
+  Widget _buildNodeChip(
+    Server server,
+    List<PanelNode> nodes,
+    String activeNode,
+  ) {
+    final label = activeNode == PanelNode.localName
+        ? context.l10n.nodes_local
+        : activeNode;
+    return CupertinoButton(
+      padding: EdgeInsets.zero,
+      minimumSize: Size.zero,
+      onPressed: () => _showNodePicker(server, nodes, activeNode),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+        decoration: BoxDecoration(
+          color: AppColors.secondaryBackground(context).withValues(alpha: 0.72),
+          borderRadius: BorderRadius.circular(20),
+          border: Border.all(
+            color: AppColors.separator(context).withValues(alpha: 0.24),
+            width: 0.5,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(
+              CupertinoIcons.arrow_left_right,
+              size: 11,
+              color: AppColors.secondaryLabel(context),
+            ),
+            const SizedBox(width: 4),
+            ConstrainedBox(
+              constraints: const BoxConstraints(maxWidth: 92),
+              child: Text(
+                label,
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 11.5,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.label(context),
+                ),
+              ),
+            ),
+            const SizedBox(width: 2),
+            Icon(
+              CupertinoIcons.chevron_down,
+              size: 9,
+              color: AppColors.tertiaryLabel(context),
+            ),
+          ],
+        ),
+      ),
+    );
+  }
+
+  Future<void> _showNodePicker(
+    Server server,
+    List<PanelNode> nodes,
+    String activeNode,
+  ) async {
+    final l10n = context.l10n;
+    await showCupertinoModalPopup<void>(
+      context: context,
+      builder: (sheetContext) => CupertinoActionSheet(
+        title: Text(l10n.nodes_switchTitle),
+        message: Text(server.displayName),
+        actions: [
+          for (final node in nodes)
+            CupertinoActionSheetAction(
+              isDefaultAction: node.name == activeNode,
+              onPressed: () {
+                Navigator.of(sheetContext).pop();
+                _selectNode(server, node.name);
+              },
+              child: Text(node.isLocal ? l10n.nodes_local : node.displayName),
+            ),
+        ],
+        cancelButton: CupertinoActionSheetAction(
+          onPressed: () => Navigator.of(sheetContext).pop(),
+          child: Text(l10n.common_cancel),
+        ),
+      ),
+    );
+  }
+
+  Future<void> _selectNode(Server server, String nodeName) async {
+    await ref
+        .read(activeNodeControllerProvider(server.id).notifier)
+        .select(nodeName);
+    // 等待 DioClient 按新节点重建，再刷新当前 Tab，避免仍用旧节点发请求。
+    await ref.read(dioClientProvider(server.id).future);
+    if (!mounted) return;
+    _refreshTab(_selectedIndex);
+    ref.invalidate(serverDashboardSnapshotProvider(server.id));
   }
 
   Widget _buildFilesTrailing(bool isDark, bool isOverlapping) {

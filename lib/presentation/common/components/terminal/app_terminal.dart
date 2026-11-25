@@ -18,6 +18,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/storage/storage_service.dart';
 import '../frosted_header.dart';
 import '../../../features/server_detail/providers/active_server_provider.dart';
+import '../../../features/servers/providers/node_selection_provider.dart';
 import '../../../../core/router/app_router.dart';
 import 'floating_terminal_controller.dart';
 
@@ -143,6 +144,9 @@ class _AppTerminalScreenState extends ConsumerState<_AppTerminalScreen> {
       final storage = ref.read(storageServiceProvider);
       final server = await storage.getServer(serverId);
       final apiKey = await storage.getApiKey(serverId) ?? '';
+      final nodeName = await ref.read(
+        activeNodeControllerProvider(serverId).future,
+      );
 
       if (server == null) {
         if (!mounted) return;
@@ -159,7 +163,10 @@ class _AppTerminalScreenState extends ConsumerState<_AppTerminalScreen> {
       final isDatabase = widget.source == 'database';
       final isRedis =
           isDatabase && (widget.databaseType?.contains('redis') ?? false);
-      final headers = await OnePanelAuth.signedHeaders(apiKey);
+      final headers = await OnePanelAuth.signedHeaders(
+        apiKey,
+        nodeName: nodeName,
+      );
       final queryParameters = {
         'cols': _terminal.viewWidth.toString(),
         'rows': _terminal.viewHeight.toString(),
@@ -177,7 +184,7 @@ class _AppTerminalScreenState extends ConsumerState<_AppTerminalScreen> {
           'user': widget.user,
           'command': widget.command,
         },
-        'operateNode': 'local',
+        'operateNode': nodeName,
       };
 
       _channel = await ApiCompatibility.tryVariants<WebSocketChannel>(
@@ -197,7 +204,7 @@ class _AppTerminalScreenState extends ConsumerState<_AppTerminalScreen> {
                     wsUrl,
                     headers: headers,
                     allowInsecureConnections: server.allowInsecureConnections,
-                    currentNode: 'local',
+                    currentNode: nodeName,
                   );
                   return connectAppWebSocket(
                     wsUrl,

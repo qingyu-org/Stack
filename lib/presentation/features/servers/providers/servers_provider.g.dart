@@ -6,11 +6,11 @@ part of 'servers_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$serversNotifierHash() => r'a89b4aa208dc7b4b77a2c6d26f224c67f93a537c';
+String _$serversNotifierHash() => r'20f7c482e81a4a4aa43e99eb00ea4c09d782a1d1';
 
 /// 面板列表状态。
 ///
-/// 只负责持久化与展示，连通性测试通过 [HostApi.getOsInfo] 走真实 API，
+/// 只负责持久化与展示，连通性测试通过 [DashboardApi.getOsInfo] 走真实 API，
 /// 验证 MD5 鉴权链路是否通畅。
 ///
 /// Copied from [ServersNotifier].

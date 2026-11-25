@@ -201,7 +201,7 @@ class _ImagePullSheetState extends ConsumerState<_ImagePullSheet> {
                 ),
               ),
             ),
-            ?trailing,
+            if (trailing != null) trailing!,
           ],
         ),
         if (child != null) ...[const SizedBox(height: 8), child],

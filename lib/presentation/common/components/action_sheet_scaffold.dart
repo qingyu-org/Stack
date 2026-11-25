@@ -188,7 +188,7 @@ class ActionSheetScaffold extends StatelessWidget {
                                   ],
                                 ),
                               ),
-                            ?panelHeader,
+                            if (panelHeader != null) panelHeader!,
                             Flexible(
                               child: SingleChildScrollView(
                                 keyboardDismissBehavior:
@@ -208,7 +208,7 @@ class ActionSheetScaffold extends StatelessWidget {
                             ),
                           ],
                         ),
-                        ?panelOverlay,
+                        if (panelOverlay != null) panelOverlay!,
                       ],
                     ),
                   ),

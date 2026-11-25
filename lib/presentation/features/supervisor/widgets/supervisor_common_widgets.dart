@@ -143,7 +143,11 @@ class _MetaLine extends StatelessWidget {
         ? context.l10n.common_unknown
         : process.user.trim();
     final pid = _pidSummary(process);
-    final text = [user, _statusSummary(context, process), ?pid].join(' · ');
+    final text = [
+      user,
+      _statusSummary(context, process),
+      if (pid != null) pid,
+    ].join(' · ');
     return Row(
       children: [
         Icon(

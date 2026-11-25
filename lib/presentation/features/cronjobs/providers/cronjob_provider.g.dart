@@ -6,23 +6,23 @@ part of 'cronjob_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$cronjobControllerHash() => r'55d3d8e7d2cd529a5b2d6524b4c9bfed934c5332';
+String _$cronjobControllerHash() => r'2e02662decdfd84db809a27b106ba12c0b9abde9';
 
 /// See also [CronjobController].
 @ProviderFor(CronjobController)
 final cronjobControllerProvider =
     AutoDisposeAsyncNotifierProvider<CronjobController, CronjobState>.internal(
-      CronjobController.new,
-      name: r'cronjobControllerProvider',
-      debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
-          ? null
-          : _$cronjobControllerHash,
-      dependencies: <ProviderOrFamily>[cronjobRepositoryProvider],
-      allTransitiveDependencies: <ProviderOrFamily>{
-        cronjobRepositoryProvider,
-        ...?cronjobRepositoryProvider.allTransitiveDependencies,
-      },
-    );
+  CronjobController.new,
+  name: r'cronjobControllerProvider',
+  debugGetCreateSourceHash: const bool.fromEnvironment('dart.vm.product')
+      ? null
+      : _$cronjobControllerHash,
+  dependencies: <ProviderOrFamily>[cronjobRepositoryProvider],
+  allTransitiveDependencies: <ProviderOrFamily>{
+    cronjobRepositoryProvider,
+    ...?cronjobRepositoryProvider.allTransitiveDependencies
+  },
+);
 
 typedef _$CronjobController = AutoDisposeAsyncNotifier<CronjobState>;
 // ignore_for_file: type=lint

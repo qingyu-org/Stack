@@ -1,3 +1,4 @@
+import '../entities/panel_probe_result.dart';
 import '../entities/server.dart';
 
 /// 面板服务器仓库抽象。
@@ -18,6 +19,7 @@ abstract class ServerRepository {
     required bool isHttps,
     required bool allowInsecureConnections,
     required String apiKey,
+    PanelProbeResult? probe,
   });
 
   /// 更新服务器元数据（可选更新 API Key）。

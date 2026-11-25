@@ -6,7 +6,7 @@ part of 'network_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$networkControllerHash() => r'c74fa58a8da77e126a6bf7c9c6353999baabda75';
+String _$networkControllerHash() => r'7660f1e9928add21a407d810fe28c279ea258177';
 
 /// See also [NetworkController].
 @ProviderFor(NetworkController)

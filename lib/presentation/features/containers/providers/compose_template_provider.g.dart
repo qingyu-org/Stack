@@ -7,7 +7,7 @@ part of 'compose_template_provider.dart';
 // **************************************************************************
 
 String _$composeTemplateControllerHash() =>
-    r'acea8b2d89e7ad5b34b43fbc9046ee999fa902cc';
+    r'af86400890c51cae60541a9d299c2fc2676a3b93';
 
 /// See also [ComposeTemplateController].
 @ProviderFor(ComposeTemplateController)

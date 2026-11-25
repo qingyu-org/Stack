@@ -24,6 +24,7 @@ class DioClient {
     Map<String, String> customHeaders = const {},
     required String userAgent,
     bool allowInsecureConnections = false,
+    String currentNodeName = '',
   }) : _dio = Dio(
          _baseOptions(
            baseUrl,
@@ -32,7 +33,7 @@ class DioClient {
            userAgent: userAgent,
          ),
        ),
-       _auth = AuthInterceptor(apiKey) {
+       _auth = AuthInterceptor(apiKey, nodeName: currentNodeName) {
     _dio.httpClientAdapter = IOHttpClientAdapter(
       createHttpClient: () {
         final client = HttpClient();
@@ -58,6 +59,9 @@ class DioClient {
 
   /// 切换 API Key（不重建实例）。
   void updateApiKey(String apiKey) => _auth.updateApiKey(apiKey);
+
+  /// 切换当前节点（不重建实例）。默认 `local` 表示主面板。
+  void updateCurrentNode(String nodeName) => _auth.updateNodeName(nodeName);
 
   /// 关闭底层连接池。
   void dispose() => _dio.close(force: true);

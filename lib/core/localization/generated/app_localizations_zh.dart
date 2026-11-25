@@ -11711,4 +11711,137 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get testflight_serviceUnavailable => '申请服务暂时不可用，请稍后重试。';
+
+  @override
+  String get serverEdition_title => '面板版本';
+
+  @override
+  String get serverEdition_auto => '自动检测';
+
+  @override
+  String get serverEdition_community => '社区版';
+
+  @override
+  String get serverEdition_pro => '专业版';
+
+  @override
+  String get serverEdition_hint =>
+      '自动检测会读取授权状态与节点列表。如果检测有误可手动指定；专业版接口不可用时页面会明确提示。';
+
+  @override
+  String get nodes_title => '节点';
+
+  @override
+  String get nodes_local => '主节点';
+
+  @override
+  String get nodes_switchTitle => '切换节点';
+
+  @override
+  String get nodes_current => '当前节点';
+
+  @override
+  String get nodes_online => '在线';
+
+  @override
+  String get nodes_offline => '离线';
+
+  @override
+  String get nodes_empty => '暂无节点';
+
+  @override
+  String get nodes_management => '节点管理';
+
+  @override
+  String get nodes_managementSubtitle => '面板组下的所有机器';
+
+  @override
+  String get nodes_loading => '正在加载节点...';
+
+  @override
+  String get nodes_loadFailed => '节点加载失败';
+
+  @override
+  String get nodes_retry => '重试';
+
+  @override
+  String get nodes_pro => '专业版';
+
+  @override
+  String nodes_version(String version) {
+    return '版本 $version';
+  }
+
+  @override
+  String get pro_sectionTitle => '专业版功能';
+
+  @override
+  String get pro_readOnly => '只读';
+
+  @override
+  String get pro_waf_title => 'WAF';
+
+  @override
+  String get pro_waf_subtitle => '攻击与拦截概览（仅查看）';
+
+  @override
+  String get pro_monitor_title => '网站监控';
+
+  @override
+  String get pro_monitor_subtitle => '访客、QPS 与趋势（仅查看）';
+
+  @override
+  String get pro_opsReport_title => '运维报表';
+
+  @override
+  String get pro_opsReport_subtitle => '系统与登录报表';
+
+  @override
+  String get pro_tamper_title => '网站防篡改';
+
+  @override
+  String get pro_tamper_subtitle => '受保护目录与模板';
+
+  @override
+  String get pro_sync_title => '资源同步';
+
+  @override
+  String get pro_sync_subtitle => '在节点间同步文件、镜像、SSL 与应用';
+
+  @override
+  String get pro_unavailableTitle => '专业版功能不可用';
+
+  @override
+  String get pro_unavailableDescription =>
+      '当前面板或节点未开放该接口，或授权未绑定。如果确认是专业版，可在面板编辑中手动设为专业版。';
+
+  @override
+  String get pro_unsupportedNode => '请切换到支持该功能的节点。';
+
+  @override
+  String get pro_metric_requests => '请求数';
+
+  @override
+  String get pro_metric_attacks => '攻击数';
+
+  @override
+  String get pro_metric_blocked => '拦截数';
+
+  @override
+  String get pro_metric_visitors => '访客数';
+
+  @override
+  String get pro_metric_qps => 'QPS';
+
+  @override
+  String get pro_metric_bandwidth => '流量';
+
+  @override
+  String get pro_metric_today => '今日';
+
+  @override
+  String get pro_empty => '暂无数据';
+
+  @override
+  String get pro_error => '专业版数据加载失败';
 }

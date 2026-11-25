@@ -15,6 +15,7 @@ import '../../../../core/utils/format_utils.dart';
 import '../../../../data/repositories_impl/file_repository_impl.dart';
 import '../../../common/components/wave_progress_item.dart';
 import '../../server_detail/providers/active_server_provider.dart';
+import '../../servers/providers/node_selection_provider.dart';
 
 class WgetProcessInfo {
   WgetProcessInfo({
@@ -104,27 +105,33 @@ class WgetTaskTrackerState extends ConsumerState<WgetTaskTracker> {
       final storage = ref.read(storageServiceProvider);
       final server = await storage.getServer(serverId);
       final apiKey = await storage.getApiKey(serverId) ?? '';
+      final nodeName = await ref.read(
+        activeNodeControllerProvider(serverId).future,
+      );
 
       if (server == null) return;
 
       final baseUrl = server.baseUrl.toString();
       final uri = Uri.parse(baseUrl);
       final wsScheme = uri.scheme == 'https' ? 'wss' : 'ws';
-      final headers = await OnePanelAuth.signedHeaders(apiKey);
+      final headers = await OnePanelAuth.signedHeaders(
+        apiKey,
+        nodeName: nodeName,
+      );
 
       final wsUrl = Uri(
         scheme: wsScheme,
         host: uri.host,
         port: uri.port,
         path: '${uri.path}/api/v2/files/wget/process'.replaceAll('//', '/'),
-        queryParameters: {'operateNode': 'local'},
+        queryParameters: {'operateNode': nodeName},
       );
 
       await checkAppWebSocketAuth(
         wsUrl,
         headers: headers,
         allowInsecureConnections: server.allowInsecureConnections,
-        currentNode: 'local',
+        currentNode: nodeName,
       );
       final channel = connectAppWebSocket(
         wsUrl,
