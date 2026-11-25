@@ -2145,7 +2145,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_premium_title => '内购';
 
   @override
-  String get settings_premium_unlimitedTitle => '羽栈 Unlimited';
+  String get settings_premium_unlimitedTitle => '羽栈无限版';
 
   @override
   String get settings_premium_unlimitedUnlocked => '已解锁无限面板';
@@ -3584,7 +3584,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_appLock_pageTitle => '启动保护';
 
   @override
-  String get settings_appLock_description => '打开 羽栈 前需要输入密码或完成生物识别验证。';
+  String get settings_appLock_description => '打开羽栈前需要输入密码或完成生物识别验证。';
 
   @override
   String get settings_appLock_passwordLabel => '数字密码';
@@ -3647,7 +3647,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_appLock_disableTitle => '关闭启动保护？';
 
   @override
-  String get settings_appLock_disableContent => '关闭后，打开 羽栈 时不再需要密码或生物识别验证。';
+  String get settings_appLock_disableContent => '关闭后，打开羽栈时不再需要密码或生物识别验证。';
 
   @override
   String get settings_appLock_disableAction => '关闭';
@@ -3695,10 +3695,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_appLock_changePasswordSubtitle => '更新用于解锁 App 的密码';
 
   @override
-  String get settings_appLock_authReason => '解锁 羽栈';
+  String get settings_appLock_authReason => '解锁羽栈';
 
   @override
-  String get settings_appLock_unlockTitle => '羽栈 已锁定';
+  String get settings_appLock_unlockTitle => '羽栈已锁定';
 
   @override
   String get settings_appLock_unlockSubtitle => '输入数字密码或使用生物识别继续。';
@@ -3739,7 +3739,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String settings_appLock_enableBiometricSheetSubtitle(String method) {
-    return '输入一次数字密码后，可以使用 $method 解锁 羽栈。';
+    return '输入一次数字密码后，可以使用 $method 解锁羽栈。';
   }
 
   @override
@@ -3788,7 +3788,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_help_openSourceTitle => '查看源码';
 
   @override
-  String get settings_help_openSourceSubtitle => '查看 羽栈 的 GitHub 仓库';
+  String get settings_help_openSourceSubtitle => '查看羽栈的 GitHub 仓库';
 
   @override
   String get settings_openSource_projectTitle => '羽栈是开源项目';
