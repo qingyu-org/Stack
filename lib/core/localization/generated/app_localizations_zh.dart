@@ -3738,7 +3738,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_help_contactTitle => '联系我们';
 
   @override
-  String get settings_help_contactSubtitle => 'GitHub Issues 与 Telegram 群组';
+  String get settings_help_contactSubtitle => 'GitHub Issues 与作者博客';
 
   @override
   String get settings_contact_supportTitle => 'GitHub Issues';
@@ -3748,17 +3748,7 @@ class AppLocalizationsZh extends AppLocalizations {
       '如果遇到使用问题，请在 GitHub Issues 提交，方便跟踪和处理。';
 
   @override
-  String get settings_contact_feedbackTitle => 'Telegram 群组';
-
-  @override
-  String get settings_contact_feedbackContent =>
-      '也可以加入 Telegram 群组进行讨论，反馈使用问题或交流建议。';
-
-  @override
   String get settings_contact_submitIssue => '提交 GitHub Issue';
-
-  @override
-  String get settings_contact_joinSupport => '加入 Telegram 群组';
 
   @override
   String get settings_contact_openFailed => '无法打开链接';
@@ -3771,11 +3761,11 @@ class AppLocalizationsZh extends AppLocalizations {
       '在 1Panel 面板中进入「设置 → 面板设置 → API」，开启 API 并生成 API Key 后填入添加面板表单。';
 
   @override
-  String get settings_help_privacyTitle => '隐私与购买说明';
+  String get settings_help_privacyTitle => '隐私与数据';
 
   @override
   String get settings_help_privacyContent =>
-      '面板连接信息保存在本机，API Key 使用系统安全存储。购买由 App Store 或 Google Play 处理，RevenueCat 只用于同步购买状态。';
+      '面板连接信息与 API Key 仅保存在本机，不会发送到第三方服务。当前版本不包含购买、账号登录或激活。';
 
   @override
   String get settings_help_openSourceTitle => '查看源码';
@@ -11731,4 +11721,31 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get pro_error => '专业版数据加载失败';
+
+  @override
+  String get home_greeting_lateNight => '凌晨好';
+
+  @override
+  String get home_greeting_morning => '早上好';
+
+  @override
+  String get home_greeting_noon => '中午好';
+
+  @override
+  String get home_greeting_afternoon => '下午好';
+
+  @override
+  String get home_greeting_evening => '晚上好';
+
+  @override
+  String get nodes_community => '社区版';
+
+  @override
+  String get settings_contact_blogTitle => '作者博客';
+
+  @override
+  String get settings_contact_blogContent => '在博客中查看作者的使用笔记与更新动态。';
+
+  @override
+  String get settings_contact_openBlog => '访问作者博客';
 }

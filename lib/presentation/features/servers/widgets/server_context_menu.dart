@@ -20,6 +20,7 @@ class ServerContextMenu {
     required VoidCallback onSort,
     required VoidCallback onEdit,
     required VoidCallback onDelete,
+    bool showPreview = true,
   }) {
     HapticFeedback.mediumImpact();
 
@@ -40,6 +41,7 @@ class ServerContextMenu {
           isDark: isDark,
           anchorOffset: offset,
           anchorSize: size,
+          showPreview: showPreview,
           onSort: onSort,
           onEdit: onEdit,
           onDelete: onDelete,
@@ -59,6 +61,7 @@ class _ServerContextMenuOverlay extends StatefulWidget {
     required this.isDark,
     required this.anchorOffset,
     required this.anchorSize,
+    this.showPreview = true,
     required this.onSort,
     required this.onEdit,
     required this.onDelete,
@@ -70,6 +73,7 @@ class _ServerContextMenuOverlay extends StatefulWidget {
   final bool isDark;
   final Offset anchorOffset;
   final Size anchorSize;
+  final bool showPreview;
   final VoidCallback onSort;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -187,25 +191,26 @@ class _ServerContextMenuOverlayState extends State<_ServerContextMenuOverlay>
             ),
           ),
         ),
-        Positioned(
-          left: widget.anchorOffset.dx,
-          top: previewTop,
-          width: widget.anchorSize.width,
-          child: FadeTransition(
-            opacity: _fadeAnimation,
-            child: ScaleTransition(
-              scale: _scaleAnimation,
-              alignment: isMenuAbove
-                  ? Alignment.topCenter
-                  : Alignment.bottomCenter,
-              child: _ServerPreviewItem(
-                server: widget.server,
-                style: widget.style,
-                isDark: widget.isDark,
+        if (widget.showPreview)
+          Positioned(
+            left: widget.anchorOffset.dx,
+            top: previewTop,
+            width: widget.anchorSize.width,
+            child: FadeTransition(
+              opacity: _fadeAnimation,
+              child: ScaleTransition(
+                scale: _scaleAnimation,
+                alignment: isMenuAbove
+                    ? Alignment.topCenter
+                    : Alignment.bottomCenter,
+                child: _ServerPreviewItem(
+                  server: widget.server,
+                  style: widget.style,
+                  isDark: widget.isDark,
+                ),
               ),
             ),
           ),
-        ),
         Positioned(
           left: menuLeft,
           top: menuTop,

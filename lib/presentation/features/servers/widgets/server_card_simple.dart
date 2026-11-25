@@ -23,6 +23,10 @@ class SimpleServerCard extends StatelessWidget {
     required this.onTap,
     required this.isSelected,
     this.loading = false,
+    this.titleOverride,
+    this.subtitleOverride,
+    this.titleBadge,
+    this.showCountLinks = true,
   });
 
   final Server server;
@@ -31,24 +35,32 @@ class SimpleServerCard extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isSelected;
   final bool loading;
+  final String? titleOverride;
+  final String? subtitleOverride;
+  final Widget? titleBadge;
+  final bool showCountLinks;
 
   @override
   Widget build(BuildContext context) {
     final base = dashboard?.base;
     final current = dashboard?.current;
     final disk = current == null ? null : primaryDisk(current.disks);
-    final title = server.name?.isNotEmpty == true
-        ? server.name!
-        : (base?.hostname.isNotEmpty == true
-              ? base!.hostname
-              : server.displayName);
-    final subtitle = base == null
-        ? '${server.host}:${server.port}'
-        : serverSubtitle(
-            distro: base.prettyDistro,
-            ip: base.ipV4Addr,
-            fallback: base.platform,
-          );
+    final title =
+        titleOverride ??
+        (server.name?.isNotEmpty == true
+            ? server.name!
+            : (base?.hostname.isNotEmpty == true
+                  ? base!.hostname
+                  : server.displayName));
+    final subtitle =
+        subtitleOverride ??
+        (base == null
+            ? '${server.host}:${server.port}'
+            : serverSubtitle(
+                distro: base.prettyDistro,
+                ip: base.ipV4Addr,
+                fallback: base.platform,
+              ));
 
     return DecoratedBox(
       decoration: BoxDecoration(
@@ -83,6 +95,7 @@ class SimpleServerCard extends StatelessWidget {
                 subtitle: subtitle,
                 status: status,
                 loading: loading,
+                titleBadge: titleBadge,
               ),
               const SizedBox(height: 18),
               _SimpleResourceRow(
@@ -97,14 +110,22 @@ class SimpleServerCard extends StatelessWidget {
               _SimpleCountRow(
                 base: base,
                 loading: loading,
-                onWebsitesTap: () => _openWebsitesPage(context),
-                onDatabasesTap: () => showDatabaseSheet(context, server.id),
-                onAppsTap: () => Navigator.of(context).push(
-                  CupertinoPageRoute<void>(
-                    builder: (_) => AppStorePage(serverId: server.id),
-                  ),
-                ),
-                onTasksTap: () => openCronjobPage(context, server.id),
+                onWebsitesTap: showCountLinks
+                    ? () => _openWebsitesPage(context)
+                    : null,
+                onDatabasesTap: showCountLinks
+                    ? () => showDatabaseSheet(context, server.id)
+                    : null,
+                onAppsTap: showCountLinks
+                    ? () => Navigator.of(context).push(
+                        CupertinoPageRoute<void>(
+                          builder: (_) => AppStorePage(serverId: server.id),
+                        ),
+                      )
+                    : null,
+                onTasksTap: showCountLinks
+                    ? () => openCronjobPage(context, server.id)
+                    : null,
               ),
             ],
           ),
@@ -132,6 +153,7 @@ class _SimpleHeader extends StatelessWidget {
     required this.subtitle,
     required this.status,
     this.loading = false,
+    this.titleBadge,
   });
 
   final DashboardBase? base;
@@ -139,6 +161,7 @@ class _SimpleHeader extends StatelessWidget {
   final String subtitle;
   final ServerCardStatus status;
   final bool loading;
+  final Widget? titleBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -157,16 +180,27 @@ class _SimpleHeader extends StatelessWidget {
               if (loading)
                 const SkeletonItem.text(width: 120, height: 17)
               else
-                Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontSize: 17,
-                    fontWeight: FontWeight.w800,
-                    color: _SimpleCardColors.title(context),
-                    height: 1.14,
-                  ),
+                Row(
+                  mainAxisSize: MainAxisSize.min,
+                  children: [
+                    Flexible(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontSize: 17,
+                          fontWeight: FontWeight.w800,
+                          color: _SimpleCardColors.title(context),
+                          height: 1.14,
+                        ),
+                      ),
+                    ),
+                    if (titleBadge != null) ...[
+                      const SizedBox(width: 6),
+                      titleBadge!,
+                    ],
+                  ],
                 ),
               const SizedBox(height: 4),
               if (loading)

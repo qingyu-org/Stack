@@ -201,7 +201,7 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
         ServerCardStyle.simple;
 
     return FrostedScaffold(
-      title: 'Mono Dash',
+      title: _greeting(context),
       showBackButton: false,
       largeTitle: true,
       fadeOutDistance: 41,
@@ -351,12 +351,14 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
   void _showServerMenu(
     BuildContext itemContext,
     Server server,
-    ServerCardStyle cardStyle,
-  ) {
+    ServerCardStyle cardStyle, {
+    bool showPreview = true,
+  }) {
     ServerContextMenu.show(
       itemContext,
       server,
       style: cardStyle,
+      showPreview: showPreview,
       onSort: () => setState(() => _isSorting = true),
       onEdit: () => AddServerSheet.edit(context, server),
       onDelete: () => _confirmDelete(server),
@@ -374,8 +376,21 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
         style: cardStyle,
         interactive: interactive,
         onOpenNode: (nodeName) => _openNode(server, nodeName),
-        onLongPress: interactive
-            ? () => _showServerMenu(context, server, cardStyle)
+        onLongPressNode: interactive
+            ? (anchorContext, _) => _showServerMenu(
+                anchorContext,
+                server,
+                cardStyle,
+                showPreview: false,
+              )
+            : null,
+        onLongPressHeader: interactive
+            ? (anchorContext) => _showServerMenu(
+                anchorContext,
+                server,
+                cardStyle,
+                showPreview: false,
+              )
             : null,
       );
     }
@@ -422,6 +437,16 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
 
     if (confirmed != true) return;
     await ref.read(serversNotifierProvider.notifier).removeServer(server.id);
+  }
+
+  String _greeting(BuildContext context) {
+    final hour = DateTime.now().hour;
+    final l10n = context.l10n;
+    if (hour < 5) return l10n.home_greeting_lateNight;
+    if (hour < 11) return l10n.home_greeting_morning;
+    if (hour < 13) return l10n.home_greeting_noon;
+    if (hour < 18) return l10n.home_greeting_afternoon;
+    return l10n.home_greeting_evening;
   }
 
   List<Server> _syncOrderedServers(List<Server> servers) {
@@ -476,14 +501,16 @@ class _ProServerCardView extends ConsumerWidget {
     required this.style,
     required this.interactive,
     required this.onOpenNode,
-    this.onLongPress,
+    this.onLongPressNode,
+    this.onLongPressHeader,
   });
 
   final Server server;
   final ServerCardStyle style;
   final bool interactive;
   final ValueChanged<String> onOpenNode;
-  final VoidCallback? onLongPress;
+  final void Function(BuildContext context, PanelNode node)? onLongPressNode;
+  final void Function(BuildContext context)? onLongPressHeader;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -501,16 +528,14 @@ class _ProServerCardView extends ConsumerWidget {
       );
     }
 
-    final groupCard = ServerGroupCard(
+    // 组卡不再包 Memo Curl：备注卡会从组卡后面露出来，而且长按预览会
+    // 变成一张满宽的单机卡。分组直接用自带交互的组卡，长按只显示遮罩
+    // 与锚定菜单，原卡尺寸和边距保持不变。
+    return ServerGroupCard(
       server: server,
       onOpenNode: interactive ? onOpenNode : (_) {},
-      onLongPress: onLongPress,
-    );
-    if (!interactive) return groupCard;
-    return ServerMemoCurlCard(
-      server: server,
-      style: style,
-      frontChild: groupCard,
+      onLongPressNode: onLongPressNode,
+      onLongPressHeader: onLongPressHeader,
     );
   }
 }

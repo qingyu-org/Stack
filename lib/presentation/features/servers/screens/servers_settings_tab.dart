@@ -37,8 +37,9 @@ const _issueTrackerUrl = 'https://github.com/willow-god/Mono-Dash/issues';
 const _privacyPolicyUrl =
     'https://github.com/willow-god/Mono-Dash/blob/main/PRIVACY.md';
 const _repositoryUrl = 'https://github.com/willow-god/Mono-Dash';
-const _supportGroupUrl = 'https://t.me/mono_dash';
-const _termsOfUseUrl = 'https://github.com/willow-god/Mono-Dash/blob/main/TERMS.md';
+const _authorBlogUrl = 'https://blog.liushen.fun/';
+const _termsOfUseUrl =
+    'https://github.com/willow-god/Mono-Dash/blob/main/TERMS.md';
 
 class ServersSettingsTab extends ConsumerWidget {
   const ServersSettingsTab({super.key});
@@ -1443,10 +1444,10 @@ class _ContactSupportSheet extends StatelessWidget {
             ),
             const SizedBox(height: 10),
             _ContactInfoCard(
-              icon: TablerIcons.brand_telegram,
+              icon: TablerIcons.world,
               iconColor: CupertinoColors.activeBlue.resolveFrom(context),
-              title: l10n.settings_contact_feedbackTitle,
-              content: l10n.settings_contact_feedbackContent,
+              title: l10n.settings_contact_blogTitle,
+              content: l10n.settings_contact_blogContent,
             ),
             const SizedBox(height: 16),
             CupertinoButton.filled(
@@ -1455,8 +1456,8 @@ class _ContactSupportSheet extends StatelessWidget {
             ),
             const SizedBox(height: 8),
             CupertinoButton(
-              onPressed: () => _openUrl(context, _supportGroupUrl),
-              child: Text(l10n.settings_contact_joinSupport),
+              onPressed: () => _openUrl(context, _authorBlogUrl),
+              child: Text(l10n.settings_contact_openBlog),
             ),
             const SizedBox(height: 8),
             Text(

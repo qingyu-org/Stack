@@ -7082,10 +7082,10 @@ abstract class AppLocalizations {
   /// **'Contact Us'**
   String get settings_help_contactTitle;
 
-  /// Settings row subtitle for contacting support.
+  /// Settings row subtitle for contact options.
   ///
   /// In en, this message translates to:
-  /// **'GitHub Issues and Telegram group'**
+  /// **'GitHub Issues and the author\'s blog'**
   String get settings_help_contactSubtitle;
 
   /// Contact support sheet title for the support group section.
@@ -7100,29 +7100,11 @@ abstract class AppLocalizations {
   /// **'If you run into usage issues, submit them on GitHub Issues so they can be tracked.'**
   String get settings_contact_supportContent;
 
-  /// Contact support sheet title for feedback requirements.
-  ///
-  /// In en, this message translates to:
-  /// **'Telegram Group'**
-  String get settings_contact_feedbackTitle;
-
-  /// Contact support sheet content asking users to include the 1Panel version.
-  ///
-  /// In en, this message translates to:
-  /// **'You can also join the Telegram group to discuss usage questions and share feedback.'**
-  String get settings_contact_feedbackContent;
-
   /// Button label for opening the GitHub issue tracker.
   ///
   /// In en, this message translates to:
   /// **'Submit GitHub Issue'**
   String get settings_contact_submitIssue;
-
-  /// Button label for opening the support group.
-  ///
-  /// In en, this message translates to:
-  /// **'Join Telegram Group'**
-  String get settings_contact_joinSupport;
 
   /// Toast shown when opening the support group link fails.
   ///
@@ -7142,16 +7124,16 @@ abstract class AppLocalizations {
   /// **'In 1Panel, go to Settings > Panel Settings > API, enable API access, generate an API Key, and enter it in the add panel form.'**
   String get settings_help_apiKeyContent;
 
-  /// Help entry title for privacy and purchase information.
+  /// Help entry title for privacy and local data.
   ///
   /// In en, this message translates to:
-  /// **'Privacy & Purchases'**
+  /// **'Privacy & Data'**
   String get settings_help_privacyTitle;
 
-  /// Help dialog content explaining privacy and purchases.
+  /// Help dialog content explaining privacy and local data.
   ///
   /// In en, this message translates to:
-  /// **'Panel connection information is stored on this device. API Keys use secure system storage. Purchases are processed by the App Store or Google Play, and RevenueCat is only used to sync purchase status.'**
+  /// **'Panel connection information and API Keys stay on this device and are never sent to third-party services. This build has no purchases, account login, or activation.'**
   String get settings_help_privacyContent;
 
   /// Settings row title for the Mono Dash source repository.
@@ -22272,6 +22254,60 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Failed to load professional data'**
   String get pro_error;
+
+  /// Home title for 00:00-04:59.
+  ///
+  /// In en, this message translates to:
+  /// **'Still awake?'**
+  String get home_greeting_lateNight;
+
+  /// Home title for 05:00-10:59.
+  ///
+  /// In en, this message translates to:
+  /// **'Good morning'**
+  String get home_greeting_morning;
+
+  /// Home title for 11:00-12:59.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get home_greeting_noon;
+
+  /// Home title for 13:00-17:59.
+  ///
+  /// In en, this message translates to:
+  /// **'Good afternoon'**
+  String get home_greeting_afternoon;
+
+  /// Home title for 18:00-23:59.
+  ///
+  /// In en, this message translates to:
+  /// **'Good evening'**
+  String get home_greeting_evening;
+
+  /// Community edition badge for a node.
+  ///
+  /// In en, this message translates to:
+  /// **'Community'**
+  String get nodes_community;
+
+  /// Contact row title for the author blog.
+  ///
+  /// In en, this message translates to:
+  /// **'Author\'s blog'**
+  String get settings_contact_blogTitle;
+
+  /// Contact row description for the author blog.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the author\'s notes and product updates on the blog.'**
+  String get settings_contact_blogContent;
+
+  /// Button label opening the author blog.
+  ///
+  /// In en, this message translates to:
+  /// **'Open author\'s blog'**
+  String get settings_contact_openBlog;
 }
 
 class _AppLocalizationsDelegate

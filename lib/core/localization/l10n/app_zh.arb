@@ -1192,18 +1192,15 @@
   "settings_cache_subtitle": "清理本机临时文件",
   "settings_help_title": "帮助与关于",
   "settings_help_contactTitle": "联系我们",
-  "settings_help_contactSubtitle": "GitHub Issues 与 Telegram 群组",
+  "settings_help_contactSubtitle": "GitHub Issues 与作者博客",
   "settings_contact_supportTitle": "GitHub Issues",
   "settings_contact_supportContent": "如果遇到使用问题，请在 GitHub Issues 提交，方便跟踪和处理。",
-  "settings_contact_feedbackTitle": "Telegram 群组",
-  "settings_contact_feedbackContent": "也可以加入 Telegram 群组进行讨论，反馈使用问题或交流建议。",
   "settings_contact_submitIssue": "提交 GitHub Issue",
-  "settings_contact_joinSupport": "加入 Telegram 群组",
   "settings_contact_openFailed": "无法打开链接",
   "settings_help_apiKeyTitle": "API Key 获取位置",
   "settings_help_apiKeyContent": "在 1Panel 面板中进入「设置 → 面板设置 → API」，开启 API 并生成 API Key 后填入添加面板表单。",
-  "settings_help_privacyTitle": "隐私与购买说明",
-  "settings_help_privacyContent": "面板连接信息保存在本机，API Key 使用系统安全存储。购买由 App Store 或 Google Play 处理，RevenueCat 只用于同步购买状态。",
+  "settings_help_privacyTitle": "隐私与数据",
+  "settings_help_privacyContent": "面板连接信息与 API Key 仅保存在本机，不会发送到第三方服务。当前版本不包含购买、账号登录或激活。",
   "settings_help_openSourceTitle": "查看源码",
   "settings_help_openSourceSubtitle": "查看 Mono Dash 的 GitHub 仓库",
   "settings_openSource_projectTitle": "Mono Dash 是开源项目",
@@ -3736,5 +3733,44 @@
   "pro_metric_bandwidth": "流量",
   "pro_metric_today": "今日",
   "pro_empty": "暂无数据",
-  "pro_error": "专业版数据加载失败"
+  "pro_error": "专业版数据加载失败",
+  "home_greeting_lateNight": "凌晨好",
+  "home_greeting_morning": "早上好",
+  "home_greeting_noon": "中午好",
+  "home_greeting_afternoon": "下午好",
+  "home_greeting_evening": "晚上好",
+  "nodes_community": "社区版",
+  "settings_contact_blogTitle": "作者博客",
+  "settings_contact_blogContent": "在博客中查看作者的使用笔记与更新动态。",
+  "settings_contact_openBlog": "访问作者博客",
+  "@home_greeting_lateNight": {
+    "description": "Home title for 00:00-04:59."
+  },
+  "@home_greeting_morning": {
+    "description": "Home title for 05:00-10:59."
+  },
+  "@home_greeting_noon": {
+    "description": "Home title for 11:00-12:59."
+  },
+  "@home_greeting_afternoon": {
+    "description": "Home title for 13:00-17:59."
+  },
+  "@home_greeting_evening": {
+    "description": "Home title for 18:00-23:59."
+  },
+  "@nodes_community": {
+    "description": "Community edition badge for a node."
+  },
+  "@settings_contact_blogTitle": {
+    "description": "Contact row title for the author blog."
+  },
+  "@settings_contact_blogContent": {
+    "description": "Contact row description for the author blog."
+  },
+  "@settings_contact_openBlog": {
+    "description": "Button label opening the author blog."
+  },
+  "@settings_help_contactSubtitle": {
+    "description": "Settings row subtitle for contact options."
+  }
 }

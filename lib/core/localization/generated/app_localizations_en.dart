@@ -3845,7 +3845,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_help_contactSubtitle =>
-      'GitHub Issues and Telegram group';
+      'GitHub Issues and the author\'s blog';
 
   @override
   String get settings_contact_supportTitle => 'GitHub Issues';
@@ -3855,17 +3855,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'If you run into usage issues, submit them on GitHub Issues so they can be tracked.';
 
   @override
-  String get settings_contact_feedbackTitle => 'Telegram Group';
-
-  @override
-  String get settings_contact_feedbackContent =>
-      'You can also join the Telegram group to discuss usage questions and share feedback.';
-
-  @override
   String get settings_contact_submitIssue => 'Submit GitHub Issue';
-
-  @override
-  String get settings_contact_joinSupport => 'Join Telegram Group';
 
   @override
   String get settings_contact_openFailed => 'Unable to open the link';
@@ -3878,11 +3868,11 @@ class AppLocalizationsEn extends AppLocalizations {
       'In 1Panel, go to Settings > Panel Settings > API, enable API access, generate an API Key, and enter it in the add panel form.';
 
   @override
-  String get settings_help_privacyTitle => 'Privacy & Purchases';
+  String get settings_help_privacyTitle => 'Privacy & Data';
 
   @override
   String get settings_help_privacyContent =>
-      'Panel connection information is stored on this device. API Keys use secure system storage. Purchases are processed by the App Store or Google Play, and RevenueCat is only used to sync purchase status.';
+      'Panel connection information and API Keys stay on this device and are never sent to third-party services. This build has no purchases, account login, or activation.';
 
   @override
   String get settings_help_openSourceTitle => 'Source Code';
@@ -12214,4 +12204,32 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get pro_error => 'Failed to load professional data';
+
+  @override
+  String get home_greeting_lateNight => 'Still awake?';
+
+  @override
+  String get home_greeting_morning => 'Good morning';
+
+  @override
+  String get home_greeting_noon => 'Good afternoon';
+
+  @override
+  String get home_greeting_afternoon => 'Good afternoon';
+
+  @override
+  String get home_greeting_evening => 'Good evening';
+
+  @override
+  String get nodes_community => 'Community';
+
+  @override
+  String get settings_contact_blogTitle => 'Author\'s blog';
+
+  @override
+  String get settings_contact_blogContent =>
+      'Read the author\'s notes and product updates on the blog.';
+
+  @override
+  String get settings_contact_openBlog => 'Open author\'s blog';
 }

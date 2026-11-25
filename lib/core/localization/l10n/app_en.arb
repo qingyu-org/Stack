@@ -5380,9 +5380,9 @@
   "@settings_help_contactTitle": {
     "description": "Help entry title for contacting support."
   },
-  "settings_help_contactSubtitle": "GitHub Issues and Telegram group",
+  "settings_help_contactSubtitle": "GitHub Issues and the author's blog",
   "@settings_help_contactSubtitle": {
-    "description": "Settings row subtitle for contacting support."
+    "description": "Settings row subtitle for contact options."
   },
   "settings_contact_supportTitle": "GitHub Issues",
   "@settings_contact_supportTitle": {
@@ -5392,21 +5392,9 @@
   "@settings_contact_supportContent": {
     "description": "Contact support sheet content explaining where to discuss issues and submit feedback."
   },
-  "settings_contact_feedbackTitle": "Telegram Group",
-  "@settings_contact_feedbackTitle": {
-    "description": "Contact support sheet title for feedback requirements."
-  },
-  "settings_contact_feedbackContent": "You can also join the Telegram group to discuss usage questions and share feedback.",
-  "@settings_contact_feedbackContent": {
-    "description": "Contact support sheet content asking users to include the 1Panel version."
-  },
   "settings_contact_submitIssue": "Submit GitHub Issue",
   "@settings_contact_submitIssue": {
     "description": "Button label for opening the GitHub issue tracker."
-  },
-  "settings_contact_joinSupport": "Join Telegram Group",
-  "@settings_contact_joinSupport": {
-    "description": "Button label for opening the support group."
   },
   "settings_contact_openFailed": "Unable to open the link",
   "@settings_contact_openFailed": {
@@ -5420,13 +5408,13 @@
   "@settings_help_apiKeyContent": {
     "description": "Help dialog content explaining where to find an API key."
   },
-  "settings_help_privacyTitle": "Privacy & Purchases",
+  "settings_help_privacyTitle": "Privacy & Data",
   "@settings_help_privacyTitle": {
-    "description": "Help entry title for privacy and purchase information."
+    "description": "Help entry title for privacy and local data."
   },
-  "settings_help_privacyContent": "Panel connection information is stored on this device. API Keys use secure system storage. Purchases are processed by the App Store or Google Play, and RevenueCat is only used to sync purchase status.",
+  "settings_help_privacyContent": "Panel connection information and API Keys stay on this device and are never sent to third-party services. This build has no purchases, account login, or activation.",
   "@settings_help_privacyContent": {
-    "description": "Help dialog content explaining privacy and purchases."
+    "description": "Help dialog content explaining privacy and local data."
   },
   "settings_help_openSourceTitle": "Source Code",
   "@settings_help_openSourceTitle": {
@@ -16417,5 +16405,41 @@
   "pro_error": "Failed to load professional data",
   "@pro_error": {
     "description": "Error state for Pro feature pages."
+  },
+  "home_greeting_lateNight": "Still awake?",
+  "home_greeting_morning": "Good morning",
+  "home_greeting_noon": "Good afternoon",
+  "home_greeting_afternoon": "Good afternoon",
+  "home_greeting_evening": "Good evening",
+  "nodes_community": "Community",
+  "settings_contact_blogTitle": "Author's blog",
+  "settings_contact_blogContent": "Read the author's notes and product updates on the blog.",
+  "settings_contact_openBlog": "Open author's blog",
+  "@home_greeting_lateNight": {
+    "description": "Home title for 00:00-04:59."
+  },
+  "@home_greeting_morning": {
+    "description": "Home title for 05:00-10:59."
+  },
+  "@home_greeting_noon": {
+    "description": "Home title for 11:00-12:59."
+  },
+  "@home_greeting_afternoon": {
+    "description": "Home title for 13:00-17:59."
+  },
+  "@home_greeting_evening": {
+    "description": "Home title for 18:00-23:59."
+  },
+  "@nodes_community": {
+    "description": "Community edition badge for a node."
+  },
+  "@settings_contact_blogTitle": {
+    "description": "Contact row title for the author blog."
+  },
+  "@settings_contact_blogContent": {
+    "description": "Contact row description for the author blog."
+  },
+  "@settings_contact_openBlog": {
+    "description": "Button label opening the author blog."
   }
 }
