@@ -141,7 +141,7 @@ class ProMetricGrid extends StatelessWidget {
                       ),
                       const SizedBox(height: 3),
                       Text(
-                        formatProValue(entry.value),
+                        formatProValue(entry.value, context: context),
                         maxLines: 1,
                         overflow: TextOverflow.ellipsis,
                         style: TextStyle(
@@ -219,14 +219,14 @@ class ProDataValue extends StatelessWidget {
     if (data is List) {
       if (rows.isEmpty) {
         return Text(
-          formatProValue(data),
+          formatProValue(data, context: context),
           style: TextStyle(fontSize: 12, color: AppColors.label(context)),
         );
       }
       return ProRowsList(rows: rows);
     }
     return Text(
-      formatProValue(data),
+      formatProValue(data, context: context),
       style: TextStyle(fontSize: 12, color: AppColors.label(context)),
     );
   }
@@ -292,10 +292,13 @@ class ProRowsList extends StatelessWidget {
                           color: AppColors.label(context),
                         ),
                       ),
-                      if (proRowSubtitle(visible[i]).isNotEmpty) ...[
+                      if (proRowSubtitle(
+                        visible[i],
+                        context: context,
+                      ).isNotEmpty) ...[
                         const SizedBox(height: 2),
                         Text(
-                          proRowSubtitle(visible[i]),
+                          proRowSubtitle(visible[i], context: context),
                           maxLines: 2,
                           overflow: TextOverflow.ellipsis,
                           style: TextStyle(

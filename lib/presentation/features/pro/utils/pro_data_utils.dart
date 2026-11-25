@@ -109,24 +109,46 @@ List<Map<String, dynamic>> extractProRows(dynamic data, {int depth = 0}) {
   return const [];
 }
 
-String formatProValue(Object? value) {
+String formatProValue(Object? value, {BuildContext? context}) {
   if (value == null) return '-';
   if (value is double) {
     if (value.isNaN || value.isInfinite) return '-';
-    if (value == value.roundToDouble()) return value.round().toString();
-    return value.toStringAsFixed(2);
   }
   if (value is num) {
-    if (value >= 100000000) {
-      return '${(value / 100000000).toStringAsFixed(2)}亿';
-    }
-    if (value >= 10000) {
-      return '${(value / 10000).toStringAsFixed(2)}万';
-    }
-    return value.toString();
+    final language = context == null
+        ? null
+        : Localizations.localeOf(context).languageCode;
+    return _formatNumber(value, zh: language == null || language == 'zh');
   }
   final text = value.toString();
   return text.length > 80 ? '${text.substring(0, 77)}...' : text;
+}
+
+String _formatNumber(num value, {required bool zh}) {
+  final magnitude = value.abs();
+  if (zh) {
+    if (magnitude >= 100000000) {
+      return '${(value / 100000000).toStringAsFixed(2)}亿';
+    }
+    if (magnitude >= 10000) {
+      return '${(value / 10000).toStringAsFixed(2)}万';
+    }
+  } else {
+    if (magnitude >= 1000000000) {
+      return '${(value / 1000000000).toStringAsFixed(2)}B';
+    }
+    if (magnitude >= 1000000) {
+      return '${(value / 1000000).toStringAsFixed(2)}M';
+    }
+    if (magnitude >= 1000) {
+      return '${(value / 1000).toStringAsFixed(2)}K';
+    }
+  }
+  if (value is double) {
+    if (value == value.roundToDouble()) return value.round().toString();
+    return value.toStringAsFixed(2);
+  }
+  return value.toString();
 }
 
 /// 列表行里可读的标题字段。
@@ -156,7 +178,11 @@ String proRowTitle(Map<String, dynamic> row) {
   return '-';
 }
 
-String proRowSubtitle(Map<String, dynamic> row, {int maxParts = 4}) {
+String proRowSubtitle(
+  Map<String, dynamic> row, {
+  int maxParts = 4,
+  BuildContext? context,
+}) {
   final parts = <String>[];
   for (final entry in row.entries) {
     if (parts.length >= maxParts) break;
@@ -165,7 +191,7 @@ String proRowSubtitle(Map<String, dynamic> row, {int maxParts = 4}) {
     if (value is String && value.trim().isEmpty) continue;
     final key = entry.key.toString();
     if (key == 'name' || key == 'website' || key == 'domain') continue;
-    parts.add('$key: ${formatProValue(value)}');
+    parts.add('$key: ${formatProValue(value, context: context)}');
   }
   return parts.join(' · ');
 }
