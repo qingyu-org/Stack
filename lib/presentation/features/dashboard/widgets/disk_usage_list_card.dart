@@ -52,6 +52,7 @@ class _DiskUsageLine extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final l10n = context.l10n;
     final percent = disk?.usedPercent.clamp(0.0, 100.0).toDouble() ?? 0.0;
     final color = loading
         ? CupertinoColors.systemGrey.resolveFrom(context).withValues(alpha: 0.2)
@@ -121,7 +122,7 @@ class _DiskUsageLine extends StatelessWidget {
                 const SizedBox(height: 8),
                 if (loading)
                   const SkeletonItem.text(width: 120, height: 12)
-                else
+                else ...[
                   Text(
                     '${Formatter.adaptiveBytes(disk!.used)} / ${Formatter.adaptiveBytes(disk!.total)}',
                     style: TextStyle(
@@ -129,6 +130,18 @@ class _DiskUsageLine extends StatelessWidget {
                       color: AppColors.secondaryLabel(context),
                     ),
                   ),
+                  if (disk!.inodesTotal > 0) ...[
+                    const SizedBox(height: 4),
+                    Text(
+                      '${l10n.dashboard_inodes} ${Formatter.percent(disk!.inodesUsedPercent)} · '
+                      '${disk!.inodesUsed}/${disk!.inodesTotal}',
+                      style: TextStyle(
+                        fontSize: 11.5,
+                        color: AppColors.tertiaryLabel(context),
+                      ),
+                    ),
+                  ],
+                ],
               ],
             ),
           ),

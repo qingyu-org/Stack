@@ -215,17 +215,18 @@ class ServersSettingsTab extends ConsumerWidget {
                               selectedAppearanceMode,
                             ),
                     ),
-                    _SettingsRow(
-                      icon: CupertinoIcons.app_badge,
-                      iconColor: CupertinoColors.activeOrange,
-                      title: l10n.settings_appearance_appIconTitle,
-                      subtitle: selectedIconVariant.labelOf(l10n),
-                      onTap: () => Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (_) => const AppIconSettingsPage(),
+                    if (Platform.isAndroid || Platform.isIOS)
+                      _SettingsRow(
+                        icon: CupertinoIcons.app_badge,
+                        iconColor: CupertinoColors.activeOrange,
+                        title: l10n.settings_appearance_appIconTitle,
+                        subtitle: selectedIconVariant.labelOf(l10n),
+                        onTap: () => Navigator.of(context).push(
+                          CupertinoPageRoute<void>(
+                            builder: (_) => const AppIconSettingsPage(),
+                          ),
                         ),
                       ),
-                    ),
                     _SettingsRow(
                       icon: CupertinoIcons.rectangle_grid_1x2,
                       iconColor: CupertinoColors.activeBlue,

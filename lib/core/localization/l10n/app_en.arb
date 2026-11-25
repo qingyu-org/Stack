@@ -587,6 +587,18 @@
   "@dashboard_kernel": {
     "description": "Dashboard kernel row label."
   },
+  "dashboard_virtualization": "Virtualization",
+  "@dashboard_virtualization": {
+    "description": "Dashboard virtualization platform row label."
+  },
+  "dashboard_systemProxy": "System Proxy",
+  "@dashboard_systemProxy": {
+    "description": "Dashboard system proxy row label."
+  },
+  "dashboard_inodes": "Inodes",
+  "@dashboard_inodes": {
+    "description": "Dashboard disk inode usage label."
+  },
   "dashboard_cpuCores": "Cores",
   "@dashboard_cpuCores": {
     "description": "Dashboard CPU cores row label."

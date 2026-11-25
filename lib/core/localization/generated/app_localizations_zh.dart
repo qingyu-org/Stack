@@ -418,6 +418,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dashboard_kernel => '内核';
 
   @override
+  String get dashboard_virtualization => '虚拟化';
+
+  @override
+  String get dashboard_systemProxy => '系统代理';
+
+  @override
+  String get dashboard_inodes => 'Inode';
+
+  @override
   String get dashboard_cpuCores => '核心';
 
   @override

@@ -842,6 +842,24 @@ abstract class AppLocalizations {
   /// **'Kernel'**
   String get dashboard_kernel;
 
+  /// Dashboard virtualization platform row label.
+  ///
+  /// In en, this message translates to:
+  /// **'Virtualization'**
+  String get dashboard_virtualization;
+
+  /// Dashboard system proxy row label.
+  ///
+  /// In en, this message translates to:
+  /// **'System Proxy'**
+  String get dashboard_systemProxy;
+
+  /// Dashboard disk inode usage label.
+  ///
+  /// In en, this message translates to:
+  /// **'Inodes'**
+  String get dashboard_inodes;
+
   /// Dashboard CPU cores row label.
   ///
   /// In en, this message translates to:

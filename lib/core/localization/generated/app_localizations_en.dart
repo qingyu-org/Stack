@@ -422,6 +422,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboard_kernel => 'Kernel';
 
   @override
+  String get dashboard_virtualization => 'Virtualization';
+
+  @override
+  String get dashboard_systemProxy => 'System Proxy';
+
+  @override
+  String get dashboard_inodes => 'Inodes';
+
+  @override
   String get dashboard_cpuCores => 'Cores';
 
   @override

@@ -19,6 +19,14 @@ class DashboardHostDetailsCard extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final l10n = context.l10n;
+    final cpuClock = base.cpuMhz > 0
+        ? '${(base.cpuMhz / 1000).toStringAsFixed(2)} GHz'
+        : '';
+    final cpuText = base.cpuModelName.isEmpty
+        ? cpuClock
+        : (cpuClock.isEmpty
+              ? base.cpuModelName
+              : '${base.cpuModelName} · $cpuClock');
 
     return InfoCard(
       title: l10n.dashboard_hostDetailsTitle,
@@ -30,11 +38,15 @@ class DashboardHostDetailsCard extends StatelessWidget {
         if (loading || base.ipV4Addr.isNotEmpty) ('IPv4', base.ipV4Addr),
         if (loading || base.kernelVersion.isNotEmpty)
           (l10n.dashboard_kernel, '${base.kernelVersion} (${base.kernelArch})'),
-        if (loading || base.cpuModelName.isNotEmpty) ('CPU', base.cpuModelName),
+        if (loading || cpuText.isNotEmpty) ('CPU', cpuText),
         (
           l10n.dashboard_cpuCores,
           l10n.dashboard_cpuCoreSummary(base.cpuCores, base.cpuLogicalCores),
         ),
+        if (!loading && base.virtualizationSystem.isNotEmpty)
+          (l10n.dashboard_virtualization, base.virtualizationSystem),
+        if (!loading && base.systemProxy.isNotEmpty)
+          (l10n.dashboard_systemProxy, base.systemProxy),
       ],
     );
   }
