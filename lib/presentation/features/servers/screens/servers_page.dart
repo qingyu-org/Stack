@@ -368,21 +368,15 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
     ServerCardStyle cardStyle, {
     required bool interactive,
   }) {
-    if (server.isProActive && server.hasChildNodes) {
-      final groupCard = ServerGroupCard(
+    if (server.isProActive) {
+      return _ProServerCardView(
         server: server,
-        onOpenNode: interactive
-            ? (nodeName) => _openNode(server, nodeName)
-            : (_) {},
+        style: cardStyle,
+        interactive: interactive,
+        onOpenNode: (nodeName) => _openNode(server, nodeName),
         onLongPress: interactive
             ? () => _showServerMenu(context, server, cardStyle)
             : null,
-      );
-      if (!interactive) return groupCard;
-      return ServerMemoCurlCard(
-        server: server,
-        style: cardStyle,
-        frontChild: groupCard,
       );
     }
     return ServerMemoCurlCard(
@@ -469,5 +463,54 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
       if (first[i] != second[i]) return false;
     }
     return true;
+  }
+}
+
+/// 专业版面板卡片：拿到实时节点后再决定展示多机组卡还是普通单卡。
+///
+/// 添加面板时可能因网络抖动没拉到节点；这里在缓存为空时主动拉取一次，
+/// 让「手动覆盖为专业版」或探测失败的场景也能自动出现分组。
+class _ProServerCardView extends ConsumerWidget {
+  const _ProServerCardView({
+    required this.server,
+    required this.style,
+    required this.interactive,
+    required this.onOpenNode,
+    this.onLongPress,
+  });
+
+  final Server server;
+  final ServerCardStyle style;
+  final bool interactive;
+  final ValueChanged<String> onOpenNode;
+  final VoidCallback? onLongPress;
+
+  @override
+  Widget build(BuildContext context, WidgetRef ref) {
+    final shouldFetch = server.nodes.isEmpty || server.hasChildNodes;
+    final nodes = shouldFetch
+        ? (ref.watch(serverNodesProvider(server.id)).valueOrNull ?? server.nodes)
+        : server.nodes;
+    final hasChildren = nodes.any((node) => !node.isLocal);
+
+    if (!hasChildren) {
+      return ServerMemoCurlCard(
+        server: server,
+        style: style,
+        onTap: interactive ? () => onOpenNode(PanelNode.localName) : null,
+      );
+    }
+
+    final groupCard = ServerGroupCard(
+      server: server,
+      onOpenNode: interactive ? onOpenNode : (_) {},
+      onLongPress: onLongPress,
+    );
+    if (!interactive) return groupCard;
+    return ServerMemoCurlCard(
+      server: server,
+      style: style,
+      frontChild: groupCard,
+    );
   }
 }
