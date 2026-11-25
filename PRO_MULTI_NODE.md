@@ -77,6 +77,12 @@ WAF / 网站监控只做查看，不提供规则修改。运维报表只查看�
 - Flutter `3.50.1`
 - `flutter pub get` → `flutter gen-l10n` → `flutter analyze` → `flutter test`
 
+Android 工具链为 AGP `9.3.1` + Gradle `9.5.0` + Kotlin `2.4.20`，与
+Flutter `3.50.1` 模板保持一致。`android/gradle.properties` 中的
+`android.r8.proguardAndroidTxt.disallowed=false` 是临时兼容项：
+`flutter_inappwebview_android 1.1.3` 仍引用旧的 `proguard-android.txt`，
+等插件稳定版修复后应删除。
+
 ### Release
 
 `.github/workflows/release.yml` 在推送 `v*` tag 或手动 `workflow_dispatch`
