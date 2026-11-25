@@ -9,7 +9,7 @@ class AppLocalizationsZh extends AppLocalizations {
   AppLocalizationsZh([String locale = 'zh']) : super(locale);
 
   @override
-  String get app_title => 'Mono Dash';
+  String get app_title => '羽栈';
 
   @override
   String get common_ok => '好';
@@ -2136,7 +2136,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_premium_title => '内购';
 
   @override
-  String get settings_premium_unlimitedTitle => 'Mono Dash Unlimited';
+  String get settings_premium_unlimitedTitle => '羽栈 Unlimited';
 
   @override
   String get settings_premium_unlimitedUnlocked => '已解锁无限面板';
@@ -2161,6 +2161,15 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settings_appearance_cardStyleTitle => '卡片样式';
+
+  @override
+  String get settings_appearance_pinTabBarTitle => '固定底部菜单';
+
+  @override
+  String get settings_appearance_pinTabBarSubtitleOn => '滚动页面时保持底部菜单可见';
+
+  @override
+  String get settings_appearance_pinTabBarSubtitleOff => '滚动页面时自动隐藏底部菜单';
 
   @override
   String get settings_language_title => '语言';
@@ -3566,7 +3575,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_appLock_pageTitle => '启动保护';
 
   @override
-  String get settings_appLock_description => '打开 Mono Dash 前需要输入密码或完成生物识别验证。';
+  String get settings_appLock_description => '打开 羽栈 前需要输入密码或完成生物识别验证。';
 
   @override
   String get settings_appLock_passwordLabel => '数字密码';
@@ -3629,8 +3638,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_appLock_disableTitle => '关闭启动保护？';
 
   @override
-  String get settings_appLock_disableContent =>
-      '关闭后，打开 Mono Dash 时不再需要密码或生物识别验证。';
+  String get settings_appLock_disableContent => '关闭后，打开 羽栈 时不再需要密码或生物识别验证。';
 
   @override
   String get settings_appLock_disableAction => '关闭';
@@ -3678,10 +3686,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_appLock_changePasswordSubtitle => '更新用于解锁 App 的密码';
 
   @override
-  String get settings_appLock_authReason => '解锁 Mono Dash';
+  String get settings_appLock_authReason => '解锁 羽栈';
 
   @override
-  String get settings_appLock_unlockTitle => 'Mono Dash 已锁定';
+  String get settings_appLock_unlockTitle => '羽栈 已锁定';
 
   @override
   String get settings_appLock_unlockSubtitle => '输入数字密码或使用生物识别继续。';
@@ -3722,7 +3730,7 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String settings_appLock_enableBiometricSheetSubtitle(String method) {
-    return '输入一次数字密码后，可以使用 $method 解锁 Mono Dash。';
+    return '输入一次数字密码后，可以使用 $method 解锁 羽栈。';
   }
 
   @override
@@ -3771,14 +3779,14 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_help_openSourceTitle => '查看源码';
 
   @override
-  String get settings_help_openSourceSubtitle => '查看 Mono Dash 的 GitHub 仓库';
+  String get settings_help_openSourceSubtitle => '查看 羽栈 的 GitHub 仓库';
 
   @override
-  String get settings_openSource_projectTitle => 'Mono Dash 是开源项目';
+  String get settings_openSource_projectTitle => '羽栈是开源项目';
 
   @override
   String get settings_openSource_projectContent =>
-      'Mono Dash 的源代码托管在 GitHub。你可以查看代码、提交 Issue，或参与改进这个第三方 1Panel 移动管理客户端。';
+      '羽栈的源代码托管在 GitHub。你可以查看代码、提交 Issue，或参与改进这个第三方 1Panel 移动管理客户端。';
 
   @override
   String get settings_openSource_openRepository => '打开 GitHub 仓库';
@@ -3826,10 +3834,30 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_licenses_emptySubtitle => '当前没有可展示的注册许可数据。';
 
   @override
-  String get settings_help_aboutTitle => '关于 Mono Dash';
+  String get settings_help_aboutTitle => '关于羽栈';
 
   @override
-  String get settings_help_aboutContent => '1Panel 第三方移动管理工具。';
+  String get settings_help_aboutContent =>
+      '羽栈是面向 1Panel 的第三方移动管理客户端，由 qingyu 维护。';
+
+  @override
+  String get settings_ack_title => '致谢';
+
+  @override
+  String get settings_ack_upstreamTitle => '上游项目 Mono Dash';
+
+  @override
+  String get settings_ack_upstreamSubtitle => '羽栈基于 Mono Dash 二次开发，感谢原作者与贡献者。';
+
+  @override
+  String get settings_ack_upstreamContent =>
+      '羽栈（FeatherStack / 清羽运维栈）基于 Mono Dash 开发。Mono Dash 是一个开源的 1Panel 第三方客户端，本项目保留其上游提交历史，并继续以 GPL-3.0 许可开源。羽栈不是 1Panel 官方产品。';
+
+  @override
+  String get settings_ack_openUpstream => '查看上游仓库';
+
+  @override
+  String get settings_ack_license => 'GPL-3.0 开源许可';
 
   @override
   String get settings_insecure_confirmTitle => '确认允许不安全连接？';

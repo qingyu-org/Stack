@@ -180,13 +180,17 @@ class _ServerContextMenuOverlayState extends State<_ServerContextMenuOverlay>
             onTap: _dismiss,
             child: FadeTransition(
               opacity: _fadeAnimation,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-                child: Container(
-                  color: widget.isDark
-                      ? CupertinoColors.black.withValues(alpha: 0.25)
-                      : CupertinoColors.white.withValues(alpha: 0.15),
-                ),
+              child: _buildBackdrop(
+                // 分组/节点卡不绘制预览时，在锚定卡片位置留出透明孔洞，
+                // 让被长按的卡片保持清晰，只压暗周围区域。
+                hole: widget.showPreview
+                    ? null
+                    : Rect.fromLTWH(
+                        widget.anchorOffset.dx,
+                        widget.anchorOffset.dy,
+                        widget.anchorSize.width,
+                        widget.anchorSize.height,
+                      ),
               ),
             ),
           ),
@@ -227,6 +231,19 @@ class _ServerContextMenuOverlayState extends State<_ServerContextMenuOverlay>
         ),
       ],
     );
+  }
+
+  Widget _buildBackdrop({Rect? hole}) {
+    final content = BackdropFilter(
+      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+      child: Container(
+        color: widget.isDark
+            ? CupertinoColors.black.withValues(alpha: 0.25)
+            : CupertinoColors.white.withValues(alpha: 0.15),
+      ),
+    );
+    if (hole == null) return content;
+    return ClipPath(clipper: _BackdropHoleClipper(hole), child: content);
   }
 
   Widget _buildMenuPanel(List<_MenuItemData> items) {
@@ -282,6 +299,24 @@ class _ServerContextMenuOverlayState extends State<_ServerContextMenuOverlay>
       ),
     );
   }
+}
+
+class _BackdropHoleClipper extends CustomClipper<Path> {
+  const _BackdropHoleClipper(this.hole);
+
+  final Rect hole;
+
+  @override
+  Path getClip(Size size) {
+    return Path()
+      ..fillType = PathFillType.evenOdd
+      ..addRect(Offset.zero & size)
+      ..addRect(hole);
+  }
+
+  @override
+  bool shouldReclip(_BackdropHoleClipper oldClipper) =>
+      oldClipper.hole != hole;
 }
 
 class _ServerPreviewItem extends StatelessWidget {

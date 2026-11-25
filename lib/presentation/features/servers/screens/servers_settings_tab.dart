@@ -38,8 +38,18 @@ const _privacyPolicyUrl =
     'https://github.com/willow-god/Mono-Dash/blob/main/PRIVACY.md';
 const _repositoryUrl = 'https://github.com/willow-god/Mono-Dash';
 const _authorBlogUrl = 'https://blog.liushen.fun/';
+const _upstreamRepositoryUrl = 'https://github.com/nowubh/Mono-Dash';
+const _gplLicenseUrl = 'https://www.gnu.org/licenses/gpl-3.0.html';
 const _termsOfUseUrl =
     'https://github.com/willow-god/Mono-Dash/blob/main/TERMS.md';
+
+Future<void> _openExternal(BuildContext context, String url) async {
+  final uri = Uri.parse(url);
+  final launched = await launchUrl(uri, mode: LaunchMode.externalApplication);
+  if (!launched && context.mounted) {
+    showAppErrorToast(context.l10n.settings_contact_openFailed);
+  }
+}
 
 class ServersSettingsTab extends ConsumerWidget {
   const ServersSettingsTab({super.key});
@@ -73,6 +83,7 @@ class ServersSettingsTab extends ConsumerWidget {
         settings?.serversRefreshIntervalSeconds ??
         AppSettingsController.defaultServersRefreshIntervalSeconds;
     final customHeaders = settings?.customHeaders ?? const {};
+    final pinTabBar = settings?.pinTabBar ?? true;
     final localeOption = ref.watch(localeControllerProvider);
 
     return FrostedScaffold(
@@ -227,6 +238,20 @@ class ServersSettingsTab extends ConsumerWidget {
                         ),
                       ),
                     ),
+                    _SettingsSwitchRow(
+                      icon: CupertinoIcons.rectangle_badge_checkmark,
+                      iconColor: CupertinoColors.systemGreen,
+                      title: l10n.settings_appearance_pinTabBarTitle,
+                      subtitle: pinTabBar
+                          ? l10n.settings_appearance_pinTabBarSubtitleOn
+                          : l10n.settings_appearance_pinTabBarSubtitleOff,
+                      value: pinTabBar,
+                      onChanged: settingsAsync.isLoading
+                          ? null
+                          : (value) => ref
+                                .read(appSettingsControllerProvider.notifier)
+                                .setPinTabBar(value),
+                    ),
                     _SettingsRow(
                       icon: CupertinoIcons.globe,
                       iconColor: CupertinoColors.systemTeal,
@@ -356,6 +381,28 @@ class ServersSettingsTab extends ConsumerWidget {
                         title: l10n.settings_help_aboutTitle,
                         content: l10n.settings_help_aboutContent,
                       ),
+                    ),
+                  ],
+                ),
+                const SizedBox(height: 12),
+
+                // Acknowledgements
+                SubMenuCard(
+                  title: l10n.settings_ack_title,
+                  children: [
+                    _SettingsRow(
+                      icon: CupertinoIcons.hand_thumbsup_fill,
+                      iconColor: CupertinoColors.systemOrange,
+                      title: l10n.settings_ack_upstreamTitle,
+                      subtitle: l10n.settings_ack_upstreamSubtitle,
+                      onTap: () => _showAcknowledgementsSheet(context),
+                    ),
+                    _SettingsRow(
+                      icon: CupertinoIcons.doc_text_fill,
+                      iconColor: const Color(0xFF6B7280),
+                      title: l10n.settings_ack_license,
+                      subtitle: 'GPL-3.0',
+                      onTap: () => _openExternal(context, _gplLicenseUrl),
                     ),
                   ],
                 ),
@@ -1375,6 +1422,50 @@ Future<void> _showOpenSourceProjectSheet(BuildContext context) {
     expand: false,
     builder: (_) => const _OpenSourceProjectSheet(),
   );
+}
+
+Future<void> _showAcknowledgementsSheet(BuildContext context) {
+  return showActionSheet<void>(
+    context: context,
+    expand: false,
+    builder: (_) => const _AcknowledgementsSheet(),
+  );
+}
+
+class _AcknowledgementsSheet extends StatelessWidget {
+  const _AcknowledgementsSheet();
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return ActionSheetScaffold(
+      title: l10n.settings_ack_title,
+      isAdaptive: true,
+      child: Column(
+        crossAxisAlignment: CrossAxisAlignment.stretch,
+        children: [
+          Text(
+            l10n.settings_ack_upstreamContent,
+            style: TextStyle(
+              fontSize: 13,
+              height: 1.6,
+              color: AppColors.secondaryLabel(context),
+            ),
+          ),
+          const SizedBox(height: 18),
+          CupertinoButton.filled(
+            onPressed: () => _openExternal(context, _upstreamRepositoryUrl),
+            child: Text(l10n.settings_ack_openUpstream),
+          ),
+          const SizedBox(height: 6),
+          CupertinoButton(
+            onPressed: () => _openExternal(context, _gplLicenseUrl),
+            child: Text(l10n.settings_ack_license),
+          ),
+        ],
+      ),
+    );
+  }
 }
 
 class _ContactSupportSheet extends StatelessWidget {

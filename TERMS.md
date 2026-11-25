@@ -4,11 +4,11 @@ Language: English | [简体中文](./TERMS.zh-CN.md)
 
 Last updated: May 8, 2026
 
-These Terms of Use ("Terms") govern your use of Mono Dash ("Mono Dash", "the App", "we", "us", or "our").
+These Terms of Use ("Terms") govern your use of FeatherStack ("FeatherStack", "the App", "we", "us", or "our").
 
-By installing, accessing, or using Mono Dash, you agree to these Terms. If you do not agree, do not use the App.
+By installing, accessing, or using FeatherStack, you agree to these Terms. If you do not agree, do not use the App.
 
-Mono Dash is a third-party mobile management client for 1Panel. It is not an official 1Panel product and is not affiliated with 1Panel.
+FeatherStack is a third-party mobile management client for 1Panel. It is not an official 1Panel product and is not affiliated with 1Panel.
 
 This document is provided for transparency and for use on GitHub and app distribution platforms. It is not legal advice.
 
@@ -24,7 +24,7 @@ You are responsible for:
 
 ## 2. Permitted Use
 
-You may use Mono Dash to connect to and manage 1Panel servers that you own, administer, or are authorized to access.
+You may use FeatherStack to connect to and manage 1Panel servers that you own, administer, or are authorized to access.
 
 You must not use the App to:
 
@@ -36,7 +36,7 @@ You must not use the App to:
 
 ## 3. Server Administration Risks
 
-Mono Dash provides administrative access to powerful 1Panel features. Actions performed through the App may affect your servers and data.
+FeatherStack provides administrative access to powerful 1Panel features. Actions performed through the App may affect your servers and data.
 
 Depending on your permissions and the features you use, the App may allow you to:
 
@@ -50,7 +50,7 @@ You are responsible for verifying commands, settings, paths, targets, and confir
 
 ## 4. Third-Party Services and Servers
 
-Mono Dash connects to 1Panel servers that you configure. We do not operate, control, or monitor those servers.
+FeatherStack connects to 1Panel servers that you configure. We do not operate, control, or monitor those servers.
 
 Your use of 1Panel, your server provider, app stores, and any other third-party services may be subject to their own terms and policies. We are not responsible for third-party services, servers, software, content, outages, security incidents, or data handling practices.
 
@@ -60,7 +60,7 @@ This build does not include in-app purchases, subscriptions, activation codes, o
 
 ## 6. Privacy
 
-Your use of Mono Dash is also governed by our Privacy Policy:
+Your use of FeatherStack is also governed by our Privacy Policy:
 
 [Privacy Policy](./PRIVACY.md)
 
@@ -74,13 +74,13 @@ You are responsible for deciding whether to install updates and for testing the 
 
 ## 8. No Professional Advice
 
-Mono Dash is a software tool. It does not provide legal, security, compliance, financial, or professional operations advice.
+FeatherStack is a software tool. It does not provide legal, security, compliance, financial, or professional operations advice.
 
 You are responsible for evaluating server changes, security settings, firewall rules, backup strategies, and operational decisions before applying them.
 
 ## 9. Disclaimer of Warranties
 
-To the maximum extent permitted by law, Mono Dash is provided "as is" and "as available", without warranties of any kind, whether express, implied, or statutory.
+To the maximum extent permitted by law, FeatherStack is provided "as is" and "as available", without warranties of any kind, whether express, implied, or statutory.
 
 We do not warrant that:
 
@@ -93,7 +93,7 @@ Some jurisdictions do not allow certain warranty exclusions, so some of these ex
 
 ## 10. Limitation of Liability
 
-To the maximum extent permitted by law, we will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for loss of profits, revenue, data, backups, business, goodwill, or server availability arising from or related to your use of Mono Dash.
+To the maximum extent permitted by law, we will not be liable for indirect, incidental, special, consequential, exemplary, or punitive damages, or for loss of profits, revenue, data, backups, business, goodwill, or server availability arising from or related to your use of FeatherStack.
 
 You understand that server administration carries inherent risk and that you are responsible for your own backups, access controls, configuration review, and recovery plans.
 
@@ -101,22 +101,22 @@ Some jurisdictions do not allow certain liability limitations, so some of these 
 
 ## 11. Indemnity
 
-To the extent permitted by law, you agree to defend, indemnify, and hold harmless the Mono Dash maintainers and contributors from claims, damages, liabilities, losses, and expenses arising from your misuse of the App, unauthorized server access, violation of these Terms, or violation of applicable law or third-party rights.
+To the extent permitted by law, you agree to defend, indemnify, and hold harmless the FeatherStack maintainers and contributors from claims, damages, liabilities, losses, and expenses arising from your misuse of the App, unauthorized server access, violation of these Terms, or violation of applicable law or third-party rights.
 
 ## 12. Open Source and Repository Materials
 
-If Mono Dash source code is made available in a public repository, your use of the source code may also be governed by the license file or other notices in that repository. These Terms apply to use of the App and do not replace any open-source license terms that apply to source code.
+If FeatherStack source code is made available in a public repository, your use of the source code may also be governed by the license file or other notices in that repository. These Terms apply to use of the App and do not replace any open-source license terms that apply to source code.
 
 If there is a conflict between these Terms and an applicable open-source license for repository source code, the open-source license controls for the source code.
 
 ## 13. Changes to These Terms
 
-We may update these Terms from time to time. Changes will be posted in this repository or another public location used by Mono Dash. The "Last updated" date will be updated when material changes are made.
+We may update these Terms from time to time. Changes will be posted in this repository or another public location used by FeatherStack. The "Last updated" date will be updated when material changes are made.
 
 Your continued use of the App after changes become effective means you accept the updated Terms.
 
 ## 14. Contact
 
-For questions about these Terms, open an issue in the Mono Dash GitHub repository:
+For questions about these Terms, open an issue in the FeatherStack GitHub repository:
 
 https://github.com/willow-god/Mono-Dash/issues

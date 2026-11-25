@@ -19,6 +19,7 @@ import '../../dashboard/screens/dashboard_page.dart';
 import '../../files/screens/files_page.dart';
 import '../../more/screens/more_page.dart';
 import '../../servers/providers/servers_provider.dart';
+import '../../settings/providers/app_settings_provider.dart';
 import '../../servers/providers/node_providers.dart';
 import '../../servers/providers/node_selection_provider.dart';
 import '../../websites/providers/websites_provider.dart';
@@ -207,7 +208,9 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
     final currentScroll = _scrollOffsets[_selectedIndex] ?? 0;
     final isOverlapping = currentScroll > 20;
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
-    final showTabBar = _isTabBarVisible && bottomInset == 0;
+    final pinTabBar =
+        ref.watch(appSettingsControllerProvider).valueOrNull?.pinTabBar ?? true;
+    final showTabBar = (pinTabBar || _isTabBarVisible) && bottomInset == 0;
 
     return CupertinoPageScaffold(
       backgroundColor: AppColors.background(context),

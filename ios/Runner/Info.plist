@@ -7,7 +7,7 @@
 	<key>CFBundleDevelopmentRegion</key>
 	<string>$(DEVELOPMENT_LANGUAGE)</string>
 	<key>CFBundleDisplayName</key>
-	<string>Mono Dash</string>
+	<string>羽栈</string>
 	<key>CFBundleExecutable</key>
 	<string>$(EXECUTABLE_NAME)</string>
 	<key>CFBundleIdentifier</key>
@@ -15,7 +15,7 @@
 	<key>CFBundleInfoDictionaryVersion</key>
 	<string>6.0</string>
 	<key>CFBundleName</key>
-	<string>Mono Dash</string>
+	<string>FeatherStack</string>
 	<key>CFBundlePackageType</key>
 	<string>APPL</string>
 	<key>CFBundleShortVersionString</key>
@@ -41,7 +41,7 @@
 		<string>_lnp._tcp.</string>
 	</array>
 	<key>NSFaceIDUsageDescription</key>
-	<string>Use Face ID to unlock Mono Dash.</string>
+	<string>Use Face ID to unlock FeatherStack.</string>
 	<key>NSPhotoLibraryUsageDescription</key>
 	<string>Select photos or files from your library to upload to a 1Panel panel.</string>
 	<key>NSCameraUsageDescription</key>

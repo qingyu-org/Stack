@@ -5,10 +5,10 @@
 // 'flutter create' template.
 
 // The application's name. By default this is also the title of the Flutter window.
-PRODUCT_NAME = Mono Dash
+PRODUCT_NAME = FeatherStack
 
 // The application's bundle identifier
 PRODUCT_BUNDLE_IDENTIFIER = com.mou.onepanelMate
 
 // The copyright displayed in application information
-PRODUCT_COPYRIGHT = Copyright © 2026 com.mou. All rights reserved.
+PRODUCT_COPYRIGHT = Copyright © 2026 qingyu. All rights reserved.

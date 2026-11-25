@@ -14,6 +14,9 @@ class TerminalServerCard extends StatelessWidget {
     required this.onTap,
     required this.isSelected,
     this.loading = false,
+    this.titleOverride,
+    this.subtitleOverride,
+    this.titleBadge,
   });
 
   final Server server;
@@ -22,6 +25,9 @@ class TerminalServerCard extends StatelessWidget {
   final VoidCallback? onTap;
   final bool isSelected;
   final bool loading;
+  final String? titleOverride;
+  final String? subtitleOverride;
+  final Widget? titleBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -49,11 +55,17 @@ class TerminalServerCard extends StatelessWidget {
                   server: server,
                   status: status,
                   loading: loading,
+                  titleOverride: titleOverride,
+                  subtitleOverride: subtitleOverride,
+                  titleBadge: titleBadge,
                 )
               : _DashboardCardContent(
                   server: server,
                   dashboard: data,
                   status: status,
+                  titleOverride: titleOverride,
+                  subtitleOverride: subtitleOverride,
+                  titleBadge: titleBadge,
                 ),
         ),
       ),
@@ -66,30 +78,38 @@ class _DashboardCardContent extends StatelessWidget {
     required this.server,
     required this.dashboard,
     required this.status,
+    this.titleOverride,
+    this.subtitleOverride,
+    this.titleBadge,
   });
 
   final Server server;
   final Dashboard dashboard;
   final ServerCardStatus status;
+  final String? titleOverride;
+  final String? subtitleOverride;
+  final Widget? titleBadge;
 
   @override
   Widget build(BuildContext context) {
     final base = dashboard.base;
     final current = dashboard.current;
     final disk = primaryDisk(current.disks);
-    final title = server.name?.isNotEmpty == true
-        ? server.name!
-        : (base.hostname.isNotEmpty ? base.hostname : server.displayName);
-    final subtitle = serverSubtitle(
-      distro: base.prettyDistro,
-      ip: base.ipV4Addr,
-      fallback: base.platform,
-    );
+    final title = titleOverride ??
+        (server.name?.isNotEmpty == true
+            ? server.name!
+            : (base.hostname.isNotEmpty ? base.hostname : server.displayName));
+    final subtitle = subtitleOverride ??
+        serverSubtitle(
+          distro: base.prettyDistro,
+          ip: base.ipV4Addr,
+          fallback: base.platform,
+        );
 
     return Column(
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
-        _HeaderLine(title: title, status: status),
+        _HeaderLine(title: title, status: status, badge: titleBadge),
         const SizedBox(height: 9),
         _SubtitleLine(text: subtitle),
         const SizedBox(height: 16),
@@ -125,11 +145,17 @@ class _FallbackCardContent extends StatelessWidget {
     required this.server,
     required this.status,
     this.loading = false,
+    this.titleOverride,
+    this.subtitleOverride,
+    this.titleBadge,
   });
 
   final Server server;
   final ServerCardStatus status;
   final bool loading;
+  final String? titleOverride;
+  final String? subtitleOverride;
+  final Widget? titleBadge;
 
   @override
   Widget build(BuildContext context) {
@@ -137,13 +163,14 @@ class _FallbackCardContent extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.start,
       children: [
         _HeaderLine(
-          title: server.displayName,
+          title: titleOverride ?? server.displayName,
           status: status,
           loading: loading,
+          badge: titleBadge,
         ),
         const SizedBox(height: 9),
         _SubtitleLine(
-          text:
+          text: subtitleOverride ??
               '${server.isHttps ? 'https' : 'http'}://${server.host}:${server.port}',
           loading: loading,
         ),
@@ -171,11 +198,13 @@ class _HeaderLine extends StatelessWidget {
     required this.title,
     required this.status,
     this.loading = false,
+    this.badge,
   });
 
   final String title;
   final ServerCardStatus status;
   final bool loading;
+  final Widget? badge;
 
   @override
   Widget build(BuildContext context) {
@@ -195,17 +224,27 @@ class _HeaderLine extends StatelessWidget {
         Expanded(
           child: loading
               ? const SkeletonItem.text(width: 100, height: 16)
-              : Text(
-                  title,
-                  maxLines: 1,
-                  overflow: TextOverflow.ellipsis,
-                  style: TextStyle(
-                    fontFamily: 'Menlo',
-                    fontSize: 16,
-                    fontWeight: FontWeight.w700,
-                    color: _TerminalCardColors.green(context),
-                    height: 1.18,
-                  ),
+              : Row(
+                  children: [
+                    Flexible(
+                      child: Text(
+                        title,
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                        style: TextStyle(
+                          fontFamily: 'Menlo',
+                          fontSize: 16,
+                          fontWeight: FontWeight.w700,
+                          color: _TerminalCardColors.green(context),
+                          height: 1.18,
+                        ),
+                      ),
+                    ),
+                    if (badge != null) ...[
+                      const SizedBox(width: 6),
+                      badge!,
+                    ],
+                  ],
                 ),
         ),
         const SizedBox(width: 10),

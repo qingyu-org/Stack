@@ -126,15 +126,15 @@ jobs:
         run: |
           mkdir -p dist
           cp build/app/outputs/flutter-apk/app-release.apk \
-            "dist/MonoDash-${VERSION_NAME}-universal.apk"
+            "dist/FeatherStack-${VERSION_NAME}-universal.apk"
           for abi in arm64-v8a armeabi-v7a x86_64; do
             src="build/app/outputs/flutter-apk/app-${abi}-release.apk"
             if [ -f "$src" ]; then
-              cp "$src" "dist/MonoDash-${VERSION_NAME}-${abi}.apk"
+              cp "$src" "dist/FeatherStack-${VERSION_NAME}-${abi}.apk"
             fi
           done
           cp build/app/outputs/bundle/release/app-release.aab \
-            "dist/MonoDash-${VERSION_NAME}.aab"
+            "dist/FeatherStack-${VERSION_NAME}.aab"
           ls -lh dist
 
       - name: Upload Android artifacts
@@ -184,7 +184,7 @@ jobs:
           mkdir -p dist/Payload
           cp -R build/ios/iphoneos/Runner.app dist/Payload/
           cd dist
-          zip -qry "MonoDash-${VERSION_NAME}-ios-unsigned.ipa" Payload
+          zip -qry "FeatherStack-${VERSION_NAME}-ios-unsigned.ipa" Payload
           rm -rf Payload
           ls -lh
 
@@ -234,11 +234,11 @@ jobs:
       - name: Package zip
         shell: pwsh
         run: |
-          $exe = Get-ChildItem build\windows -Recurse -Filter onepanel_mate.exe | Select-Object -First 1
-          if (-not $exe) { throw "onepanel_mate.exe not found" }
+          $exe = Get-ChildItem build\windows -Recurse -Filter FeatherStack.exe | Select-Object -First 1
+          if (-not $exe) { throw "FeatherStack.exe not found" }
           $dir = $exe.Directory.FullName
           New-Item -ItemType Directory -Force dist | Out-Null
-          Compress-Archive -Path "$dir\*" -DestinationPath "dist\MonoDash-$env:VERSION_NAME-windows-x64.zip" -Force
+          Compress-Archive -Path "$dir\*" -DestinationPath "dist\FeatherStack-$env:VERSION_NAME-windows-x64.zip" -Force
           Get-ChildItem dist
 
       - name: Upload Windows artifact
@@ -276,7 +276,7 @@ jobs:
         uses: softprops/action-gh-release@v2
         with:
           tag_name: ${{ env.RELEASE_TAG }}
-          name: Mono Dash ${{ env.RELEASE_TAG }}
+          name: FeatherStack ${{ env.RELEASE_TAG }}
           generate_release_notes: true
           files: artifacts/**/*
           fail_on_unmatched_files: true

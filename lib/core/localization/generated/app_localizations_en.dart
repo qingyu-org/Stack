@@ -9,7 +9,7 @@ class AppLocalizationsEn extends AppLocalizations {
   AppLocalizationsEn([String locale = 'en']) : super(locale);
 
   @override
-  String get app_title => 'Mono Dash';
+  String get app_title => 'FeatherStack';
 
   @override
   String get common_ok => 'OK';
@@ -2187,7 +2187,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get settings_premium_title => 'Purchases';
 
   @override
-  String get settings_premium_unlimitedTitle => 'Mono Dash Unlimited';
+  String get settings_premium_unlimitedTitle => 'FeatherStack Unlimited';
 
   @override
   String get settings_premium_unlimitedUnlocked => 'Unlimited panels unlocked';
@@ -2213,6 +2213,17 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_appearance_cardStyleTitle => 'Card Style';
+
+  @override
+  String get settings_appearance_pinTabBarTitle => 'Pin Tab Bar';
+
+  @override
+  String get settings_appearance_pinTabBarSubtitleOn =>
+      'Keep the bottom tab bar visible while scrolling';
+
+  @override
+  String get settings_appearance_pinTabBarSubtitleOff =>
+      'Hide the bottom tab bar while scrolling';
 
   @override
   String get settings_language_title => 'Language';
@@ -3663,7 +3674,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_appLock_description =>
-      'Require a password or biometric verification before opening Mono Dash.';
+      'Require a password or biometric verification before opening FeatherStack.';
 
   @override
   String get settings_appLock_passwordLabel => 'PIN';
@@ -3730,7 +3741,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_appLock_disableContent =>
-      'Mono Dash will open without password or biometric verification.';
+      'FeatherStack will open without password or biometric verification.';
 
   @override
   String get settings_appLock_disableAction => 'Turn Off';
@@ -3782,10 +3793,10 @@ class AppLocalizationsEn extends AppLocalizations {
       'Update the password used to unlock the app';
 
   @override
-  String get settings_appLock_authReason => 'Unlock Mono Dash';
+  String get settings_appLock_authReason => 'Unlock FeatherStack';
 
   @override
-  String get settings_appLock_unlockTitle => 'Mono Dash is locked';
+  String get settings_appLock_unlockTitle => 'FeatherStack is locked';
 
   @override
   String get settings_appLock_unlockSubtitle =>
@@ -3828,7 +3839,7 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String settings_appLock_enableBiometricSheetSubtitle(String method) {
-    return 'You can unlock Mono Dash with $method after entering your PIN once.';
+    return 'You can unlock FeatherStack with $method after entering your PIN once.';
   }
 
   @override
@@ -3879,14 +3890,14 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_help_openSourceSubtitle =>
-      'View the Mono Dash GitHub repository';
+      'View the FeatherStack GitHub repository';
 
   @override
-  String get settings_openSource_projectTitle => 'Mono Dash is open source';
+  String get settings_openSource_projectTitle => 'FeatherStack is open source';
 
   @override
   String get settings_openSource_projectContent =>
-      'Mono Dash source code is hosted on GitHub. You can inspect the code, submit issues, or help improve this third-party mobile management client for 1Panel.';
+      'FeatherStack source code is hosted on GitHub. You can inspect the code, submit issues, or help improve this third-party mobile management client for 1Panel.';
 
   @override
   String get settings_openSource_openRepository => 'Open GitHub Repository';
@@ -3935,11 +3946,31 @@ class AppLocalizationsEn extends AppLocalizations {
       'No registered license data is available.';
 
   @override
-  String get settings_help_aboutTitle => 'About Mono Dash';
+  String get settings_help_aboutTitle => 'About FeatherStack';
 
   @override
   String get settings_help_aboutContent =>
-      'A third-party mobile management tool for 1Panel.';
+      'FeatherStack is a third-party mobile management client for 1Panel, maintained by qingyu.';
+
+  @override
+  String get settings_ack_title => 'Acknowledgements';
+
+  @override
+  String get settings_ack_upstreamTitle => 'Upstream: Mono Dash';
+
+  @override
+  String get settings_ack_upstreamSubtitle =>
+      'FeatherStack is built on Mono Dash. Thanks to its author and contributors.';
+
+  @override
+  String get settings_ack_upstreamContent =>
+      'FeatherStack (Qingyu Ops Stack) is built on Mono Dash, an open-source third-party 1Panel client. This project keeps the upstream commit history and remains licensed under GPL-3.0. FeatherStack is not an official 1Panel product.';
+
+  @override
+  String get settings_ack_openUpstream => 'Open upstream repository';
+
+  @override
+  String get settings_ack_license => 'GPL-3.0 license';
 
   @override
   String get settings_insecure_confirmTitle => 'Allow insecure connections?';

@@ -6,9 +6,11 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../domain/entities/dashboard.dart';
 import '../../../../domain/entities/panel_node.dart';
 import '../../../../domain/entities/server.dart';
+import '../../settings/providers/app_settings_provider.dart';
 import '../providers/node_providers.dart';
 import 'server_card_shared.dart';
 import 'server_card_simple.dart';
+import 'server_card_terminal.dart';
 
 /// 专业版多机面板里的单个节点卡片。
 ///
@@ -24,6 +26,7 @@ class NodeServerCard extends ConsumerWidget {
     this.onLongPress,
     this.isSelected = false,
     this.showCountLinks = false,
+    this.style = ServerCardStyle.simple,
   });
 
   final Server server;
@@ -32,6 +35,7 @@ class NodeServerCard extends ConsumerWidget {
   final VoidCallback? onLongPress;
   final bool isSelected;
   final bool showCountLinks;
+  final ServerCardStyle style;
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
@@ -47,18 +51,31 @@ class NodeServerCard extends ConsumerWidget {
       latencyMs: data?.fetchMs,
     );
     final subtitle = _subtitle(node, dashboard?.base);
-    final card = SimpleServerCard(
-      server: server,
-      dashboard: dashboard,
-      status: status,
-      onTap: onTap,
-      isSelected: isSelected,
-      loading: snapshot.isLoading && dashboard == null,
-      titleOverride: node.displayName,
-      subtitleOverride: subtitle,
-      titleBadge: node.isPro ? const NodeEditionBadge.pro() : null,
-      showCountLinks: showCountLinks,
-    );
+    final card = switch (style) {
+      ServerCardStyle.simple => SimpleServerCard(
+        server: server,
+        dashboard: dashboard,
+        status: status,
+        onTap: onTap,
+        isSelected: isSelected,
+        loading: snapshot.isLoading && dashboard == null,
+        titleOverride: node.displayName,
+        subtitleOverride: subtitle,
+        titleBadge: node.isPro ? const NodeEditionBadge.pro() : null,
+        showCountLinks: showCountLinks,
+      ),
+      ServerCardStyle.terminal => TerminalServerCard(
+        server: server,
+        dashboard: dashboard,
+        status: status,
+        onTap: onTap,
+        isSelected: isSelected,
+        loading: snapshot.isLoading && dashboard == null,
+        titleOverride: node.displayName,
+        subtitleOverride: subtitle,
+        titleBadge: node.isPro ? const NodeEditionBadge.pro() : null,
+      ),
+    };
 
     if (onLongPress == null) return card;
     return GestureDetector(

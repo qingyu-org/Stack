@@ -1,7 +1,7 @@
 {
   "@@locale": "en",
   "@@last_modified": "2026-05-07T00:00:00+08:00",
-  "app_title": "Mono Dash",
+  "app_title": "FeatherStack",
   "@app_title": {
     "description": "Application title shown by the Flutter app."
   },
@@ -3135,7 +3135,7 @@
   "@settings_premium_title": {
     "description": "Settings section title for purchases."
   },
-  "settings_premium_unlimitedTitle": "Mono Dash Unlimited",
+  "settings_premium_unlimitedTitle": "FeatherStack Unlimited",
   "@settings_premium_unlimitedTitle": {
     "description": "Title for the unlimited purchase entry."
   },
@@ -3170,6 +3170,18 @@
   "settings_appearance_cardStyleTitle": "Card Style",
   "@settings_appearance_cardStyleTitle": {
     "description": "Settings row title for server card style selection."
+  },
+  "settings_appearance_pinTabBarTitle": "Pin Tab Bar",
+  "@settings_appearance_pinTabBarTitle": {
+    "description": "Settings row title for keeping the bottom tab bar visible."
+  },
+  "settings_appearance_pinTabBarSubtitleOn": "Keep the bottom tab bar visible while scrolling",
+  "@settings_appearance_pinTabBarSubtitleOn": {
+    "description": "Subtitle shown when the bottom tab bar is pinned."
+  },
+  "settings_appearance_pinTabBarSubtitleOff": "Hide the bottom tab bar while scrolling",
+  "@settings_appearance_pinTabBarSubtitleOff": {
+    "description": "Subtitle shown when the bottom tab bar auto-hides."
   },
   "settings_language_title": "Language",
   "@settings_language_title": {
@@ -5150,7 +5162,7 @@
   "@settings_appLock_pageTitle": {
     "description": "Navigation title for the app lock settings page."
   },
-  "settings_appLock_description": "Require a password or biometric verification before opening Mono Dash.",
+  "settings_appLock_description": "Require a password or biometric verification before opening FeatherStack.",
   "@settings_appLock_description": {
     "description": "Description for enabling app lock."
   },
@@ -5234,7 +5246,7 @@
   "@settings_appLock_disableTitle": {
     "description": "Dialog title for disabling app lock."
   },
-  "settings_appLock_disableContent": "Mono Dash will open without password or biometric verification.",
+  "settings_appLock_disableContent": "FeatherStack will open without password or biometric verification.",
   "@settings_appLock_disableContent": {
     "description": "Dialog content for disabling app lock."
   },
@@ -5298,11 +5310,11 @@
   "@settings_appLock_changePasswordSubtitle": {
     "description": "Settings row subtitle for changing app lock password."
   },
-  "settings_appLock_authReason": "Unlock Mono Dash",
+  "settings_appLock_authReason": "Unlock FeatherStack",
   "@settings_appLock_authReason": {
     "description": "Reason shown in the system biometric prompt."
   },
-  "settings_appLock_unlockTitle": "Mono Dash is locked",
+  "settings_appLock_unlockTitle": "FeatherStack is locked",
   "@settings_appLock_unlockTitle": {
     "description": "Title on the app lock screen."
   },
@@ -5355,7 +5367,7 @@
       }
     }
   },
-  "settings_appLock_enableBiometricSheetSubtitle": "You can unlock Mono Dash with {method} after entering your PIN once.",
+  "settings_appLock_enableBiometricSheetSubtitle": "You can unlock FeatherStack with {method} after entering your PIN once.",
   "@settings_appLock_enableBiometricSheetSubtitle": {
     "description": "Subtitle for choosing whether to enable biometric unlock after setting PIN.",
     "placeholders": {
@@ -5418,27 +5430,27 @@
   },
   "settings_help_openSourceTitle": "Source Code",
   "@settings_help_openSourceTitle": {
-    "description": "Settings row title for the Mono Dash source repository."
+    "description": "Settings row title for the FeatherStack source repository."
   },
-  "settings_help_openSourceSubtitle": "View the Mono Dash GitHub repository",
+  "settings_help_openSourceSubtitle": "View the FeatherStack GitHub repository",
   "@settings_help_openSourceSubtitle": {
-    "description": "Settings row subtitle for the Mono Dash source repository."
+    "description": "Settings row subtitle for the FeatherStack source repository."
   },
-  "settings_openSource_projectTitle": "Mono Dash is open source",
+  "settings_openSource_projectTitle": "FeatherStack is open source",
   "@settings_openSource_projectTitle": {
     "description": "Open source project sheet card title."
   },
-  "settings_openSource_projectContent": "Mono Dash source code is hosted on GitHub. You can inspect the code, submit issues, or help improve this third-party mobile management client for 1Panel.",
+  "settings_openSource_projectContent": "FeatherStack source code is hosted on GitHub. You can inspect the code, submit issues, or help improve this third-party mobile management client for 1Panel.",
   "@settings_openSource_projectContent": {
     "description": "Open source project sheet content."
   },
   "settings_openSource_openRepository": "Open GitHub Repository",
   "@settings_openSource_openRepository": {
-    "description": "Button label for opening the Mono Dash source repository."
+    "description": "Button label for opening the FeatherStack source repository."
   },
   "settings_openSource_copyRepositoryUrl": "Copy Repository Link",
   "@settings_openSource_copyRepositoryUrl": {
-    "description": "Button label for copying the Mono Dash source repository URL."
+    "description": "Button label for copying the FeatherStack source repository URL."
   },
   "settings_help_licensesTitle": "Open Source Licenses",
   "@settings_help_licensesTitle": {
@@ -5499,11 +5511,35 @@
   "@settings_licenses_emptySubtitle": {
     "description": "Empty state subtitle for the open source licenses page."
   },
-  "settings_help_aboutTitle": "About Mono Dash",
+  "settings_help_aboutTitle": "About FeatherStack",
   "@settings_help_aboutTitle": {
     "description": "Help entry title for about dialog."
   },
-  "settings_help_aboutContent": "A third-party mobile management tool for 1Panel.",
+  "settings_help_aboutContent": "FeatherStack is a third-party mobile management client for 1Panel, maintained by qingyu.",
+  "settings_ack_title": "Acknowledgements",
+  "@settings_ack_title": {
+    "description": "Acknowledgements section title."
+  },
+  "settings_ack_upstreamTitle": "Upstream: Mono Dash",
+  "@settings_ack_upstreamTitle": {
+    "description": "Acknowledgement row title for the upstream project."
+  },
+  "settings_ack_upstreamSubtitle": "FeatherStack is built on Mono Dash. Thanks to its author and contributors.",
+  "@settings_ack_upstreamSubtitle": {
+    "description": "Acknowledgement row subtitle for the upstream project."
+  },
+  "settings_ack_upstreamContent": "FeatherStack (Qingyu Ops Stack) is built on Mono Dash, an open-source third-party 1Panel client. This project keeps the upstream commit history and remains licensed under GPL-3.0. FeatherStack is not an official 1Panel product.",
+  "@settings_ack_upstreamContent": {
+    "description": "Acknowledgement sheet content for the upstream project."
+  },
+  "settings_ack_openUpstream": "Open upstream repository",
+  "@settings_ack_openUpstream": {
+    "description": "Button label for opening the upstream repository."
+  },
+  "settings_ack_license": "GPL-3.0 license",
+  "@settings_ack_license": {
+    "description": "Acknowledgement row for the open-source license."
+  },
   "@settings_help_aboutContent": {
     "description": "About dialog content."
   },

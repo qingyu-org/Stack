@@ -5,9 +5,9 @@ import 'package:package_info_plus/package_info_plus.dart';
 class AppUserAgent {
   AppUserAgent._();
 
-  static const productToken = 'Mono-Dash';
-  static const widgetProductToken = 'Mono-Dash-Widget';
-  static const displayName = 'Mono Dash';
+  static const productToken = 'FeatherStack';
+  static const widgetProductToken = 'FeatherStack-Widget';
+  static const displayName = 'FeatherStack';
   static const _fallbackVersion = '1.0.0';
 
   static Future<String>? _cached;

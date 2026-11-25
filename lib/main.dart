@@ -21,7 +21,7 @@ import 'presentation/common/components/terminal/floating_terminal_bubble.dart';
 void main() async {
   WidgetsFlutterBinding.ensureInitialized();
   await LiquidGlassWidgets.initialize();
-  debugPrint('Mono Dash booted');
+  debugPrint('FeatherStack booted');
 
   final storageService = StorageService();
   await storageService.init();

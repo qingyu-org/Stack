@@ -90,12 +90,12 @@ BEGIN
         BLOCK "040904e4"
         BEGIN
             VALUE "CompanyName", "com.mou" "\0"
-            VALUE "FileDescription", "Mono Dash" "\0"
+            VALUE "FileDescription", "FeatherStack" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
-            VALUE "InternalName", "onepanel_mate" "\0"
-            VALUE "LegalCopyright", "Copyright (C) 2026 com.mou. All rights reserved." "\0"
-            VALUE "OriginalFilename", "onepanel_mate.exe" "\0"
-            VALUE "ProductName", "Mono Dash" "\0"
+            VALUE "InternalName", "FeatherStack" "\0"
+            VALUE "LegalCopyright", "Copyright (C) 2026 qingyu. All rights reserved." "\0"
+            VALUE "OriginalFilename", "FeatherStack.exe" "\0"
+            VALUE "ProductName", "FeatherStack" "\0"
             VALUE "ProductVersion", VERSION_AS_STRING "\0"
         END
     END

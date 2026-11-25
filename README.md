@@ -1,15 +1,17 @@
-# Mono Dash
+# FeatherStack
 
 Language: English | [简体中文](README.zh-CN.md)
 
-Mono Dash is an open-source, third-party mobile management client for
+**FeatherStack** (Chinese: **清羽运维栈**, short name **羽栈**) is an
+open-source, third-party mobile management client for
 [1Panel](https://github.com/1Panel-dev/1Panel).
 
 Connect to your own 1Panel servers and manage daily operations from your phone
 with a focused, native interface.
 
-> Mono Dash is an independent third-party client. It is not an official 1Panel
-> product and is not affiliated with, endorsed by, or sponsored by 1Panel.
+> FeatherStack is an independent third-party client maintained by qingyu. It is
+> not an official 1Panel product and is not affiliated with, endorsed by, or
+> sponsored by 1Panel.
 
 ## Features
 
@@ -34,11 +36,18 @@ with a focused, native interface.
 
 ## Open Source
 
-Mono Dash is developed as an open-source project. You can review the source
+FeatherStack is developed as an open-source project. You can review the source
 code, follow development, report issues, and contribute through this repository.
 
 - Source code: <https://github.com/willow-god/Mono-Dash>
 - Upstream: <https://github.com/nowubh/Mono-Dash>
+
+## Acknowledgements
+
+FeatherStack is built on **Mono Dash**, an open-source third-party 1Panel client
+created by its original author and contributors. We thank them for their work.
+This fork keeps the upstream commit history and remains licensed under GPL-3.0.
+The "Mono Dash" name and any upstream marks belong to their respective owners.
 
 ## Unlimited Servers
 
@@ -49,8 +58,8 @@ APIs still depends on the license and permissions of the panel you connect to.
 
 ## Privacy and Data
 
-Mono Dash stores server connection settings on your device and connects directly
-to the 1Panel servers you configure. Mono Dash does not operate a backend for
+FeatherStack stores server connection settings on your device and connects directly
+to the 1Panel servers you configure. FeatherStack does not operate a backend for
 collecting your 1Panel server data.
 
 Read the full policies:
@@ -60,13 +69,13 @@ Read the full policies:
 
 ## Important Notice
 
-Use Mono Dash only with servers you own, administer, or are authorized to
+Use FeatherStack only with servers you own, administer, or are authorized to
 access. Server management actions can affect websites, databases, containers,
 files, backups, firewall rules, scheduled jobs, and other production resources.
 Review destructive operations carefully and keep independent backups of
 important data.
 
-Mono Dash depends on the 1Panel API and may not be compatible with every 1Panel
+FeatherStack depends on the 1Panel API and may not be compatible with every 1Panel
 version, plugin, server configuration, or deployment environment.
 
 ## Development

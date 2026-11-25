@@ -420,7 +420,7 @@ enum ServerWidgetFetcher {
     request.setValue("application/json", forHTTPHeaderField: "Accept")
     request.setValue("application/json", forHTTPHeaderField: "Content-Type")
     let userAgent = settings.userAgent?.trimmingCharacters(in: .whitespacesAndNewlines)
-    request.setValue(userAgent?.isEmpty == false ? userAgent! : "Mono-Dash-Widget/1.0", forHTTPHeaderField: "User-Agent")
+    request.setValue(userAgent?.isEmpty == false ? userAgent! : "FeatherStack-Widget/1.0", forHTTPHeaderField: "User-Agent")
     for (key, value) in settings.customHeaders where key.lowercased() != "user-agent" {
       request.setValue(value, forHTTPHeaderField: key)
     }
@@ -806,8 +806,8 @@ private func placeholderServerEntry(cardStyle: ServerWidgetCardStyle) -> ServerE
     date: Date(),
     server: WidgetServer(
       id: 1,
-      name: "Mono Dash",
-      displayName: "Mono Dash",
+      name: "FeatherStack",
+      displayName: "FeatherStack",
       host: "127.0.0.1",
       port: 10086,
       isHttps: true,
@@ -816,14 +816,14 @@ private func placeholderServerEntry(cardStyle: ServerWidgetCardStyle) -> ServerE
     ),
     snapshot: ServerSnapshot(
       id: 1,
-      name: "Mono Dash",
-      displayName: "Mono Dash",
+      name: "FeatherStack",
+      displayName: "FeatherStack",
       host: "127.0.0.1",
       port: 10086,
       isHttps: true,
       allowInsecureConnections: false,
       sortIndex: 0,
-      title: "Mono Dash",
+      title: "FeatherStack",
       subtitle: "Ubuntu  |  10.0.0.2",
       ipAddress: "10.0.0.2",
       osName: "Ubuntu",

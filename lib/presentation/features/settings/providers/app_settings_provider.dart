@@ -9,9 +9,17 @@ import '../../../../core/localization/generated/app_localizations.dart';
 part 'app_settings_provider.g.dart';
 
 enum AppIconVariant {
-  defaultIcon('default', null, 'assets/icons/1panel_mate_app_icon_2.png'),
-  dark('icon_dark', 'icon_dark', 'assets/icons/mono-dash-appicon-dark.png'),
-  adaptive('adaptive', null, 'assets/icons/1panel_mate_app_icon_2.png');
+  defaultIcon(
+    'default',
+    null,
+    'assets/icons/featherstack-default.png',
+  ),
+  dark('icon_dark', 'icon_dark', 'assets/icons/featherstack-dark.png'),
+  adaptive(
+    'adaptive',
+    null,
+    'assets/icons/featherstack-default.png',
+  );
 
   const AppIconVariant(
     this.storageName,
@@ -107,6 +115,7 @@ class AppSettings {
     this.requestTimeoutSeconds = 60,
     this.serversAutoRefreshEnabled = true,
     this.serversRefreshIntervalSeconds = 5,
+    this.pinTabBar = true,
     this.customHeaders = const {},
   });
 
@@ -116,6 +125,9 @@ class AppSettings {
   final int requestTimeoutSeconds;
   final bool serversAutoRefreshEnabled;
   final int serversRefreshIntervalSeconds;
+
+  /// 是否固定底部菜单：开启后滚动页面不再自动隐藏悬浮 Tab 栏。
+  final bool pinTabBar;
   final Map<String, String> customHeaders;
 
   AppSettings copyWith({
@@ -125,6 +137,7 @@ class AppSettings {
     int? requestTimeoutSeconds,
     bool? serversAutoRefreshEnabled,
     int? serversRefreshIntervalSeconds,
+    bool? pinTabBar,
     Map<String, String>? customHeaders,
   }) {
     return AppSettings(
@@ -137,6 +150,7 @@ class AppSettings {
           serversAutoRefreshEnabled ?? this.serversAutoRefreshEnabled,
       serversRefreshIntervalSeconds:
           serversRefreshIntervalSeconds ?? this.serversRefreshIntervalSeconds,
+      pinTabBar: pinTabBar ?? this.pinTabBar,
       customHeaders: customHeaders ?? this.customHeaders,
     );
   }
@@ -151,6 +165,7 @@ class AppSettingsController extends _$AppSettingsController {
   static const _serversAutoRefreshEnabledKey = 'servers_auto_refresh_enabled';
   static const _serversRefreshIntervalSecondsKey =
       'servers_refresh_interval_seconds';
+  static const _pinTabBarKey = 'pin_tab_bar';
   static const _customHeadersKey = 'custom_headers';
   static const defaultRequestTimeoutSeconds = 60;
   static const defaultServersRefreshIntervalSeconds = 5;
@@ -176,6 +191,7 @@ class AppSettingsController extends _$AppSettingsController {
       serversRefreshIntervalSeconds:
           prefs.getInt(_serversRefreshIntervalSecondsKey) ??
           defaultServersRefreshIntervalSeconds,
+      pinTabBar: prefs.getBool(_pinTabBarKey) ?? true,
       customHeaders: _decodeHeaders(prefs.getString(_customHeadersKey)),
     );
     return settings;
@@ -241,6 +257,14 @@ class AppSettingsController extends _$AppSettingsController {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setInt(_serversRefreshIntervalSecondsKey, value);
+  }
+
+  Future<void> setPinTabBar(bool pinned) async {
+    final previous = state.valueOrNull ?? const AppSettings();
+    state = AsyncValue.data(previous.copyWith(pinTabBar: pinned));
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_pinTabBarKey, pinned);
   }
 
   Future<void> setCustomHeaders(Map<String, String> headers) async {

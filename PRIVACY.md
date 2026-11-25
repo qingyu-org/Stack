@@ -4,29 +4,29 @@ Language: English | [简体中文](./PRIVACY.zh-CN.md)
 
 Last updated: May 8, 2026
 
-This Privacy Policy explains how Mono Dash ("Mono Dash", "the App", "we", "us", or "our") handles information when you use the App.
+This Privacy Policy explains how FeatherStack ("FeatherStack", "the App", "we", "us", or "our") handles information when you use the App.
 
-Mono Dash is a third-party mobile management client for 1Panel. It is not an official 1Panel product and is not affiliated with 1Panel.
+FeatherStack is a third-party mobile management client for 1Panel. It is not an official 1Panel product and is not affiliated with 1Panel.
 
 This document is provided for transparency and for use as a public privacy policy URL, including on GitHub, the App Store, and Google Play. It is not legal advice.
 
 ## Summary
 
-Mono Dash does not operate any backend server for user accounts, analytics, behavior tracking, logs, or 1Panel data. We do not collect, record, or analyze your in-app behavior.
+FeatherStack does not operate any backend server for user accounts, analytics, behavior tracking, logs, or 1Panel data. We do not collect, record, or analyze your in-app behavior.
 
 Your server list, app settings, and 1Panel connection information are stored locally on your device. Your operations are performed from your device to the 1Panel servers that you configure.
 
-Mono Dash does not include accounts, in-app purchases, subscriptions, or activation codes in this build. No RevenueCat or payment SDK is bundled.
+FeatherStack does not include accounts, in-app purchases, subscriptions, or activation codes in this build. No RevenueCat or payment SDK is bundled.
 
 ## No Analytics or Tracking
 
-Mono Dash does not include a Mono Dash-operated analytics service, tracking SDK, advertising SDK, behavior logging backend, or crash-report collection backend.
+FeatherStack does not include a FeatherStack-operated analytics service, tracking SDK, advertising SDK, behavior logging backend, or crash-report collection backend.
 
 We do not record what panels you add, what pages you open, what operations you perform, what commands you run, what files you view, or how often you use the App.
 
 ## Developer and Privacy Contact
 
-The developer and maintainer contact for Mono Dash is the Mono Dash project maintainer through the GitHub repository:
+The developer and maintainer contact for FeatherStack is the FeatherStack project maintainer through the GitHub repository:
 
 https://github.com/willow-god/Mono-Dash/issues
 
@@ -36,7 +36,7 @@ https://github.com/willow-god/Mono-Dash/issues
 
 ## Information We Handle
 
-Depending on how you use the App, Mono Dash may access or store the following information locally on your device, or transmit it directly from your device to the 1Panel server that you configure. We do not receive this information on our own servers.
+Depending on how you use the App, FeatherStack may access or store the following information locally on your device, or transmit it directly from your device to the 1Panel server that you configure. We do not receive this information on our own servers.
 
 ### Panel connection information
 
@@ -50,13 +50,13 @@ When you add a 1Panel server, the App may store:
 - Creation time, last used time, and local ordering information
 - Custom request headers if you configure them
 
-This information is stored locally on your device so the App can reconnect to your panels. It is not uploaded to a Mono Dash backend.
+This information is stored locally on your device so the App can reconnect to your panels. It is not uploaded to a FeatherStack backend.
 
 ### API keys and authentication data
 
 The App stores 1Panel API keys locally using the operating system's secure storage where available. The App uses the API key to sign requests to your configured 1Panel server.
 
-Mono Dash does not send your 1Panel API keys to any Mono Dash backend.
+FeatherStack does not send your 1Panel API keys to any FeatherStack backend.
 
 ### Server and panel data
 
@@ -68,7 +68,7 @@ When you connect to a 1Panel instance, the App may display or transmit data betw
 - Terminal input and terminal output when you use terminal features
 - Operation results and error messages returned by your panel
 
-This data is exchanged directly between your device and the 1Panel server that you configure. Mono Dash does not provide or control that server, and we do not collect this data.
+This data is exchanged directly between your device and the 1Panel server that you configure. FeatherStack does not provide or control that server, and we do not collect this data.
 
 ### Files, photos, and documents
 
@@ -82,7 +82,7 @@ On platforms that require permission, the App may request local network access s
 
 ### Purchases
 
-This build does not contain in-app purchases, subscriptions, or entitlement checks. Mono Dash does not contact Apple, Google Play, or RevenueCat for purchase processing.
+This build does not contain in-app purchases, subscriptions, or entitlement checks. FeatherStack does not contact Apple, Google Play, or RevenueCat for purchase processing.
 
 ### Device and app information
 
@@ -94,7 +94,7 @@ The App may create local debug or diagnostic logs while running. These logs stay
 
 ## How the App Processes Information
 
-Mono Dash processes information locally on your device to:
+FeatherStack processes information locally on your device to:
 
 - Connect to and manage the 1Panel servers you configure
 - Store your local app settings and server list
@@ -102,11 +102,11 @@ Mono Dash processes information locally on your device to:
 - Upload, download, view, edit, or share files when you request those actions
 - Display server status, logs, terminal sessions, websites, databases, containers, and other 1Panel resources
 
-We do not operate a Mono Dash backend that receives your server list, API keys, panel data, operation history, terminal input, logs, files, analytics events, or usage behavior.
+We do not operate a FeatherStack backend that receives your server list, API keys, panel data, operation history, terminal input, logs, files, analytics events, or usage behavior.
 
 ## How Information Is Shared
 
-Mono Dash does not sell your personal information and does not share your 1Panel data with a Mono Dash backend.
+FeatherStack does not sell your personal information and does not share your 1Panel data with a FeatherStack backend.
 
 Information may leave your device only in the following situations:
 
@@ -117,15 +117,15 @@ Because we do not operate a backend for App usage data, we generally do not have
 
 ## Local Storage and Security
 
-Mono Dash stores panel connection data and app preferences locally on your device. API keys are stored using secure system storage where available. We do not copy this local data to a Mono Dash backend.
+FeatherStack stores panel connection data and app preferences locally on your device. API keys are stored using secure system storage where available. We do not copy this local data to a FeatherStack backend.
 
 You are responsible for protecting access to your device, your 1Panel servers, and your API keys. You should use HTTPS whenever possible and only enable insecure/self-signed certificate connections for servers you trust.
 
-No method of storage or transmission is completely secure. Because Mono Dash connects directly to servers you configure, the security of your data also depends on your server configuration, network environment, certificate setup, and 1Panel access controls.
+No method of storage or transmission is completely secure. Because FeatherStack connects directly to servers you configure, the security of your data also depends on your server configuration, network environment, certificate setup, and 1Panel access controls.
 
 ## Data Retention
 
-Mono Dash keeps locally stored information on your device until you delete it, remove a server from the App, clear local data, uninstall the App, or your operating system removes the data.
+FeatherStack keeps locally stored information on your device until you delete it, remove a server from the App, clear local data, uninstall the App, or your operating system removes the data.
 
 Downloaded files remain on your device until you delete them. Files and logs stored on your 1Panel server are controlled by that server and by your own server retention settings.
 
@@ -135,11 +135,11 @@ You can delete locally stored panel connection information by removing the serve
 
 You can delete downloaded files from your device using the App's download management features or your operating system's file management tools.
 
-To delete data stored on a 1Panel server, use 1Panel, Mono Dash features that operate on that server, or your server administration tools. Mono Dash does not control server-side retention for 1Panel instances that you operate or connect to.
+To delete data stored on a 1Panel server, use 1Panel, FeatherStack features that operate on that server, or your server administration tools. FeatherStack does not control server-side retention for 1Panel instances that you operate or connect to.
 
 ## Third-Party Services
 
-Mono Dash may interact with third-party services or components, including:
+FeatherStack may interact with third-party services or components, including:
 
 - 1Panel servers configured by you
 - Operating system services such as secure storage, file pickers, sharing, web views, and local network permission prompts
@@ -148,18 +148,18 @@ These services may process data under their own privacy policies.
 
 ## Children's Privacy
 
-Mono Dash is intended for server administration and is not directed to children. We do not knowingly collect personal information from children.
+FeatherStack is intended for server administration and is not directed to children. We do not knowingly collect personal information from children.
 
 ## International Use
 
-You may use Mono Dash to connect to servers in different countries or regions. Information transmitted to your configured 1Panel server will be processed wherever that server is hosted.
+You may use FeatherStack to connect to servers in different countries or regions. Information transmitted to your configured 1Panel server will be processed wherever that server is hosted.
 
 ## Changes to This Policy
 
-We may update this Privacy Policy from time to time. Changes will be posted in this repository or another public location used by Mono Dash. The "Last updated" date will be updated when material changes are made.
+We may update this Privacy Policy from time to time. Changes will be posted in this repository or another public location used by FeatherStack. The "Last updated" date will be updated when material changes are made.
 
 ## Contact
 
-For privacy questions, open an issue in the Mono Dash GitHub repository:
+For privacy questions, open an issue in the FeatherStack GitHub repository:
 
 https://github.com/willow-god/Mono-Dash/issues

@@ -1,6 +1,6 @@
 # 1Panel Pro 多机与发布说明
 
-本分支在 Mono Dash 上游基础上移除了内购与服务器数量限制，并增加了对
+本分支在 FeatherStack 上游基础上移除了内购与服务器数量限制，并增加了对
 1Panel 专业版（XPack / Pro）多机管理的支持。本文说明实现方式、接口边界和
 GitHub Actions 发布流程。
 

@@ -6,6 +6,7 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../domain/entities/panel_node.dart';
 import '../../../../domain/entities/server.dart';
+import '../../settings/providers/app_settings_provider.dart';
 import '../providers/node_providers.dart';
 import '../providers/node_selection_provider.dart';
 import 'node_server_card.dart';
@@ -23,10 +24,12 @@ class ServerGroupCard extends ConsumerWidget {
     this.onLongPressNode,
     this.onLongPressHeader,
     this.isSelected = false,
+    this.style = ServerCardStyle.simple,
   });
 
   final Server server;
   final ValueChanged<String> onOpenNode;
+  final ServerCardStyle style;
 
   /// 长按某个节点卡（传入节点卡自身的 context，用于锚定菜单）。
   final void Function(BuildContext context, PanelNode node)? onLongPressNode;
@@ -184,6 +187,7 @@ class ServerGroupCard extends ConsumerWidget {
               server: server,
               node: nodes[i],
               isSelected: (activeNode ?? PanelNode.localName) == nodes[i].name,
+              style: style,
               onTap: () => onOpenNode(nodes[i].name),
               onLongPress: onLongPressNode == null
                   ? null

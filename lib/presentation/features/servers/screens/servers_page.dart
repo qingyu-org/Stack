@@ -533,6 +533,7 @@ class _ProServerCardView extends ConsumerWidget {
     // 与锚定菜单，原卡尺寸和边距保持不变。
     return ServerGroupCard(
       server: server,
+      style: style,
       onOpenNode: interactive ? onOpenNode : (_) {},
       onLongPressNode: onLongPressNode,
       onLongPressHeader: onLongPressHeader,

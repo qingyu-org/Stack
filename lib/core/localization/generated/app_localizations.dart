@@ -101,7 +101,7 @@ abstract class AppLocalizations {
   /// Application title shown by the Flutter app.
   ///
   /// In en, this message translates to:
-  /// **'Mono Dash'**
+  /// **'FeatherStack'**
   String get app_title;
 
   /// Generic OK action.
@@ -4079,7 +4079,7 @@ abstract class AppLocalizations {
   /// Title for the unlimited purchase entry.
   ///
   /// In en, this message translates to:
-  /// **'Mono Dash Unlimited'**
+  /// **'FeatherStack Unlimited'**
   String get settings_premium_unlimitedTitle;
 
   /// Subtitle shown when unlimited panels are unlocked.
@@ -4129,6 +4129,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Card Style'**
   String get settings_appearance_cardStyleTitle;
+
+  /// Settings row title for keeping the bottom tab bar visible.
+  ///
+  /// In en, this message translates to:
+  /// **'Pin Tab Bar'**
+  String get settings_appearance_pinTabBarTitle;
+
+  /// Subtitle shown when the bottom tab bar is pinned.
+  ///
+  /// In en, this message translates to:
+  /// **'Keep the bottom tab bar visible while scrolling'**
+  String get settings_appearance_pinTabBarSubtitleOn;
+
+  /// Subtitle shown when the bottom tab bar auto-hides.
+  ///
+  /// In en, this message translates to:
+  /// **'Hide the bottom tab bar while scrolling'**
+  String get settings_appearance_pinTabBarSubtitleOff;
 
   /// Settings row and page title for language selection.
   ///
@@ -6755,7 +6773,7 @@ abstract class AppLocalizations {
   /// Description for enabling app lock.
   ///
   /// In en, this message translates to:
-  /// **'Require a password or biometric verification before opening Mono Dash.'**
+  /// **'Require a password or biometric verification before opening FeatherStack.'**
   String get settings_appLock_description;
 
   /// Password field label for app lock.
@@ -6881,7 +6899,7 @@ abstract class AppLocalizations {
   /// Dialog content for disabling app lock.
   ///
   /// In en, this message translates to:
-  /// **'Mono Dash will open without password or biometric verification.'**
+  /// **'FeatherStack will open without password or biometric verification.'**
   String get settings_appLock_disableContent;
 
   /// Destructive action label for disabling app lock.
@@ -6977,13 +6995,13 @@ abstract class AppLocalizations {
   /// Reason shown in the system biometric prompt.
   ///
   /// In en, this message translates to:
-  /// **'Unlock Mono Dash'**
+  /// **'Unlock FeatherStack'**
   String get settings_appLock_authReason;
 
   /// Title on the app lock screen.
   ///
   /// In en, this message translates to:
-  /// **'Mono Dash is locked'**
+  /// **'FeatherStack is locked'**
   String get settings_appLock_unlockTitle;
 
   /// Subtitle on the app lock screen.
@@ -7055,7 +7073,7 @@ abstract class AppLocalizations {
   /// Subtitle for choosing whether to enable biometric unlock after setting PIN.
   ///
   /// In en, this message translates to:
-  /// **'You can unlock Mono Dash with {method} after entering your PIN once.'**
+  /// **'You can unlock FeatherStack with {method} after entering your PIN once.'**
   String settings_appLock_enableBiometricSheetSubtitle(String method);
 
   /// Settings row and page title for cache management.
@@ -7136,37 +7154,37 @@ abstract class AppLocalizations {
   /// **'Panel connection information and API Keys stay on this device and are never sent to third-party services. This build has no purchases, account login, or activation.'**
   String get settings_help_privacyContent;
 
-  /// Settings row title for the Mono Dash source repository.
+  /// Settings row title for the FeatherStack source repository.
   ///
   /// In en, this message translates to:
   /// **'Source Code'**
   String get settings_help_openSourceTitle;
 
-  /// Settings row subtitle for the Mono Dash source repository.
+  /// Settings row subtitle for the FeatherStack source repository.
   ///
   /// In en, this message translates to:
-  /// **'View the Mono Dash GitHub repository'**
+  /// **'View the FeatherStack GitHub repository'**
   String get settings_help_openSourceSubtitle;
 
   /// Open source project sheet card title.
   ///
   /// In en, this message translates to:
-  /// **'Mono Dash is open source'**
+  /// **'FeatherStack is open source'**
   String get settings_openSource_projectTitle;
 
   /// Open source project sheet content.
   ///
   /// In en, this message translates to:
-  /// **'Mono Dash source code is hosted on GitHub. You can inspect the code, submit issues, or help improve this third-party mobile management client for 1Panel.'**
+  /// **'FeatherStack source code is hosted on GitHub. You can inspect the code, submit issues, or help improve this third-party mobile management client for 1Panel.'**
   String get settings_openSource_projectContent;
 
-  /// Button label for opening the Mono Dash source repository.
+  /// Button label for opening the FeatherStack source repository.
   ///
   /// In en, this message translates to:
   /// **'Open GitHub Repository'**
   String get settings_openSource_openRepository;
 
-  /// Button label for copying the Mono Dash source repository URL.
+  /// Button label for copying the FeatherStack source repository URL.
   ///
   /// In en, this message translates to:
   /// **'Copy Repository Link'**
@@ -7241,14 +7259,50 @@ abstract class AppLocalizations {
   /// Help entry title for about dialog.
   ///
   /// In en, this message translates to:
-  /// **'About Mono Dash'**
+  /// **'About FeatherStack'**
   String get settings_help_aboutTitle;
 
   /// About dialog content.
   ///
   /// In en, this message translates to:
-  /// **'A third-party mobile management tool for 1Panel.'**
+  /// **'FeatherStack is a third-party mobile management client for 1Panel, maintained by qingyu.'**
   String get settings_help_aboutContent;
+
+  /// Acknowledgements section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Acknowledgements'**
+  String get settings_ack_title;
+
+  /// Acknowledgement row title for the upstream project.
+  ///
+  /// In en, this message translates to:
+  /// **'Upstream: Mono Dash'**
+  String get settings_ack_upstreamTitle;
+
+  /// Acknowledgement row subtitle for the upstream project.
+  ///
+  /// In en, this message translates to:
+  /// **'FeatherStack is built on Mono Dash. Thanks to its author and contributors.'**
+  String get settings_ack_upstreamSubtitle;
+
+  /// Acknowledgement sheet content for the upstream project.
+  ///
+  /// In en, this message translates to:
+  /// **'FeatherStack (Qingyu Ops Stack) is built on Mono Dash, an open-source third-party 1Panel client. This project keeps the upstream commit history and remains licensed under GPL-3.0. FeatherStack is not an official 1Panel product.'**
+  String get settings_ack_upstreamContent;
+
+  /// Button label for opening the upstream repository.
+  ///
+  /// In en, this message translates to:
+  /// **'Open upstream repository'**
+  String get settings_ack_openUpstream;
+
+  /// Acknowledgement row for the open-source license.
+  ///
+  /// In en, this message translates to:
+  /// **'GPL-3.0 license'**
+  String get settings_ack_license;
 
   /// Dialog title confirming insecure connections.
   ///
