@@ -12,7 +12,6 @@ import 'package:url_launcher/url_launcher.dart';
 import '../../../../core/localization/generated/app_localizations.dart';
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/localization/locale_controller.dart';
-import '../../../../core/network/app_user_agent.dart';
 import '../../../../core/storage/storage_service.dart';
 import '../../../../core/storage/webdav_sync_client.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -1198,7 +1197,7 @@ class _AppInfoFooterState extends State<_AppInfoFooter> {
           child: Column(
             children: [
               Text(
-                AppUserAgent.displayName,
+                context.l10n.app_title,
                 textAlign: TextAlign.center,
                 style: TextStyle(
                   fontSize: 14,

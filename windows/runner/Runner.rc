@@ -89,7 +89,7 @@ BEGIN
     BEGIN
         BLOCK "040904e4"
         BEGIN
-            VALUE "CompanyName", "com.mou" "\0"
+            VALUE "CompanyName", "qingyu" "\0"
             VALUE "FileDescription", "FeatherStack" "\0"
             VALUE "FileVersion", VERSION_AS_STRING "\0"
             VALUE "InternalName", "FeatherStack" "\0"

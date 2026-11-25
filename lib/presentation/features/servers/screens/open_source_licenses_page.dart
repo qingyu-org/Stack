@@ -6,7 +6,6 @@ import 'package:package_info_plus/package_info_plus.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 import '../../../../core/localization/l10n_x.dart';
-import '../../../../core/network/app_user_agent.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/app_action_components.dart';
 import '../../../common/components/frosted_scaffold.dart';
@@ -72,7 +71,7 @@ class _OpenSourceLicensesPageState extends State<OpenSourceLicensesPage> {
                                 fit: BoxFit.cover,
                               ),
                             ),
-                            title: AppUserAgent.displayName,
+                            title: l10n.app_title,
                             subtitle: Text(
                               l10n.settings_licenses_versionSubtitle(
                                 data.versionText,
