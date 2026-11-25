@@ -1,5 +1,6 @@
 import '../../../core/network/api_response_parser.dart';
 import '../../../core/network/dio_client.dart';
+import '../../../core/network/network_exceptions.dart';
 import '../../../domain/entities/panel_node.dart';
 
 /// 1Panel 专业版节点与授权相关 API。
@@ -23,8 +24,10 @@ class NodeApi {
       );
       final nodes = _parseNodeItems(resp.data ?? const {});
       if (nodes.isNotEmpty) return nodes;
-    } catch (_) {
-      // 旧版 Pro 或接口权限不足时回退到旧节点接口。
+    } on AppNetworkException catch (error) {
+      // 只有「接口不存在/无权访问」才回退；网络、401、5xx 必须暴露给
+      // 上层，否则会静默显示过期拓扑。
+      if (!_isUnsupportedEndpoint(error)) rethrow;
     }
 
     final resp = await _client.post<Map<String, dynamic>>(
@@ -44,8 +47,8 @@ class NodeApi {
       );
       final nodes = ApiResponseParser.list(resp, _nodeFromJson);
       if (nodes.isNotEmpty) return nodes;
-    } catch (_) {
-      // 旧版接口回退。
+    } on AppNetworkException catch (error) {
+      if (!_isUnsupportedEndpoint(error)) rethrow;
     }
 
     final resp = await _client.get<Map<String, dynamic>>(
@@ -91,6 +94,11 @@ class NodeApi {
     final map = ApiResponseParser.map(resp);
     if (map['name'] == null && map['hostname'] == null) return null;
     return PanelNode.fromJson(Map<String, Object?>.from(map));
+  }
+
+  static bool _isUnsupportedEndpoint(AppNetworkException error) {
+    final status = error.statusCode;
+    return status == 403 || status == 404 || status == 405;
   }
 
   static List<PanelNode> _parseNodeItems(Map<String, dynamic> resp) {

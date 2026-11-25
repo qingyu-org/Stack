@@ -1,3 +1,6 @@
+import 'dart:async';
+import 'dart:collection';
+
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/network/dio_client_provider.dart';
@@ -72,21 +75,53 @@ bool _topologyChanged(List<PanelNode> cached, List<PanelNode> live) {
   return false;
 }
 
+/// 限制同时打向主面板的 dashboard 请求数。
+///
+/// 首页组卡会为每个节点订阅一份快照；节点很多时如果全部并发，容易让
+/// 首屏等待变长并给面板造成不必要的压力。这里只做简单并发闸门，超出
+/// 的请求按到达顺序排队。
+final _nodeDashboardLimiter = _AsyncLimiter(3);
+
 /// 单个节点的完整 dashboard 快照（系统、CPU/内存/磁盘、网站/应用/数据库/
 /// 计划任务数量），并记录请求耗时作为节点延迟。
 final nodeDashboardSnapshotProvider = FutureProvider.autoDispose
     .family<ServerDashboardSnapshot, (int, String)>((ref, key) async {
-      final (serverId, nodeName) = key;
-      final client = await ref.watch(
-        nodeDioClientProvider(NodeClientKey(serverId, nodeName)).future,
-      );
-      final stopWatch = Stopwatch()..start();
-      final dashboard = await DashboardApi(client).getDashboardSnapshot();
-      return ServerDashboardSnapshot(
-        dashboard: dashboard,
-        fetchMs: stopWatch.elapsedMilliseconds,
-      );
+      return _nodeDashboardLimiter.run(() async {
+        final (serverId, nodeName) = key;
+        final client = await ref.watch(
+          nodeDioClientProvider(NodeClientKey(serverId, nodeName)).future,
+        );
+        final stopWatch = Stopwatch()..start();
+        final dashboard = await DashboardApi(client).getDashboardSnapshot();
+        return ServerDashboardSnapshot(
+          dashboard: dashboard,
+          fetchMs: stopWatch.elapsedMilliseconds,
+        );
+      });
     });
+
+class _AsyncLimiter {
+  _AsyncLimiter(this.maxConcurrent);
+
+  final int maxConcurrent;
+  final Queue<Completer<void>> _waiters = Queue<Completer<void>>();
+  int _active = 0;
+
+  Future<T> run<T>(Future<T> Function() task) async {
+    if (_active >= maxConcurrent) {
+      final waiter = Completer<void>();
+      _waiters.add(waiter);
+      await waiter.future;
+    }
+    _active++;
+    try {
+      return await task();
+    } finally {
+      _active--;
+      if (_waiters.isNotEmpty) _waiters.removeFirst().complete();
+    }
+  }
+}
 
 /// 当前活动节点是否拥有 Pro 能力。
 ///
@@ -111,7 +146,12 @@ final activeNodeIsProProvider = Provider.autoDispose.family<bool, int>((
   for (final node in nodes) {
     if (node.name == activeNode) return node.isPro;
   }
-  return server?.isProActive ?? false;
+  // 活动节点尚未出现在列表里（加载中/拓扑过期）时不能退回面板级 isPro，
+  // 否则社区版子节点会短暂露出 WAF、监控等入口。只有确认是主节点时才
+  // 用面板级判断兜底。
+  return activeNode == PanelNode.localName
+      ? (server?.isProActive ?? false)
+      : false;
 });
 
 extension _FirstOrNull<T> on Iterable<T> {
