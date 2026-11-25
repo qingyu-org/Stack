@@ -52,6 +52,7 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   int _refreshIntervalSeconds =
       AppSettingsController.defaultServersRefreshIntervalSeconds;
   bool _isCurrentRoute = true;
+  DateTime? _lastNodeRefreshAt;
 
   @override
   void initState() {
@@ -127,9 +128,16 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
     if (!mounted || _selectedIndex != 0) return;
     final servers = ref.read(serversNotifierProvider).valueOrNull;
     if (servers == null || servers.isEmpty) return;
+    final now = DateTime.now();
+    final shouldRefreshNodes =
+        _lastNodeRefreshAt == null ||
+        now.difference(_lastNodeRefreshAt!) >= const Duration(seconds: 30);
+    if (shouldRefreshNodes) {
+      _lastNodeRefreshAt = now;
+    }
     for (final server in servers) {
       ref.invalidate(serverDashboardSnapshotProvider(server.id));
-      if (server.isProActive) {
+      if (server.isProActive && shouldRefreshNodes) {
         ref.invalidate(serverNodesProvider(server.id));
       }
     }

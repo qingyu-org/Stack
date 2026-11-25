@@ -109,41 +109,120 @@ class ProApi {
       _safe('logs', [
         ProRequest.post(
           '/api/v2/xpack/waf/log/search',
-          body: {'page': 1, 'pageSize': 30},
+          body: {
+            'page': 1,
+            'pageSize': 30,
+            'ip': '',
+            'ipLocation': '',
+            'host': '',
+            'url': '',
+            'websiteKey': '',
+            'execRules': <String>[],
+            'action': 'all',
+          },
         ),
       ]),
       _safe('cdn', [ProRequest.post('/api/v2/xpack/waf/cdn', body: {})]),
     ]);
   }
 
-  Future<ProSnapshot> loadWebsiteMonitor() {
+  Future<ProSnapshot> loadWebsiteMonitor() async {
+    // 监控接口要求 websiteID，0 通常查不到数据。先取站点列表的第一个站点，
+    // 让移动端至少能看到真实趋势；后续可在此页增加站点切换器。
+    final websiteId = await _firstWebsiteId();
+    final dayRange = _todayDayRange();
+    final now = DateTime.now();
+    final startOfDay = DateTime(now.year, now.month, now.day);
+    final baseBody = <String, dynamic>{
+      if (websiteId > 0) 'websiteID': websiteId,
+      'dayRange': dayRange,
+    };
+
     return _collect([
       _safe('status', [ProRequest.get('/api/v2/xpack/monitor/status')]),
-      _safe('stat', [ProRequest.post('/api/v2/xpack/monitor/stat', body: {})]),
+      _safe('stat', [
+        ProRequest.post('/api/v2/xpack/monitor/stat', body: baseBody),
+      ]),
       _safe('visitors', [
-        ProRequest.post('/api/v2/xpack/monitor/visitors', body: {}),
+        ProRequest.post('/api/v2/xpack/monitor/visitors', body: baseBody),
       ]),
       _safe('locations', [
-        ProRequest.post('/api/v2/xpack/monitor/visitors/loc', body: {}),
+        ProRequest.post('/api/v2/xpack/monitor/visitors/loc', body: baseBody),
       ]),
-      _safe('qps', [ProRequest.post('/api/v2/xpack/monitor/qps', body: {})]),
+      _safe('qps', [
+        ProRequest.post('/api/v2/xpack/monitor/qps', body: baseBody),
+      ]),
       _safe('trend', [
-        ProRequest.post('/api/v2/xpack/monitor/trend', body: {}),
+        ProRequest.post('/api/v2/xpack/monitor/trend', body: baseBody),
       ]),
-      _safe('rank', [ProRequest.post('/api/v2/xpack/monitor/rank', body: {})]),
+      _safe('rank', [
+        ProRequest.post(
+          '/api/v2/xpack/monitor/rank',
+          body: {...baseBody, 'type': 'uri', 'limit': 10},
+        ),
+      ]),
       _safe('websites', [
-        ProRequest.post('/api/v2/xpack/monitor/websites', body: {}),
+        ProRequest.post(
+          '/api/v2/xpack/monitor/websites',
+          body: {
+            'page': 1,
+            'pageSize': 20,
+            'dayRange': dayRange,
+            'orderBy': 'primaryDomain',
+            'order': 'ascending',
+          },
+        ),
       ]),
       _safe('logs', [
         ProRequest.post(
           '/api/v2/xpack/monitor/logs/search',
-          body: {'page': 1, 'pageSize': 30},
+          body: {
+            'page': 1,
+            'pageSize': 30,
+            if (websiteId > 0) 'websiteID': websiteId,
+            'ip': '',
+            'ipLocation': '',
+            'url': '',
+            'method': '',
+            'spider': '',
+            'orderBy': 'time',
+            'order': 'descending',
+            'startTime': startOfDay.toIso8601String(),
+            'endTime': now.toIso8601String(),
+          },
         ),
       ]),
       _safe('logStat', [
-        ProRequest.post('/api/v2/xpack/monitor/logs/stat', body: {}),
+        ProRequest.post('/api/v2/xpack/monitor/logs/stat', body: baseBody),
       ]),
     ]);
+  }
+
+  Future<int> _firstWebsiteId() async {
+    try {
+      final data = await _execute(ProRequest.get('/api/v2/websites/list'));
+      final dynamic rawItems = data is Map
+          ? (data['items'] ?? data['list'] ?? data['data'])
+          : data;
+      if (rawItems is! List) return 0;
+      for (final item in rawItems) {
+        if (item is! Map) continue;
+        final id = item['id'];
+        if (id is int && id > 0) return id;
+        final parsed = int.tryParse('$id');
+        if (parsed != null && parsed > 0) return parsed;
+      }
+    } catch (_) {
+      // 站点列表不可用时仍然尝试无 websiteID 的监控接口。
+    }
+    return 0;
+  }
+
+  List<String> _todayDayRange() {
+    final now = DateTime.now();
+    String two(int value) => value.toString().padLeft(2, '0');
+    final day = '${now.year}${two(now.month)}${two(now.day)}';
+    return [day, day];
   }
 
   Future<ProSnapshot> loadOpsReport() {
