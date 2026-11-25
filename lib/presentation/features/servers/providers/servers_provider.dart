@@ -188,6 +188,9 @@ class ServersNotifier extends _$ServersNotifier {
   }
 
   void _invalidateNodeClients(int serverId, Iterable<PanelNode> nodes) {
+    // 已知节点直接失效；同时递增 revision，覆盖缓存里已不在当前拓扑中的
+    // 旧节点，确保编辑面板后没有旧 API Key 的客户端残留。
+    ref.read(nodeClientRevisionProvider(serverId).notifier).bump();
     final names = <String>{
       PanelNode.localName,
       for (final node in nodes) node.name,

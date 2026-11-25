@@ -6,7 +6,7 @@ part of 'dio_client_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$nodeDioClientHash() => r'644a891b037c3095d716083c1c7f240f33a7fcfe';
+String _$nodeDioClientHash() => r'ced7bcdcb3d91879bdf3d978063396b257881b14';
 
 /// Copied from Dart SDK
 class _SystemHash {
@@ -346,6 +346,179 @@ class _DioClientProviderElement extends FutureProviderElement<DioClient>
 
   @override
   int get serverId => (origin as DioClientProvider).serverId;
+}
+
+String _$nodeClientRevisionHash() =>
+    r'bec74019ab22694d785b0a93444e010e505e9f2d';
+
+abstract class _$NodeClientRevision extends BuildlessNotifier<int> {
+  late final int serverId;
+
+  int build(
+    int serverId,
+  );
+}
+
+/// 服务器配置（地址、API Key、证书）变更时递增。
+///
+/// [nodeDioClient] 监听它，因此编辑面板会重建该服务器下**所有**已缓存的
+/// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
+///
+/// Copied from [NodeClientRevision].
+@ProviderFor(NodeClientRevision)
+const nodeClientRevisionProvider = NodeClientRevisionFamily();
+
+/// 服务器配置（地址、API Key、证书）变更时递增。
+///
+/// [nodeDioClient] 监听它，因此编辑面板会重建该服务器下**所有**已缓存的
+/// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
+///
+/// Copied from [NodeClientRevision].
+class NodeClientRevisionFamily extends Family<int> {
+  /// 服务器配置（地址、API Key、证书）变更时递增。
+  ///
+  /// [nodeDioClient] 监听它，因此编辑面板会重建该服务器下**所有**已缓存的
+  /// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
+  ///
+  /// Copied from [NodeClientRevision].
+  const NodeClientRevisionFamily();
+
+  /// 服务器配置（地址、API Key、证书）变更时递增。
+  ///
+  /// [nodeDioClient] 监听它，因此编辑面板会重建该服务器下**所有**已缓存的
+  /// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
+  ///
+  /// Copied from [NodeClientRevision].
+  NodeClientRevisionProvider call(
+    int serverId,
+  ) {
+    return NodeClientRevisionProvider(
+      serverId,
+    );
+  }
+
+  @override
+  NodeClientRevisionProvider getProviderOverride(
+    covariant NodeClientRevisionProvider provider,
+  ) {
+    return call(
+      provider.serverId,
+    );
+  }
+
+  static const Iterable<ProviderOrFamily>? _dependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get dependencies => _dependencies;
+
+  static const Iterable<ProviderOrFamily>? _allTransitiveDependencies = null;
+
+  @override
+  Iterable<ProviderOrFamily>? get allTransitiveDependencies =>
+      _allTransitiveDependencies;
+
+  @override
+  String? get name => r'nodeClientRevisionProvider';
+}
+
+/// 服务器配置（地址、API Key、证书）变更时递增。
+///
+/// [nodeDioClient] 监听它，因此编辑面板会重建该服务器下**所有**已缓存的
+/// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
+///
+/// Copied from [NodeClientRevision].
+class NodeClientRevisionProvider
+    extends NotifierProviderImpl<NodeClientRevision, int> {
+  /// 服务器配置（地址、API Key、证书）变更时递增。
+  ///
+  /// [nodeDioClient] 监听它，因此编辑面板会重建该服务器下**所有**已缓存的
+  /// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
+  ///
+  /// Copied from [NodeClientRevision].
+  NodeClientRevisionProvider(
+    int serverId,
+  ) : this._internal(
+          () => NodeClientRevision()..serverId = serverId,
+          from: nodeClientRevisionProvider,
+          name: r'nodeClientRevisionProvider',
+          debugGetCreateSourceHash:
+              const bool.fromEnvironment('dart.vm.product')
+                  ? null
+                  : _$nodeClientRevisionHash,
+          dependencies: NodeClientRevisionFamily._dependencies,
+          allTransitiveDependencies:
+              NodeClientRevisionFamily._allTransitiveDependencies,
+          serverId: serverId,
+        );
+
+  NodeClientRevisionProvider._internal(
+    super._createNotifier, {
+    required super.name,
+    required super.dependencies,
+    required super.allTransitiveDependencies,
+    required super.debugGetCreateSourceHash,
+    required super.from,
+    required this.serverId,
+  }) : super.internal();
+
+  final int serverId;
+
+  @override
+  int runNotifierBuild(
+    covariant NodeClientRevision notifier,
+  ) {
+    return notifier.build(
+      serverId,
+    );
+  }
+
+  @override
+  Override overrideWith(NodeClientRevision Function() create) {
+    return ProviderOverride(
+      origin: this,
+      override: NodeClientRevisionProvider._internal(
+        () => create()..serverId = serverId,
+        from: from,
+        name: null,
+        dependencies: null,
+        allTransitiveDependencies: null,
+        debugGetCreateSourceHash: null,
+        serverId: serverId,
+      ),
+    );
+  }
+
+  @override
+  NotifierProviderElement<NodeClientRevision, int> createElement() {
+    return _NodeClientRevisionProviderElement(this);
+  }
+
+  @override
+  bool operator ==(Object other) {
+    return other is NodeClientRevisionProvider && other.serverId == serverId;
+  }
+
+  @override
+  int get hashCode {
+    var hash = _SystemHash.combine(0, runtimeType.hashCode);
+    hash = _SystemHash.combine(hash, serverId.hashCode);
+
+    return _SystemHash.finish(hash);
+  }
+}
+
+mixin NodeClientRevisionRef on NotifierProviderRef<int> {
+  /// The parameter `serverId` of this provider.
+  int get serverId;
+}
+
+class _NodeClientRevisionProviderElement
+    extends NotifierProviderElement<NodeClientRevision, int>
+    with NodeClientRevisionRef {
+  _NodeClientRevisionProviderElement(super.provider);
+
+  @override
+  int get serverId => (origin as NodeClientRevisionProvider).serverId;
 }
 // ignore_for_file: type=lint
 // ignore_for_file: subtype_of_sealed_class, invalid_use_of_internal_member, invalid_use_of_visible_for_testing_member

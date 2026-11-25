@@ -29,12 +29,25 @@ class NodeClientKey {
   String toString() => 'NodeClientKey($serverId, $nodeName)';
 }
 
+/// 服务器配置（地址、API Key、证书）变更时递增。
+///
+/// [nodeDioClient] 监听它，因此编辑面板会重建该服务器下**所有**已缓存的
+/// 节点客户端，包括已经不在当前节点列表里的旧节点，避免旧 API Key 残留。
+@Riverpod(keepAlive: true)
+class NodeClientRevision extends _$NodeClientRevision {
+  @override
+  int build(int serverId) => 0;
+
+  void bump() => state = state + 1;
+}
+
 /// 单个节点的 DioClient（按 `(serverId, node)` 缓存）。
 ///
 /// 每个节点拥有独立的连接池；切换节点只切换使用哪个客户端，不会销毁
 /// 其它节点正在使用的客户端，避免中断进行中的上传/长请求。
 @Riverpod(keepAlive: true)
 Future<DioClient> nodeDioClient(Ref ref, NodeClientKey key) async {
+  ref.watch(nodeClientRevisionProvider(key.serverId));
   final storage = ref.watch(storageServiceProvider);
   final server = await storage.getServer(key.serverId);
   if (server == null) {

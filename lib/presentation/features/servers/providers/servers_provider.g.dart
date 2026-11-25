@@ -6,7 +6,7 @@ part of 'servers_provider.dart';
 // RiverpodGenerator
 // **************************************************************************
 
-String _$serversNotifierHash() => r'20f7c482e81a4a4aa43e99eb00ea4c09d782a1d1';
+String _$serversNotifierHash() => r'41f85757cdea9984ae2361e8686c42cbcdb53c71';
 
 /// 面板列表状态。
 ///
