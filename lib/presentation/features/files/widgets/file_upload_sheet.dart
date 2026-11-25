@@ -62,7 +62,9 @@ class _FileUploadSheetState extends ConsumerState<FileUploadSheet>
     if (widget.initialFiles != null && widget.initialFiles!.isNotEmpty) {
       final tasks = widget.initialFiles!
           .where((f) => f.path != null)
-          .map((f) => UploadTask(filePath: f.path!, fileSize: f.lengthSync() ?? 0))
+          .map(
+            (f) => UploadTask(filePath: f.path!, fileSize: f.lengthSync() ?? 0),
+          )
           .toList();
       _tasks.addAll(tasks);
     }
@@ -86,7 +88,9 @@ class _FileUploadSheetState extends ConsumerState<FileUploadSheet>
 
     final newTasks = result
         .where((f) => f.path != null)
-        .map((f) => UploadTask(filePath: f.path!, fileSize: f.lengthSync() ?? 0))
+        .map(
+          (f) => UploadTask(filePath: f.path!, fileSize: f.lengthSync() ?? 0),
+        )
         .toList();
 
     final startIndex = _tasks.length;

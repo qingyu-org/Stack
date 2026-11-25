@@ -489,7 +489,8 @@ class _ProServerCardView extends ConsumerWidget {
   Widget build(BuildContext context, WidgetRef ref) {
     final shouldFetch = server.nodes.isEmpty || server.hasChildNodes;
     final nodes = shouldFetch
-        ? (ref.watch(serverNodesProvider(server.id)).valueOrNull ?? server.nodes)
+        ? (ref.watch(serverNodesProvider(server.id)).valueOrNull ??
+              server.nodes)
         : server.nodes;
     final hasChildren = nodes.any((node) => !node.isLocal);
 

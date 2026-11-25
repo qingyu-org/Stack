@@ -137,9 +137,7 @@ class FilesOverlayMenu extends ConsumerWidget {
                         .valueOrNull
                         ?.currentPath ??
                     '/';
-                final result = await FilePicker.pickFiles(
-                  type: FileType.image,
-                );
+                final result = await FilePicker.pickFiles(type: FileType.image);
                 if (result.isNotEmpty && context.mounted) {
                   await showFileUploadSheet(
                     context,
@@ -159,9 +157,7 @@ class FilesOverlayMenu extends ConsumerWidget {
                         .valueOrNull
                         ?.currentPath ??
                     '/';
-                final result = await FilePicker.pickFiles(
-                  type: FileType.any,
-                );
+                final result = await FilePicker.pickFiles(type: FileType.any);
                 if (result.isNotEmpty && context.mounted) {
                   await showFileUploadSheet(
                     context,
