@@ -6,6 +6,7 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../data/dto/app/app_installed_dto.dart';
 import '../../../../data/dto/app/app_installed_search_req.dart';
 import '../../../../data/repositories_impl/app_repository_impl.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../providers/app_store_provider.dart';
 import 'app_store_empty_state.dart';
@@ -125,11 +126,9 @@ class _UpdatesTabState extends ConsumerState<UpdatesTab> {
         parent: BouncingScrollPhysics(),
       ),
       slivers: [
-        CupertinoSliverRefreshControl(onRefresh: _load),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: FrostedScaffold.contentTopPadding(context) + 8,
-          ),
+        FrostedRefreshControl(
+          onRefresh: _load,
+          topSpacing: FrostedScaffold.contentTopPadding(context) + 8,
         ),
         if (_loading && _items.isEmpty)
           SliverPadding(

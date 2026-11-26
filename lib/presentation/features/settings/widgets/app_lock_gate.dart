@@ -9,6 +9,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../common/app_toast.dart';
 import '../providers/app_lock_provider.dart';
 import 'app_passcode_pad.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 class AppLockGate extends ConsumerStatefulWidget {
   const AppLockGate({super.key, required this.child});
@@ -192,7 +193,7 @@ class _AppLockScreenState extends ConsumerState<_AppLockScreen> {
       widget.onUnlocked();
       return;
     }
-    HapticFeedback.mediumImpact();
+    AppHaptics.mediumImpact();
     setState(() {
       _passwordAuthenticating = false;
       _errorText = l10n.settings_appLock_wrongPassword;

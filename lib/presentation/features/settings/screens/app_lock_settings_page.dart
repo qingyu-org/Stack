@@ -13,6 +13,7 @@ import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/sub_menu_page.dart';
 import '../providers/app_lock_provider.dart';
 import '../widgets/app_passcode_pad.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 enum _PinSheetStep { create, confirm, biometric }
 
@@ -366,7 +367,7 @@ class _SetPinSheetState extends ConsumerState<_SetPinSheet> {
       return;
     }
     if (_pin != _confirmPin) {
-      HapticFeedback.mediumImpact();
+      AppHaptics.mediumImpact();
       setState(() {
         _confirmPin = '';
         _errorText = l10n.settings_appLock_passwordMismatch;
@@ -398,7 +399,7 @@ class _SetPinSheetState extends ConsumerState<_SetPinSheet> {
       Navigator.of(context).pop();
       showAppSuccessToast(l10n.settings_appLock_enabledToast);
     } on AppLockPasswordException catch (error) {
-      HapticFeedback.mediumImpact();
+      AppHaptics.mediumImpact();
       setState(() => _errorText = _messageFor(context, error.error));
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -500,7 +501,7 @@ class _ChangePinSheetState extends ConsumerState<_ChangePinSheet> {
             .verifyPassword(_currentPin);
         if (!mounted) return;
         if (!ok) {
-          HapticFeedback.mediumImpact();
+          AppHaptics.mediumImpact();
           setState(() {
             _currentPin = '';
             _errorText = l10n.settings_appLock_wrongPassword;
@@ -536,7 +537,7 @@ class _ChangePinSheetState extends ConsumerState<_ChangePinSheet> {
       return;
     }
     if (_newPin != _confirmPin) {
-      HapticFeedback.mediumImpact();
+      AppHaptics.mediumImpact();
       setState(() {
         _confirmPin = '';
         _errorText = l10n.settings_appLock_passwordMismatch;
@@ -553,7 +554,7 @@ class _ChangePinSheetState extends ConsumerState<_ChangePinSheet> {
       Navigator.of(context).pop();
       showAppSuccessToast(l10n.settings_appLock_passwordUpdatedToast);
     } on AppLockPasswordException catch (error) {
-      HapticFeedback.mediumImpact();
+      AppHaptics.mediumImpact();
       setState(() => _errorText = _messageFor(context, error.error));
     } finally {
       if (mounted) setState(() => _isSaving = false);
@@ -636,7 +637,7 @@ class _DisableLockSheetState extends ConsumerState<_DisableLockSheet> {
         .verifyPassword(_pin);
     if (!mounted) return;
     if (!ok) {
-      HapticFeedback.mediumImpact();
+      AppHaptics.mediumImpact();
       setState(() {
         _pin = '';
         _isSaving = false;

@@ -8,6 +8,7 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import 'overlay_menu_mixin.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 /// 磨砂浮层菜单项数据
 class FrostedMenuItem {
@@ -367,7 +368,7 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
 
     return GestureDetector(
       onTap: () {
-        HapticFeedback.selectionClick();
+        AppHaptics.selectionClick();
         _toggleMenu();
       },
       behavior: HitTestBehavior.opaque,
@@ -426,7 +427,7 @@ class _FrostedMenuItemWidgetState extends State<_FrostedMenuItemWidget> {
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
         setState(() => _isPressed = false);
-        HapticFeedback.lightImpact();
+        AppHaptics.lightImpact();
         widget.onTap();
       },
       onTapCancel: () => setState(() => _isPressed = false),

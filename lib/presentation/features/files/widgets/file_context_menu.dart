@@ -25,6 +25,7 @@ import 'file_compress_sheet.dart';
 import 'file_decompress_sheet.dart';
 import 'file_move_copy_sheet.dart';
 import 'file_share_sheet.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 class FileContextMenu {
   FileContextMenu._();
@@ -34,7 +35,7 @@ class FileContextMenu {
     FileItemDto item, {
     FileViewMode viewMode = FileViewMode.list,
   }) {
-    HapticFeedback.mediumImpact();
+    AppHaptics.mediumImpact();
 
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
     final renderBox = context.findRenderObject() as RenderBox;
@@ -736,7 +737,7 @@ class _ContextMenuItemState extends State<_ContextMenuItem> {
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
         setState(() => _isPressed = false);
-        HapticFeedback.lightImpact();
+        AppHaptics.lightImpact();
         widget.onTap();
       },
       onTapCancel: () => setState(() => _isPressed = false),

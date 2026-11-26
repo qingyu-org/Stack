@@ -9,23 +9,35 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/server_host_normalizer.dart';
 import '../../../../data/repositories_impl/server_repository_impl.dart';
 import '../../../../domain/entities/panel_probe_result.dart';
+import '../../../../domain/entities/panel_type.dart';
 import '../../../../domain/entities/server.dart';
 import '../../../common/app_toast.dart';
 import '../../../common/components/action_sheet_launcher.dart';
 import '../../../common/components/action_sheet_scaffold.dart';
 import '../../../common/components/cupertino_grouped_form.dart';
 import '../providers/servers_provider.dart';
+import 'panel_type_picker_sheet.dart';
 
 class AddServerSheet extends ConsumerStatefulWidget {
-  const AddServerSheet({super.key, this.server});
+  const AddServerSheet({
+    super.key,
+    this.server,
+    this.initialPanelType = PanelType.onePanel,
+  });
 
   final Server? server;
 
-  static Future<void> show(BuildContext context) {
+  /// 新建时由类型选择器传入；编辑时以 [server] 上保存的类型为准。
+  final PanelType initialPanelType;
+
+  static Future<void> show(
+    BuildContext context, {
+    PanelType panelType = PanelType.onePanel,
+  }) {
     return showActionSheet(
       context: context,
       expand: false,
-      builder: (context) => const AddServerSheet(),
+      builder: (context) => AddServerSheet(initialPanelType: panelType),
     );
   }
 
@@ -58,6 +70,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
   bool _isLoading = false;
   bool _isApiKeyLoading = false;
   PanelEditionOverride _editionOverride = PanelEditionOverride.auto;
+  late PanelType _panelType;
 
   bool get _isEditing => widget.server != null;
 
@@ -66,6 +79,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
     super.initState();
     _apiKeyFocusNode.addListener(_handleApiKeyFocusChange);
     final server = widget.server;
+    _panelType = server?.panelType ?? widget.initialPanelType;
     if (server == null) return;
     _nameController.text = server.name ?? '';
     _hostController.text = server.host;
@@ -205,6 +219,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
           host: host,
           port: port,
           apiKey: apiKey,
+          panelType: _panelType,
           isHttps: isHttps,
           allowInsecureConnections: _allowInsecureConnections,
           probe: probe,
@@ -266,18 +281,29 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
                 ),
               ),
             ),
-            Text(
-              _isLoading
-                  ? l10n.servers_connecting
-                  : (_isEditing
-                        ? l10n.servers_editPanel
-                        : l10n.servers_addPanel),
-              style: TextStyle(
-                fontSize: 17,
-                fontWeight: FontWeight.w600,
-                color: AppColors.label(context),
-                letterSpacing: -0.4,
-              ),
+            Row(
+              mainAxisSize: MainAxisSize.min,
+              children: [
+                Flexible(
+                  child: Text(
+                    _isLoading
+                        ? l10n.servers_connecting
+                        : (_isEditing
+                              ? l10n.servers_editPanel
+                              : l10n.servers_addPanel),
+                    maxLines: 1,
+                    overflow: TextOverflow.ellipsis,
+                    style: TextStyle(
+                      fontSize: 17,
+                      fontWeight: FontWeight.w600,
+                      color: AppColors.label(context),
+                      letterSpacing: -0.4,
+                    ),
+                  ),
+                ),
+                const SizedBox(width: 6),
+                _PanelTypeBadge(type: _panelType),
+              ],
             ),
             Align(
               alignment: Alignment.centerRight,
@@ -652,6 +678,44 @@ class _SwitchTile extends StatelessWidget {
             ),
           ),
       ],
+    );
+  }
+}
+
+/// 面板类型小标签，显示在弹窗标题右侧。
+class _PanelTypeBadge extends StatelessWidget {
+  const _PanelTypeBadge({required this.type});
+
+  final PanelType type;
+
+  @override
+  Widget build(BuildContext context) {
+    final color = type.color(context);
+
+    return Container(
+      padding: const EdgeInsets.symmetric(horizontal: 5, vertical: 2.5),
+      decoration: BoxDecoration(
+        color: color.withValues(alpha: 0.11),
+        borderRadius: BorderRadius.circular(5),
+        border: Border.all(color: color.withValues(alpha: 0.14), width: 0.5),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Icon(type.icon, size: 9.5, color: color),
+          const SizedBox(width: 3),
+          Text(
+            type.label(context.l10n),
+            style: TextStyle(
+              fontSize: 9.5,
+              fontWeight: FontWeight.w700,
+              height: 1.1,
+              letterSpacing: 0.1,
+              color: color,
+            ),
+          ),
+        ],
+      ),
     );
   }
 }

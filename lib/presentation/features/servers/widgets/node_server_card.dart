@@ -8,6 +8,8 @@ import '../../../../domain/entities/panel_node.dart';
 import '../../../../domain/entities/server.dart';
 import '../../settings/providers/app_settings_provider.dart';
 import '../providers/node_providers.dart';
+import 'server_card_compact.dart';
+import 'server_card_metrics.dart';
 import 'server_card_shared.dart';
 import 'server_card_simple.dart';
 import 'server_card_terminal.dart';
@@ -65,6 +67,28 @@ class NodeServerCard extends ConsumerWidget {
         showCountLinks: showCountLinks,
       ),
       ServerCardStyle.terminal => TerminalServerCard(
+        server: server,
+        dashboard: dashboard,
+        status: status,
+        onTap: onTap,
+        isSelected: isSelected,
+        loading: snapshot.isLoading && dashboard == null,
+        titleOverride: node.displayName,
+        subtitleOverride: subtitle,
+        titleBadge: node.isPro ? const NodeEditionBadge.pro() : null,
+      ),
+      ServerCardStyle.compact => CompactServerCard(
+        server: server,
+        dashboard: dashboard,
+        status: status,
+        onTap: onTap,
+        isSelected: isSelected,
+        loading: snapshot.isLoading && dashboard == null,
+        titleOverride: node.displayName,
+        subtitleOverride: subtitle,
+        titleBadge: node.isPro ? const NodeEditionBadge.pro() : null,
+      ),
+      ServerCardStyle.metrics => MetricsServerCard(
         server: server,
         dashboard: dashboard,
         status: status,

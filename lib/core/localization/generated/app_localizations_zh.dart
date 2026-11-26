@@ -421,6 +421,15 @@ class AppLocalizationsZh extends AppLocalizations {
   String get dashboard_virtualization => '虚拟化';
 
   @override
+  String get dashboard_virtualizationHost => '宿主机';
+
+  @override
+  String get dashboard_virtualizationGuest => '虚拟机';
+
+  @override
+  String get dashboard_virtualizationContainer => '容器';
+
+  @override
   String get dashboard_systemProxy => '系统代理';
 
   @override
@@ -1894,6 +1903,36 @@ class AppLocalizationsZh extends AppLocalizations {
   String get servers_addPanel => '添加面板';
 
   @override
+  String get servers_choosePanelTypeTitle => '选择面板类型';
+
+  @override
+  String get servers_choosePanelTypeSubtitle => '先选择要连接的类型，更多面板正在路上';
+
+  @override
+  String get servers_panelTypeTitle => '面板类型';
+
+  @override
+  String get servers_panelType_onePanel => '1Panel';
+
+  @override
+  String get servers_panelType_onePanelDescription => '通过 1Panel API 连接';
+
+  @override
+  String get servers_panelType_baota => '宝塔面板';
+
+  @override
+  String get servers_panelType_baotaDescription => '通过宝塔 API 连接';
+
+  @override
+  String get servers_panelType_bareMetal => '纯服务器';
+
+  @override
+  String get servers_panelType_bareMetalDescription => '通过 SSH 直接管理服务器';
+
+  @override
+  String get servers_comingSoon => '即将支持';
+
+  @override
   String get servers_connectionSettings => '连接设置';
 
   @override
@@ -1954,6 +1993,9 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get servers_disk => '磁盘';
+
+  @override
+  String get servers_procs => '进程';
 
   @override
   String get servers_websites => '网站';
@@ -2187,12 +2229,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get settings_appearance_performanceTitle => '关闭高级材质';
 
   @override
-  String get settings_appearance_performanceSubtitleOn =>
-      '已关闭毛玻璃、液态玻璃与装饰动画，界面更流畅';
+  String get settings_appearance_performanceSubtitle => '关闭高斯模糊等高级特效，提升性能';
 
   @override
-  String get settings_appearance_performanceSubtitleOff =>
-      '当前为完整材质与动效，打开开关可换取更流畅的体验';
+  String get settings_appearance_hapticsTitle => '触感反馈';
+
+  @override
+  String get settings_appearance_hapticsSubtitle => '操作时提供轻微震动反馈';
 
   @override
   String get settings_language_title => '语言';
@@ -4005,6 +4048,12 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settings_cardStyle_simple => '简洁';
+
+  @override
+  String get settings_cardStyle_compact => '紧凑';
+
+  @override
+  String get settings_cardStyle_metrics => '指标环';
 
   @override
   String get panelSettings_title => '面板设置';
@@ -6405,10 +6454,10 @@ class AppLocalizationsZh extends AppLocalizations {
   String get websites_statusRunning => '运行中';
 
   @override
-  String get websites_start => '启动网站';
+  String get websites_start => '启动';
 
   @override
-  String get websites_stop => '停止网站';
+  String get websites_stop => '停止';
 
   @override
   String get websites_startSuccess => '网站已启动';

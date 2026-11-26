@@ -7,6 +7,7 @@ import '../../../../data/repositories_impl/cronjob_repository_impl.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/frosted_overlay_menu.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../server_detail/providers/active_server_provider.dart';
@@ -248,15 +249,12 @@ class _CronjobContentState extends ConsumerState<_CronjobContent> {
                 parent: BouncingScrollPhysics(),
               ),
               slivers: [
-                CupertinoSliverRefreshControl(
+                FrostedRefreshControl(
                   onRefresh: () =>
                       ref.read(cronjobControllerProvider.notifier).refresh(),
                 ),
                 SliverPadding(
-                  padding: EdgeInsets.only(
-                    top: FrostedScaffold.contentTopPadding(context),
-                    bottom: 132,
-                  ),
+                  padding: const EdgeInsets.only(top: 8, bottom: 132),
                   sliver: SliverList.builder(
                     itemCount: state.items.length + (state.hasMore ? 1 : 0),
                     itemBuilder: (context, index) {

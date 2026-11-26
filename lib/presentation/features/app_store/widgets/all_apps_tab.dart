@@ -5,6 +5,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/frosted_filter_bar.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../providers/app_catalog_provider.dart';
 import 'app_catalog_card.dart';
@@ -62,14 +63,10 @@ class _AllAppsTabState extends ConsumerState<AllAppsTab> {
             parent: BouncingScrollPhysics(),
           ),
           slivers: [
-            CupertinoSliverRefreshControl(
+            FrostedRefreshControl(
               onRefresh: () =>
                   ref.read(appCatalogControllerProvider.notifier).refresh(),
-            ),
-            SliverToBoxAdapter(
-              child: SizedBox(
-                height: topPadding + 58 + 4, // 导航栏 + 过滤器高度 + 间距
-              ),
+              topSpacing: topPadding + 58 + 4, // 导航栏 + 过滤器高度 + 间距
             ),
             asyncState.when(
               skipLoadingOnRefresh: true,

@@ -8,6 +8,7 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/format_utils.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 /// 带真实渐进模糊的透明导航栏。
 ///
@@ -374,7 +375,7 @@ class _FrostedBackButton extends StatelessWidget {
     // 使用更高纯度的模糊与强调色设计
     return GestureDetector(
       onTap: () {
-        HapticFeedback.lightImpact();
+        AppHaptics.lightImpact();
         onTap();
       },
       behavior: HitTestBehavior.opaque,

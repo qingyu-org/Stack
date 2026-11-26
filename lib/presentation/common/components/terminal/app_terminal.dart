@@ -21,6 +21,7 @@ import '../../../features/server_detail/providers/active_server_provider.dart';
 import '../../../features/servers/providers/node_selection_provider.dart';
 import '../../../../core/router/app_router.dart';
 import 'floating_terminal_controller.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 Future<void> showAppTerminal(
   BuildContext context, {
@@ -733,7 +734,7 @@ class _FrostedFloatButton extends StatelessWidget {
 
     return GestureDetector(
       onTap: () {
-        HapticFeedback.selectionClick();
+        AppHaptics.selectionClick();
         onTap();
       },
       behavior: HitTestBehavior.opaque,

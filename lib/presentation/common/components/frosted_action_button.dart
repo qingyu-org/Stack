@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 
 import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 /// 磨砂玻璃风格的单一操作按钮。
 ///
@@ -68,7 +69,7 @@ class FrostedActionButton extends StatelessWidget {
     return GestureDetector(
       onTap: _isEnabled
           ? () {
-              HapticFeedback.lightImpact();
+              AppHaptics.lightImpact();
               onTap!();
             }
           : null,

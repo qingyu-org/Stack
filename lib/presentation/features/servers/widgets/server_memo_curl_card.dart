@@ -17,6 +17,7 @@ import '../../../common/components/action_sheet_scaffold.dart';
 import '../../settings/providers/app_settings_provider.dart';
 import '../providers/servers_provider.dart';
 import 'server_card.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 const _pageCurlShaderAsset = 'assets/shaders/riveo_page_curl.frag';
 
@@ -377,7 +378,7 @@ class _ServerMemoSheetState extends ConsumerState<_ServerMemoSheet> {
           .read(serverMemoControllerProvider(widget.server.id).notifier)
           .save(_controller.text);
       if (!mounted) return;
-      HapticFeedback.lightImpact();
+      AppHaptics.lightImpact();
       showAppSuccessToast(context.l10n.common_saved);
       Navigator.of(context).pop();
     } catch (e) {

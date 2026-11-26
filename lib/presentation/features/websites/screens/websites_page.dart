@@ -7,6 +7,7 @@ import '../../../../core/router/sheet_dismiss_refresh_mixin.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/frosted_scaffold.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../../data/dto/website/website_dto.dart';
 import '../../app_store/screens/app_store_page.dart';
 import '../../server_detail/providers/active_server_provider.dart';
@@ -72,14 +73,10 @@ class _WebsitesPageState extends ConsumerState<WebsitesPage>
         parent: BouncingScrollPhysics(),
       ),
       slivers: [
-        CupertinoSliverRefreshControl(
+        FrostedRefreshControl(
           onRefresh: () =>
               ref.read(websitesControllerProvider.notifier).refresh(),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: FrostedScaffold.contentTopPadding(context) + 8,
-          ),
+          topSpacing: FrostedScaffold.contentTopPadding(context) + 8,
         ),
         asyncState.when(
           data: (state) {

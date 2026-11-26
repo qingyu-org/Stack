@@ -8,6 +8,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/frosted_header.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../server_detail/widgets/menus/files_overlay_menu.dart';
@@ -231,14 +232,10 @@ class _FilesPageState extends ConsumerState<FilesPage> {
                 parent: BouncingScrollPhysics(),
               ),
               slivers: [
-                CupertinoSliverRefreshControl(
+                FrostedRefreshControl(
                   onRefresh: () =>
                       ref.read(filesControllerProvider.notifier).refresh(),
-                ),
-                SliverToBoxAdapter(
-                  child: SizedBox(
-                    height: topPadding + 58, // 导航栏 + 路径栏高度
-                  ),
+                  topSpacing: topPadding + 58, // 导航栏 + 路径栏高度
                 ),
                 asyncState.when(
                   data: (state) {

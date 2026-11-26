@@ -4,6 +4,7 @@ import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 /// 过滤器项数据模型
 class FilterItem {
@@ -155,7 +156,7 @@ class _FilterButton extends StatelessWidget {
         padding: EdgeInsets.zero,
         minimumSize: Size.zero,
         onPressed: () {
-          HapticFeedback.selectionClick();
+          AppHaptics.selectionClick();
           onPressed();
         },
         child: Container(

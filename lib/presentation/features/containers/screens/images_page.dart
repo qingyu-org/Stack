@@ -5,6 +5,7 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../server_detail/providers/active_server_provider.dart';
@@ -127,7 +128,10 @@ class _ImagesPageState extends ConsumerState<_ImagesContent> {
               parent: BouncingScrollPhysics(),
             ),
             slivers: [
-              CupertinoSliverRefreshControl(onRefresh: notifier.refresh),
+              FrostedRefreshControl(
+                onRefresh: notifier.refresh,
+                topSpacing: topPadding,
+              ),
               asyncState.when(
                 data: (state) {
                   if (state.images.isEmpty) {
@@ -135,7 +139,7 @@ class _ImagesPageState extends ConsumerState<_ImagesContent> {
                   }
 
                   return SliverPadding(
-                    padding: EdgeInsets.fromLTRB(0, topPadding, 0, 100),
+                    padding: const EdgeInsets.fromLTRB(0, 8, 0, 100),
                     sliver: SliverList.builder(
                       itemCount:
                           state.images.length + (state.isLoadingMore ? 3 : 0),
@@ -157,7 +161,7 @@ class _ImagesPageState extends ConsumerState<_ImagesContent> {
                   );
                 },
                 loading: () => SliverPadding(
-                  padding: EdgeInsets.fromLTRB(0, topPadding, 0, 100),
+                  padding: const EdgeInsets.fromLTRB(0, 8, 0, 100),
                   sliver: SliverList.builder(
                     itemCount: 8,
                     itemBuilder: _buildSingleSkeletonItem,

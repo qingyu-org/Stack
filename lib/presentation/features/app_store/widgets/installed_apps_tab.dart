@@ -4,6 +4,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../providers/app_store_provider.dart';
 import 'app_installed_card.dart';
@@ -30,14 +31,10 @@ class InstalledAppsTab extends ConsumerWidget {
         parent: BouncingScrollPhysics(),
       ),
       slivers: [
-        CupertinoSliverRefreshControl(
+        FrostedRefreshControl(
           onRefresh: () =>
               ref.read(appStoreControllerProvider.notifier).refresh(),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: FrostedScaffold.contentTopPadding(context) + 8,
-          ),
+          topSpacing: FrostedScaffold.contentTopPadding(context) + 8,
         ),
         asyncState.when(
           skipLoadingOnRefresh: true,

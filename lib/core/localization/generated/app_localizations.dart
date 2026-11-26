@@ -848,6 +848,24 @@ abstract class AppLocalizations {
   /// **'Virtualization'**
   String get dashboard_virtualization;
 
+  /// Virtualization role tag for a hypervisor host.
+  ///
+  /// In en, this message translates to:
+  /// **'Host'**
+  String get dashboard_virtualizationHost;
+
+  /// Virtualization role tag for a virtual machine guest.
+  ///
+  /// In en, this message translates to:
+  /// **'VM'**
+  String get dashboard_virtualizationGuest;
+
+  /// Virtualization role tag for a container environment.
+  ///
+  /// In en, this message translates to:
+  /// **'Container'**
+  String get dashboard_virtualizationContainer;
+
   /// Dashboard system proxy row label.
   ///
   /// In en, this message translates to:
@@ -3614,6 +3632,66 @@ abstract class AppLocalizations {
   /// **'Add Panel'**
   String get servers_addPanel;
 
+  /// Panel type picker sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Choose Panel Type'**
+  String get servers_choosePanelTypeTitle;
+
+  /// Panel type picker sheet subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Pick a connection type first. More panels are on the way.'**
+  String get servers_choosePanelTypeSubtitle;
+
+  /// Panel type section title in the add server sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Panel Type'**
+  String get servers_panelTypeTitle;
+
+  /// 1Panel panel type name.
+  ///
+  /// In en, this message translates to:
+  /// **'1Panel'**
+  String get servers_panelType_onePanel;
+
+  /// 1Panel panel type description.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect through the 1Panel API'**
+  String get servers_panelType_onePanelDescription;
+
+  /// aaPanel (BT panel) type name.
+  ///
+  /// In en, this message translates to:
+  /// **'aaPanel'**
+  String get servers_panelType_baota;
+
+  /// aaPanel type description.
+  ///
+  /// In en, this message translates to:
+  /// **'Connect through the aaPanel API'**
+  String get servers_panelType_baotaDescription;
+
+  /// Bare server (SSH) type name.
+  ///
+  /// In en, this message translates to:
+  /// **'Bare Server'**
+  String get servers_panelType_bareMetal;
+
+  /// Bare server type description.
+  ///
+  /// In en, this message translates to:
+  /// **'Manage the server directly over SSH'**
+  String get servers_panelType_bareMetalDescription;
+
+  /// Badge for panel types that are not supported yet.
+  ///
+  /// In en, this message translates to:
+  /// **'Coming soon'**
+  String get servers_comingSoon;
+
   /// Add server sheet connection settings section title.
   ///
   /// In en, this message translates to:
@@ -3727,6 +3805,12 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Disk'**
   String get servers_disk;
+
+  /// Server card process count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Procs'**
+  String get servers_procs;
 
   /// Server card website count label.
   ///
@@ -4178,17 +4262,23 @@ abstract class AppLocalizations {
   /// **'Disable Advanced Materials'**
   String get settings_appearance_performanceTitle;
 
-  /// Subtitle shown when advanced materials are disabled.
+  /// Single-line explanation under the advanced materials switch.
   ///
   /// In en, this message translates to:
-  /// **'Frosted glass, liquid glass and decorative motion are off'**
-  String get settings_appearance_performanceSubtitleOn;
+  /// **'Turn off blur and other advanced effects for better performance'**
+  String get settings_appearance_performanceSubtitle;
 
-  /// Subtitle shown when performance mode is disabled.
+  /// Settings switch title for vibration feedback.
   ///
   /// In en, this message translates to:
-  /// **'Full materials and effects are on; enable this for smoother performance'**
-  String get settings_appearance_performanceSubtitleOff;
+  /// **'Haptic Feedback'**
+  String get settings_appearance_hapticsTitle;
+
+  /// Settings switch subtitle for vibration feedback.
+  ///
+  /// In en, this message translates to:
+  /// **'Light vibration on interactions'**
+  String get settings_appearance_hapticsSubtitle;
 
   /// Settings row and page title for language selection.
   ///
@@ -7567,6 +7657,18 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Simple'**
   String get settings_cardStyle_simple;
+
+  /// Compact server card style label.
+  ///
+  /// In en, this message translates to:
+  /// **'Compact'**
+  String get settings_cardStyle_compact;
+
+  /// Metric rings server card style label.
+  ///
+  /// In en, this message translates to:
+  /// **'Metric Rings'**
+  String get settings_cardStyle_metrics;
 
   /// Panel settings menu page title.
   ///
@@ -12065,13 +12167,13 @@ abstract class AppLocalizations {
   /// Swipe action label to start a stopped website.
   ///
   /// In en, this message translates to:
-  /// **'Start Website'**
+  /// **'Start'**
   String get websites_start;
 
   /// Swipe action label to stop a running website.
   ///
   /// In en, this message translates to:
-  /// **'Stop Website'**
+  /// **'Stop'**
   String get websites_stop;
 
   /// Toast shown after a website starts successfully.

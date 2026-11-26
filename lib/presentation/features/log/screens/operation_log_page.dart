@@ -10,6 +10,7 @@ import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/app_meta_chip.dart';
 import '../../../common/components/frosted_dialog.dart';
 import '../../../common/components/frosted_overlay_menu.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../../common/components/status_pill.dart';
@@ -196,12 +197,9 @@ class _OperationLogContentState extends ConsumerState<_OperationLogContent> {
                 parent: BouncingScrollPhysics(),
               ),
               slivers: [
-                CupertinoSliverRefreshControl(onRefresh: notifier.refresh),
+                FrostedRefreshControl(onRefresh: notifier.refresh),
                 SliverPadding(
-                  padding: EdgeInsets.only(
-                    top: FrostedScaffold.contentTopPadding(context),
-                    bottom: 132,
-                  ),
+                  padding: const EdgeInsets.only(top: 8, bottom: 132),
                   sliver: SliverList.builder(
                     itemCount: state.items.length + (state.hasMore ? 1 : 0),
                     itemBuilder: (context, index) {

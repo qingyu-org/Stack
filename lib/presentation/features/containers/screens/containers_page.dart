@@ -3,6 +3,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/l10n_x.dart';
 import '../../../common/components/frosted_scaffold.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../../data/dto/container/docker_status_dto.dart';
 import '../../server_detail/providers/active_server_provider.dart';
@@ -27,14 +28,10 @@ class ContainersPage extends ConsumerWidget {
         parent: BouncingScrollPhysics(),
       ),
       slivers: [
-        CupertinoSliverRefreshControl(
+        FrostedRefreshControl(
           onRefresh: () =>
               ref.read(containerOverviewProvider.notifier).refresh(),
-        ),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: FrostedScaffold.contentTopPadding(context) + 8,
-          ),
+          topSpacing: FrostedScaffold.contentTopPadding(context) + 8,
         ),
         asyncState.when(
           data: (state) {

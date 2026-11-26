@@ -7,6 +7,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../../data/dto/app/app_store_config_dto.dart';
 import '../../../../data/repositories_impl/app_repository_impl.dart';
 import '../../../common/app_toast.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 
 class AppSettingsTab extends ConsumerStatefulWidget {
@@ -88,11 +89,9 @@ class _AppSettingsTabState extends ConsumerState<AppSettingsTab> {
         parent: BouncingScrollPhysics(),
       ),
       slivers: [
-        CupertinoSliverRefreshControl(onRefresh: _load),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: FrostedScaffold.contentTopPadding(context) + 8,
-          ),
+        FrostedRefreshControl(
+          onRefresh: _load,
+          topSpacing: FrostedScaffold.contentTopPadding(context) + 8,
         ),
         if (_loading && _config == null)
           const SliverFillRemaining(

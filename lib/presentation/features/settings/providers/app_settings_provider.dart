@@ -9,17 +9,9 @@ import '../../../../core/localization/generated/app_localizations.dart';
 part 'app_settings_provider.g.dart';
 
 enum AppIconVariant {
-  defaultIcon(
-    'default',
-    null,
-    'assets/icons/featherstack-default.png',
-  ),
+  defaultIcon('default', null, 'assets/icons/featherstack-default.png'),
   dark('icon_dark', 'icon_dark', 'assets/icons/featherstack-dark.png'),
-  adaptive(
-    'adaptive',
-    null,
-    'assets/icons/featherstack-default.png',
-  );
+  adaptive('adaptive', null, 'assets/icons/featherstack-default.png');
 
   const AppIconVariant(
     this.storageName,
@@ -65,7 +57,9 @@ enum AppIconVariant {
 
 enum ServerCardStyle {
   terminal('terminal'),
-  simple('simple');
+  simple('simple'),
+  compact('compact'),
+  metrics('metrics');
 
   const ServerCardStyle(this.name);
 
@@ -74,6 +68,8 @@ enum ServerCardStyle {
   String labelOf(AppLocalizations l10n) => switch (this) {
     ServerCardStyle.terminal => l10n.settings_cardStyle_terminal,
     ServerCardStyle.simple => l10n.settings_cardStyle_simple,
+    ServerCardStyle.compact => l10n.settings_cardStyle_compact,
+    ServerCardStyle.metrics => l10n.settings_cardStyle_metrics,
   };
 
   static ServerCardStyle fromName(String? name) {
@@ -117,6 +113,7 @@ class AppSettings {
     this.serversRefreshIntervalSeconds = 5,
     this.pinTabBar = true,
     this.performanceMode = false,
+    this.hapticsEnabled = false,
     this.customHeaders = const {},
   });
 
@@ -133,6 +130,9 @@ class AppSettings {
   /// 性能模式：关闭毛玻璃模糊、液态玻璃与装饰性动画，优先保证流畅度。
   /// 页面转场、淡入淡出等基础动画仍会保留。
   final bool performanceMode;
+
+  /// 是否启用触感反馈（震动）。默认关闭。
+  final bool hapticsEnabled;
   final Map<String, String> customHeaders;
 
   AppSettings copyWith({
@@ -144,6 +144,7 @@ class AppSettings {
     int? serversRefreshIntervalSeconds,
     bool? pinTabBar,
     bool? performanceMode,
+    bool? hapticsEnabled,
     Map<String, String>? customHeaders,
   }) {
     return AppSettings(
@@ -158,6 +159,7 @@ class AppSettings {
           serversRefreshIntervalSeconds ?? this.serversRefreshIntervalSeconds,
       pinTabBar: pinTabBar ?? this.pinTabBar,
       performanceMode: performanceMode ?? this.performanceMode,
+      hapticsEnabled: hapticsEnabled ?? this.hapticsEnabled,
       customHeaders: customHeaders ?? this.customHeaders,
     );
   }
@@ -174,6 +176,7 @@ class AppSettingsController extends _$AppSettingsController {
       'servers_refresh_interval_seconds';
   static const _pinTabBarKey = 'pin_tab_bar';
   static const _performanceModeKey = 'performance_mode';
+  static const _hapticsEnabledKey = 'haptics_enabled';
   static const _customHeadersKey = 'custom_headers';
   static const defaultRequestTimeoutSeconds = 60;
   static const defaultServersRefreshIntervalSeconds = 5;
@@ -201,6 +204,7 @@ class AppSettingsController extends _$AppSettingsController {
           defaultServersRefreshIntervalSeconds,
       pinTabBar: prefs.getBool(_pinTabBarKey) ?? true,
       performanceMode: prefs.getBool(_performanceModeKey) ?? false,
+      hapticsEnabled: prefs.getBool(_hapticsEnabledKey) ?? false,
       customHeaders: _decodeHeaders(prefs.getString(_customHeadersKey)),
     );
     return settings;
@@ -282,6 +286,14 @@ class AppSettingsController extends _$AppSettingsController {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_performanceModeKey, enabled);
+  }
+
+  Future<void> setHapticsEnabled(bool enabled) async {
+    final previous = state.valueOrNull ?? const AppSettings();
+    state = AsyncValue.data(previous.copyWith(hapticsEnabled: enabled));
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_hapticsEnabledKey, enabled);
   }
 
   Future<void> setCustomHeaders(Map<String, String> headers) async {

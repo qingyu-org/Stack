@@ -12,6 +12,7 @@ import '../../../common/app_toast.dart';
 import '../../../common/components/action_sheet_launcher.dart';
 import '../../../common/components/action_sheet_scaffold.dart';
 import '../providers/image_list_provider.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 void showImageTagSheet(BuildContext context, DockerImageInfo image) {
   showActionSheet<void>(
@@ -72,14 +73,14 @@ class _ImageTagSheetState extends ConsumerState<_ImageTagSheet> {
   }
 
   void _addTag() {
-    HapticFeedback.selectionClick();
+    AppHaptics.selectionClick();
     setState(() {
       _entries.add(_TagEntry(id: const Uuid().v4(), value: ''));
     });
   }
 
   void _removeTag(int index) {
-    HapticFeedback.lightImpact();
+    AppHaptics.lightImpact();
     setState(() => _entries.removeAt(index));
   }
 

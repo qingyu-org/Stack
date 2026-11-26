@@ -25,6 +25,7 @@ import '../../../common/components/app_confirm_sheet.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_picker.dart';
 import '../../../common/components/floating_tab_bar.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/mini_button.dart';
 import '../../../common/components/status_pill.dart';
@@ -1032,11 +1033,9 @@ class _SshSessionTabState extends ConsumerState<_SshSessionTab> {
         parent: BouncingScrollPhysics(),
       ),
       slivers: [
-        CupertinoSliverRefreshControl(onRefresh: () async => _sendRequest()),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: FrostedScaffold.contentTopPadding(context) + 8,
-          ),
+        FrostedRefreshControl(
+          onRefresh: () async => _sendRequest(),
+          topSpacing: FrostedScaffold.contentTopPadding(context) + 8,
         ),
         if (_sessions.isEmpty)
           SliverToBoxAdapter(

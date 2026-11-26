@@ -12,6 +12,7 @@ import '../../../common/app_toast.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/frosted_overlay_menu.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../server_detail/providers/active_server_provider.dart';
@@ -359,7 +360,7 @@ class _SslManageContentState extends ConsumerState<_SslManageContent>
               parent: BouncingScrollPhysics(),
             ),
             slivers: [
-              CupertinoSliverRefreshControl(
+              FrostedRefreshControl(
                 onRefresh: () =>
                     ref.read(sslManageControllerProvider.notifier).refresh(),
               ),
@@ -371,12 +372,7 @@ class _SslManageContentState extends ConsumerState<_SslManageContent>
                     return const SliverToBoxAdapter(child: SizedBox.shrink());
                   }
                   return SliverPadding(
-                    padding: EdgeInsets.fromLTRB(
-                      16,
-                      FrostedScaffold.contentTopPadding(context) + 12,
-                      16,
-                      40,
-                    ),
+                    padding: const EdgeInsets.fromLTRB(16, 12, 16, 40),
                     sliver: SliverList(
                       delegate: SliverChildBuilderDelegate(
                         (context, index) {

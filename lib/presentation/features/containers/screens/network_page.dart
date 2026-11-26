@@ -8,6 +8,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/frosted_overlay_menu.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../server_detail/providers/active_server_provider.dart';
@@ -121,7 +122,7 @@ class _NetworkContentState extends ConsumerState<_NetworkContent>
               parent: BouncingScrollPhysics(),
             ),
             slivers: [
-              CupertinoSliverRefreshControl(
+              FrostedRefreshControl(
                 onRefresh: () =>
                     ref.read(networkControllerProvider.notifier).refresh(),
               ),
@@ -135,7 +136,7 @@ class _NetworkContentState extends ConsumerState<_NetworkContent>
                   return SliverPadding(
                     padding: EdgeInsets.fromLTRB(
                       16,
-                      FrostedScaffold.contentTopPadding(context) + 12,
+                      12,
                       16,
                       40,
                     ),
@@ -168,7 +169,7 @@ class _NetworkContentState extends ConsumerState<_NetworkContent>
                 loading: () => SliverPadding(
                   padding: EdgeInsets.fromLTRB(
                     16,
-                    FrostedScaffold.contentTopPadding(context) + 12,
+                    12,
                     16,
                     40,
                   ),

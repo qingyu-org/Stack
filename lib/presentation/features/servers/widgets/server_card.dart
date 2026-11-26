@@ -4,6 +4,8 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import '../../../../domain/entities/server.dart';
 import '../../settings/providers/app_settings_provider.dart';
 import '../providers/servers_provider.dart';
+import 'server_card_compact.dart';
+import 'server_card_metrics.dart';
 import 'server_card_shared.dart';
 import 'server_card_simple.dart';
 import 'server_card_terminal.dart';
@@ -44,6 +46,22 @@ class ServerCard extends ConsumerWidget {
         loading: status.isLoading && !status.hasData,
       ),
       ServerCardStyle.terminal => TerminalServerCard(
+        server: server,
+        dashboard: dashboard,
+        status: status,
+        onTap: onTap,
+        isSelected: isSelected,
+        loading: status.isLoading && !status.hasData,
+      ),
+      ServerCardStyle.compact => CompactServerCard(
+        server: server,
+        dashboard: dashboard,
+        status: status,
+        onTap: onTap,
+        isSelected: isSelected,
+        loading: status.isLoading && !status.hasData,
+      ),
+      ServerCardStyle.metrics => MetricsServerCard(
         server: server,
         dashboard: dashboard,
         status: status,

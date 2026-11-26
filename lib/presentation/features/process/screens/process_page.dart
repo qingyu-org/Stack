@@ -17,6 +17,7 @@ import '../../../common/components/app_confirm_sheet.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/floating_tab_bar.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/more_info_card.dart';
 import '../../../common/utils/display_utils.dart';
@@ -372,11 +373,9 @@ class _ProcessContentState extends ConsumerState<_ProcessContent> {
         parent: BouncingScrollPhysics(),
       ),
       slivers: [
-        CupertinoSliverRefreshControl(onRefresh: () async => _sendCurrent()),
-        SliverToBoxAdapter(
-          child: SizedBox(
-            height: FrostedScaffold.contentTopPadding(context) + 8,
-          ),
+        FrostedRefreshControl(
+          onRefresh: () async => _sendCurrent(),
+          topSpacing: FrostedScaffold.contentTopPadding(context) + 8,
         ),
         SliverPadding(
           padding: const EdgeInsets.fromLTRB(16, 4, 16, 132),

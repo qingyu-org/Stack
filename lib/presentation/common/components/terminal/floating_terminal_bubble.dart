@@ -14,6 +14,7 @@ import '../../../../core/router/app_router.dart';
 import 'floating_terminal_controller.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import 'app_terminal.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 /// 悬浮终端气泡 Overlay 管理器。
 ///
@@ -279,7 +280,7 @@ class _FloatingTerminalBubbleState extends State<_FloatingTerminalBubble>
   }
 
   void _handleTap() {
-    HapticFeedback.lightImpact();
+    AppHaptics.lightImpact();
 
     if (_isDocked) {
       final size = MediaQuery.of(context).size;
@@ -359,7 +360,7 @@ class _FloatingTerminalBubbleState extends State<_FloatingTerminalBubble>
           final distanceFromEdge = _dx + (_bubbleSize / 2);
           if (distanceFromEdge >= _detachDistance) {
             _isDocked = false;
-            HapticFeedback.lightImpact(); // 瞬间剥离边缘时的轻微触觉反馈
+            AppHaptics.lightImpact(); // 瞬间剥离边缘时的轻微触觉反馈
           }
         } else {
           final double dockedX = size.width - _dockedVisibleWidth;
@@ -369,7 +370,7 @@ class _FloatingTerminalBubbleState extends State<_FloatingTerminalBubble>
           final distanceFromEdge = size.width - (_dx + (_bubbleSize / 2));
           if (distanceFromEdge >= _detachDistance) {
             _isDocked = false;
-            HapticFeedback.lightImpact();
+            AppHaptics.lightImpact();
           }
         }
       } else {
@@ -432,7 +433,7 @@ class _FloatingTerminalBubbleState extends State<_FloatingTerminalBubble>
 
   void _showContextMenu() {
     _cancelDockTimer();
-    HapticFeedback.mediumImpact();
+    AppHaptics.mediumImpact();
     final l10n = context.l10n;
 
     showActionSheet<void>(

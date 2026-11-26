@@ -105,4 +105,42 @@ void main() {
     );
     expect(content.transform.storage[12], moreOrLessEquals(0, epsilon: 0.5));
   });
+
+  testWidgets('a short card with many actions does not overflow', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      CupertinoApp(
+        home: Center(
+          child: SizedBox(
+            width: 340,
+            height: 40,
+            child: SwipeActionCell(
+              actions: [
+                for (var i = 0; i < 7; i++)
+                  SwipeAction(
+                    label: 'Action $i',
+                    icon: CupertinoIcons.delete,
+                    color: CupertinoColors.systemRed,
+                    onTap: () {},
+                  ),
+              ],
+              child: const SizedBox.expand(
+                key: ValueKey('short-swipe-card'),
+                child: ColoredBox(color: CupertinoColors.white),
+              ),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    await tester.drag(
+      find.byKey(const ValueKey('short-swipe-card')),
+      const Offset(-120, 0),
+    );
+    await tester.pumpAndSettle();
+
+    expect(tester.takeException(), isNull);
+  });
 }

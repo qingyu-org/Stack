@@ -7,6 +7,7 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/performance/performance_mode.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 class ServerContextMenu {
   const ServerContextMenu._();
@@ -17,7 +18,7 @@ class ServerContextMenu {
     required VoidCallback onEdit,
     required VoidCallback onDelete,
   }) {
-    HapticFeedback.mediumImpact();
+    AppHaptics.mediumImpact();
 
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
     final renderBox = context.findRenderObject() as RenderBox;
@@ -333,7 +334,7 @@ class _ContextMenuItemState extends State<_ContextMenuItem> {
       onTapDown: (_) => setState(() => _isPressed = true),
       onTapUp: (_) {
         setState(() => _isPressed = false);
-        HapticFeedback.lightImpact();
+        AppHaptics.lightImpact();
         widget.onTap();
       },
       onTapCancel: () => setState(() => _isPressed = false),

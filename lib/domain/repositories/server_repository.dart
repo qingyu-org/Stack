@@ -1,4 +1,5 @@
 import '../entities/panel_probe_result.dart';
+import '../entities/panel_type.dart';
 import '../entities/server.dart';
 
 /// 面板服务器仓库抽象。
@@ -16,6 +17,7 @@ abstract class ServerRepository {
     String? name,
     required String host,
     required int port,
+    PanelType panelType = PanelType.onePanel,
     required bool isHttps,
     required bool allowInsecureConnections,
     required String apiKey,

@@ -7,6 +7,7 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_meta_chip.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../../common/components/status_pill.dart';
@@ -101,10 +102,10 @@ class _SshLogListState extends ConsumerState<SshLogList> {
               parent: BouncingScrollPhysics(),
             ),
             slivers: [
-              CupertinoSliverRefreshControl(onRefresh: notifier.refresh),
+              FrostedRefreshControl(onRefresh: notifier.refresh),
               SliverPadding(
                 padding: EdgeInsets.only(
-                  top: FrostedScaffold.contentTopPadding(context),
+                  top: 8,
                   bottom: widget.bottomPadding,
                 ),
                 sliver: SliverList.builder(

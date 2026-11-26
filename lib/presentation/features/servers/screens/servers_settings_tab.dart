@@ -84,6 +84,7 @@ class ServersSettingsTab extends ConsumerWidget {
     final customHeaders = settings?.customHeaders ?? const {};
     final pinTabBar = settings?.pinTabBar ?? true;
     final performanceMode = settings?.performanceMode ?? false;
+    final hapticsEnabled = settings?.hapticsEnabled ?? false;
     final localeOption = ref.watch(localeControllerProvider);
 
     return FrostedScaffold(
@@ -257,15 +258,25 @@ class ServersSettingsTab extends ConsumerWidget {
                       icon: CupertinoIcons.bolt_fill,
                       iconColor: CupertinoColors.systemOrange,
                       title: l10n.settings_appearance_performanceTitle,
-                      subtitle: performanceMode
-                          ? l10n.settings_appearance_performanceSubtitleOn
-                          : l10n.settings_appearance_performanceSubtitleOff,
+                      subtitle: l10n.settings_appearance_performanceSubtitle,
                       value: performanceMode,
                       onChanged: settingsAsync.isLoading
                           ? null
                           : (value) => ref
                                 .read(appSettingsControllerProvider.notifier)
                                 .setPerformanceMode(value),
+                    ),
+                    _SettingsSwitchRow(
+                      icon: TablerIcons.device_mobile_vibration,
+                      iconColor: CupertinoColors.systemPurple,
+                      title: l10n.settings_appearance_hapticsTitle,
+                      subtitle: l10n.settings_appearance_hapticsSubtitle,
+                      value: hapticsEnabled,
+                      onChanged: settingsAsync.isLoading
+                          ? null
+                          : (value) => ref
+                                .read(appSettingsControllerProvider.notifier)
+                                .setHapticsEnabled(value),
                     ),
                     _SettingsRow(
                       icon: CupertinoIcons.globe,

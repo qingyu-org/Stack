@@ -11,6 +11,7 @@ import '../../../common/app_toast.dart';
 import '../../../common/components/action_sheet_launcher.dart';
 import '../../../common/components/action_sheet_scaffold.dart';
 import '../../../common/components/app_confirm_sheet.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 /// Shows the website group management sheet.
 Future<void> showWebsiteGroupSheet(
@@ -373,7 +374,7 @@ class _GroupTile extends StatelessWidget {
   }
 
   void _showGroupActions(BuildContext context) {
-    HapticFeedback.selectionClick();
+    AppHaptics.selectionClick();
     showCupertinoModalPopup<void>(
       context: context,
       builder: (_) => CupertinoActionSheet(

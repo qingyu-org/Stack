@@ -17,6 +17,7 @@ import '../providers/node_providers.dart';
 import '../providers/node_selection_provider.dart';
 import '../providers/servers_provider.dart';
 import '../widgets/add_server_sheet.dart';
+import '../widgets/panel_type_picker_sheet.dart';
 import '../widgets/server_context_menu.dart';
 import '../widgets/server_group_card.dart';
 import '../widgets/server_memo_curl_card.dart';
@@ -202,7 +203,9 @@ class _ServersPageState extends ConsumerState<ServersPage>
   }
 
   Future<void> _handleAddServer() async {
-    await AddServerSheet.show(context);
+    final panelType = await showPanelTypePicker(context);
+    if (panelType == null || !mounted) return;
+    await AddServerSheet.show(context, panelType: panelType);
   }
 }
 

@@ -4,6 +4,7 @@ import 'package:riverpod_annotation/riverpod_annotation.dart';
 import '../../core/storage/storage_service.dart';
 import '../../domain/entities/panel_node.dart';
 import '../../domain/entities/panel_probe_result.dart';
+import '../../domain/entities/panel_type.dart';
 import '../../domain/entities/server.dart';
 import '../../domain/repositories/server_repository.dart';
 
@@ -29,6 +30,7 @@ class ServerRepositoryImpl implements ServerRepository {
     String? name,
     required String host,
     required int port,
+    PanelType panelType = PanelType.onePanel,
     required bool isHttps,
     required bool allowInsecureConnections,
     required String apiKey,
@@ -40,6 +42,7 @@ class ServerRepositoryImpl implements ServerRepository {
       ..name = name
       ..host = host
       ..port = port
+      ..panelType = panelType
       ..isHttps = isHttps
       ..allowInsecureConnections = allowInsecureConnections
       ..isPro = probe?.isPro ?? false

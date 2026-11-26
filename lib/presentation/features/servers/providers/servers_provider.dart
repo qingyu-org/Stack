@@ -17,6 +17,7 @@ import '../../../../data/services/panel_probe_service.dart';
 import '../../../../domain/entities/dashboard.dart';
 import '../../../../domain/entities/panel_node.dart';
 import '../../../../domain/entities/panel_probe_result.dart';
+import '../../../../domain/entities/panel_type.dart';
 import '../../../../domain/entities/server.dart';
 import '../../../../domain/repositories/server_repository.dart';
 import '../../settings/providers/app_settings_provider.dart';
@@ -79,6 +80,7 @@ class ServersNotifier extends _$ServersNotifier {
     required String host,
     required int port,
     required String apiKey,
+    PanelType panelType = PanelType.onePanel,
     bool isHttps = false,
     bool allowInsecureConnections = false,
     PanelProbeResult? probe,
@@ -91,6 +93,7 @@ class ServersNotifier extends _$ServersNotifier {
         name: name.isEmpty ? null : name,
         host: host,
         port: port,
+        panelType: panelType,
         isHttps: isHttps,
         allowInsecureConnections: allowInsecureConnections,
         apiKey: apiKey,

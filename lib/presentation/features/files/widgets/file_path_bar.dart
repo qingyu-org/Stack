@@ -7,6 +7,7 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../providers/files_provider.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 /// 模仿 [FrostedFilterBar] 设计的路径导航栏。
 class FilePathBar extends ConsumerStatefulWidget {
@@ -207,7 +208,7 @@ class _PathSegmentButton extends StatelessWidget {
       padding: EdgeInsets.zero,
       minimumSize: Size.zero,
       onPressed: () {
-        HapticFeedback.selectionClick();
+        AppHaptics.selectionClick();
         onPressed();
       },
       child: Container(

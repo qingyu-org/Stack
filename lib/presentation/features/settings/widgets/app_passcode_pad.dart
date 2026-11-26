@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/theme/app_theme.dart';
+import 'package:mono_dash/core/utils/app_haptics.dart';
 
 class AppPasscodePad extends StatefulWidget {
   const AppPasscodePad({
@@ -151,13 +152,13 @@ class _AppPasscodePadState extends State<AppPasscodePad>
                 enabled: widget.enabled,
                 onDigit: (digit) {
                   if (widget.value.length >= widget.maxLength) return;
-                  HapticFeedback.selectionClick();
+                  AppHaptics.selectionClick();
                   widget.onChanged('${widget.value}$digit');
                 },
                 onDelete: widget.value.isEmpty
                     ? null
                     : () {
-                        HapticFeedback.selectionClick();
+                        AppHaptics.selectionClick();
                         widget.onChanged(
                           widget.value.substring(0, widget.value.length - 1),
                         );

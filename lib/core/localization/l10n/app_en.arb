@@ -591,6 +591,18 @@
   "@dashboard_virtualization": {
     "description": "Dashboard virtualization platform row label."
   },
+  "dashboard_virtualizationHost": "Host",
+  "@dashboard_virtualizationHost": {
+    "description": "Virtualization role tag for a hypervisor host."
+  },
+  "dashboard_virtualizationGuest": "VM",
+  "@dashboard_virtualizationGuest": {
+    "description": "Virtualization role tag for a virtual machine guest."
+  },
+  "dashboard_virtualizationContainer": "Container",
+  "@dashboard_virtualizationContainer": {
+    "description": "Virtualization role tag for a container environment."
+  },
   "dashboard_systemProxy": "System Proxy",
   "@dashboard_systemProxy": {
     "description": "Dashboard system proxy row label."
@@ -2709,6 +2721,46 @@
   "@servers_addPanel": {
     "description": "Add server sheet title."
   },
+  "servers_choosePanelTypeTitle": "Choose Panel Type",
+  "@servers_choosePanelTypeTitle": {
+    "description": "Panel type picker sheet title."
+  },
+  "servers_choosePanelTypeSubtitle": "Pick a connection type first. More panels are on the way.",
+  "@servers_choosePanelTypeSubtitle": {
+    "description": "Panel type picker sheet subtitle."
+  },
+  "servers_panelTypeTitle": "Panel Type",
+  "@servers_panelTypeTitle": {
+    "description": "Panel type section title in the add server sheet."
+  },
+  "servers_panelType_onePanel": "1Panel",
+  "@servers_panelType_onePanel": {
+    "description": "1Panel panel type name."
+  },
+  "servers_panelType_onePanelDescription": "Connect through the 1Panel API",
+  "@servers_panelType_onePanelDescription": {
+    "description": "1Panel panel type description."
+  },
+  "servers_panelType_baota": "aaPanel",
+  "@servers_panelType_baota": {
+    "description": "aaPanel (BT panel) type name."
+  },
+  "servers_panelType_baotaDescription": "Connect through the aaPanel API",
+  "@servers_panelType_baotaDescription": {
+    "description": "aaPanel type description."
+  },
+  "servers_panelType_bareMetal": "Bare Server",
+  "@servers_panelType_bareMetal": {
+    "description": "Bare server (SSH) type name."
+  },
+  "servers_panelType_bareMetalDescription": "Manage the server directly over SSH",
+  "@servers_panelType_bareMetalDescription": {
+    "description": "Bare server type description."
+  },
+  "servers_comingSoon": "Coming soon",
+  "@servers_comingSoon": {
+    "description": "Badge for panel types that are not supported yet."
+  },
   "servers_connectionSettings": "Connection Settings",
   "@servers_connectionSettings": {
     "description": "Add server sheet connection settings section title."
@@ -2794,6 +2846,10 @@
   "servers_disk": "Disk",
   "@servers_disk": {
     "description": "Server card disk metric label."
+  },
+  "servers_procs": "Procs",
+  "@servers_procs": {
+    "description": "Server card process count label."
   },
   "servers_websites": "Websites",
   "@servers_websites": {
@@ -3203,13 +3259,17 @@
   "@settings_appearance_performanceTitle": {
     "description": "Settings switch title for turning off frosted/liquid glass and decorative motion."
   },
-  "settings_appearance_performanceSubtitleOn": "Frosted glass, liquid glass and decorative motion are off",
-  "@settings_appearance_performanceSubtitleOn": {
-    "description": "Subtitle shown when advanced materials are disabled."
+  "settings_appearance_performanceSubtitle": "Turn off blur and other advanced effects for better performance",
+  "@settings_appearance_performanceSubtitle": {
+    "description": "Single-line explanation under the advanced materials switch."
   },
-  "settings_appearance_performanceSubtitleOff": "Full materials and effects are on; enable this for smoother performance",
-  "@settings_appearance_performanceSubtitleOff": {
-    "description": "Subtitle shown when performance mode is disabled."
+  "settings_appearance_hapticsTitle": "Haptic Feedback",
+  "@settings_appearance_hapticsTitle": {
+    "description": "Settings switch title for vibration feedback."
+  },
+  "settings_appearance_hapticsSubtitle": "Light vibration on interactions",
+  "@settings_appearance_hapticsSubtitle": {
+    "description": "Settings switch subtitle for vibration feedback."
   },
   "settings_language_title": "Language",
   "@settings_language_title": {
@@ -5743,6 +5803,14 @@
   "settings_cardStyle_simple": "Simple",
   "@settings_cardStyle_simple": {
     "description": "Simple server card style label."
+  },
+  "settings_cardStyle_compact": "Compact",
+  "@settings_cardStyle_compact": {
+    "description": "Compact server card style label."
+  },
+  "settings_cardStyle_metrics": "Metric Rings",
+  "@settings_cardStyle_metrics": {
+    "description": "Metric rings server card style label."
   },
   "panelSettings_title": "Panel Settings",
   "@panelSettings_title": {
@@ -9095,11 +9163,11 @@
     "description": "Generic website type fallback label."
   },
   "websites_statusRunning": "Running",
-  "websites_start": "Start Website",
+  "websites_start": "Start",
   "@websites_start": {
     "description": "Swipe action label to start a stopped website."
   },
-  "websites_stop": "Stop Website",
+  "websites_stop": "Stop",
   "@websites_stop": {
     "description": "Swipe action label to stop a running website."
   },

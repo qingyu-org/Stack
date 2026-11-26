@@ -10,6 +10,7 @@ import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/frosted_filter_bar.dart';
 import '../../../common/components/frosted_overlay_menu.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../../common/components/task_log_sheet.dart';
@@ -380,12 +381,12 @@ class _RuntimeContentState extends ConsumerState<_RuntimeContent> {
                     parent: BouncingScrollPhysics(),
                   ),
                   slivers: [
-                    CupertinoSliverRefreshControl(
+                    FrostedRefreshControl(
                       onRefresh: () async => ref
                           .read(runtimeControllerProvider.notifier)
                           .refresh(),
+                      topSpacing: topPad,
                     ),
-                    SliverToBoxAdapter(child: SizedBox(height: topPad)),
                     SliverFillRemaining(
                       child: AppEmptyState(
                         icon: _selectedType.isEmpty
@@ -425,13 +426,14 @@ class _RuntimeContentState extends ConsumerState<_RuntimeContent> {
                     parent: BouncingScrollPhysics(),
                   ),
                   slivers: [
-                    CupertinoSliverRefreshControl(
+                    FrostedRefreshControl(
                       onRefresh: () async => ref
                           .read(runtimeControllerProvider.notifier)
                           .refresh(),
+                      topSpacing: topPad,
                     ),
                     SliverPadding(
-                      padding: EdgeInsets.only(top: topPad, bottom: 40),
+                      padding: const EdgeInsets.only(top: 8, bottom: 40),
                       sliver: SliverList.builder(
                         itemCount: items.length + (isLoadingMore ? 1 : 0),
                         itemBuilder: (context, index) {

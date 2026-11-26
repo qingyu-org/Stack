@@ -425,6 +425,15 @@ class AppLocalizationsEn extends AppLocalizations {
   String get dashboard_virtualization => 'Virtualization';
 
   @override
+  String get dashboard_virtualizationHost => 'Host';
+
+  @override
+  String get dashboard_virtualizationGuest => 'VM';
+
+  @override
+  String get dashboard_virtualizationContainer => 'Container';
+
+  @override
   String get dashboard_systemProxy => 'System Proxy';
 
   @override
@@ -1942,6 +1951,40 @@ class AppLocalizationsEn extends AppLocalizations {
   String get servers_addPanel => 'Add Panel';
 
   @override
+  String get servers_choosePanelTypeTitle => 'Choose Panel Type';
+
+  @override
+  String get servers_choosePanelTypeSubtitle =>
+      'Pick a connection type first. More panels are on the way.';
+
+  @override
+  String get servers_panelTypeTitle => 'Panel Type';
+
+  @override
+  String get servers_panelType_onePanel => '1Panel';
+
+  @override
+  String get servers_panelType_onePanelDescription =>
+      'Connect through the 1Panel API';
+
+  @override
+  String get servers_panelType_baota => 'aaPanel';
+
+  @override
+  String get servers_panelType_baotaDescription =>
+      'Connect through the aaPanel API';
+
+  @override
+  String get servers_panelType_bareMetal => 'Bare Server';
+
+  @override
+  String get servers_panelType_bareMetalDescription =>
+      'Manage the server directly over SSH';
+
+  @override
+  String get servers_comingSoon => 'Coming soon';
+
+  @override
   String get servers_connectionSettings => 'Connection Settings';
 
   @override
@@ -2003,6 +2046,9 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get servers_disk => 'Disk';
+
+  @override
+  String get servers_procs => 'Procs';
 
   @override
   String get servers_websites => 'Websites';
@@ -2242,12 +2288,15 @@ class AppLocalizationsEn extends AppLocalizations {
       'Disable Advanced Materials';
 
   @override
-  String get settings_appearance_performanceSubtitleOn =>
-      'Frosted glass, liquid glass and decorative motion are off';
+  String get settings_appearance_performanceSubtitle =>
+      'Turn off blur and other advanced effects for better performance';
 
   @override
-  String get settings_appearance_performanceSubtitleOff =>
-      'Full materials and effects are on; enable this for smoother performance';
+  String get settings_appearance_hapticsTitle => 'Haptic Feedback';
+
+  @override
+  String get settings_appearance_hapticsSubtitle =>
+      'Light vibration on interactions';
 
   @override
   String get settings_language_title => 'Language';
@@ -4124,6 +4173,12 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get settings_cardStyle_simple => 'Simple';
+
+  @override
+  String get settings_cardStyle_compact => 'Compact';
+
+  @override
+  String get settings_cardStyle_metrics => 'Metric Rings';
 
   @override
   String get panelSettings_title => 'Panel Settings';
@@ -6615,10 +6670,10 @@ class AppLocalizationsEn extends AppLocalizations {
   String get websites_statusRunning => 'Running';
 
   @override
-  String get websites_start => 'Start Website';
+  String get websites_start => 'Start';
 
   @override
-  String get websites_stop => 'Stop Website';
+  String get websites_stop => 'Stop';
 
   @override
   String get websites_startSuccess => 'Website started';

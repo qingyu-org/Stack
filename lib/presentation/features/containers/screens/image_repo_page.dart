@@ -8,6 +8,7 @@ import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/app_header_search_field.dart';
 import '../../../common/components/frosted_overlay_menu.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../server_detail/providers/active_server_provider.dart';
@@ -116,7 +117,7 @@ class _ImageRepoContentState extends ConsumerState<_ImageRepoContent>
               parent: BouncingScrollPhysics(),
             ),
             slivers: [
-              CupertinoSliverRefreshControl(
+              FrostedRefreshControl(
                 onRefresh: () =>
                     ref.read(imageRepoControllerProvider.notifier).refresh(),
               ),
@@ -130,7 +131,7 @@ class _ImageRepoContentState extends ConsumerState<_ImageRepoContent>
                   return SliverPadding(
                     padding: EdgeInsets.fromLTRB(
                       16,
-                      FrostedScaffold.contentTopPadding(context) + 12,
+                      12,
                       16,
                       40,
                     ),
@@ -164,7 +165,7 @@ class _ImageRepoContentState extends ConsumerState<_ImageRepoContent>
                 loading: () => SliverPadding(
                   padding: EdgeInsets.fromLTRB(
                     16,
-                    FrostedScaffold.contentTopPadding(context) + 12,
+                    12,
                     16,
                     40,
                   ),

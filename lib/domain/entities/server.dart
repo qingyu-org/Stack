@@ -1,5 +1,6 @@
 import '../../core/utils/server_host_normalizer.dart';
 import 'panel_node.dart';
+import 'panel_type.dart';
 
 /// 用户对面板版本的覆盖设置。
 ///
@@ -32,6 +33,9 @@ class Server {
   late String host;
 
   late int port;
+
+  /// 面板类型；旧数据没有该字段时按 1Panel 处理。
+  PanelType panelType = PanelType.onePanel;
 
   bool isHttps = false;
 
@@ -100,6 +104,7 @@ class Server {
       'name': name,
       'host': host,
       'port': port,
+      'panelType': panelType.storageName,
       'isHttps': isHttps,
       'allowInsecureConnections': allowInsecureConnections,
       'sortIndex': sortIndex,
@@ -121,6 +126,7 @@ class Server {
       ..name = json['name'] as String?
       ..host = json['host'] as String
       ..port = _intValue(json['port'])
+      ..panelType = PanelType.fromName(json['panelType'] as String?)
       ..isHttps = json['isHttps'] == true
       ..allowInsecureConnections = json['allowInsecureConnections'] == true
       ..sortIndex = _intValue(json['sortIndex'])

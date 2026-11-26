@@ -14,6 +14,7 @@ import 'core/performance/performance_mode.dart';
 import 'core/router/app_router.dart';
 import 'core/storage/storage_service.dart';
 import 'core/theme/app_theme.dart';
+import 'core/utils/app_haptics.dart';
 import 'core/widgets/ios_server_widget_bridge.dart';
 import 'presentation/features/settings/providers/app_settings_provider.dart';
 import 'presentation/features/settings/widgets/app_lock_gate.dart';
@@ -51,6 +52,7 @@ class MyApp extends ConsumerWidget {
     final appIconVariant =
         settingsAsync.valueOrNull?.appIconVariant ?? AppIconVariant.defaultIcon;
     final performanceMode = settingsAsync.valueOrNull?.performanceMode ?? false;
+    AppHaptics.enabled = settingsAsync.valueOrNull?.hapticsEnabled ?? false;
     final effectiveBrightness = switch (appearanceMode) {
       AppAppearanceMode.system =>
         WidgetsBinding.instance.platformDispatcher.platformBrightness,

@@ -18,6 +18,7 @@ import '../../../common/components/app_code_editor.dart';
 import '../../../common/components/app_confirm_sheet.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/frosted_overlay_menu.dart';
+import '../../../common/components/frosted_refresh_control.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../../common/components/skeleton_item.dart';
 import '../../files/screens/files_page.dart';
@@ -628,14 +629,9 @@ class _SupervisorContentState extends ConsumerState<_SupervisorContent> {
               parent: BouncingScrollPhysics(),
             ),
             slivers: [
-              CupertinoSliverRefreshControl(onRefresh: _loadAll),
+              FrostedRefreshControl(onRefresh: _loadAll),
               SliverPadding(
-                padding: EdgeInsets.fromLTRB(
-                  16,
-                  FrostedScaffold.contentTopPadding(context) + 12,
-                  16,
-                  132,
-                ),
+                padding: const EdgeInsets.fromLTRB(16, 12, 16, 132),
                 sliver: _buildBodySliver(),
               ),
             ],
