@@ -3896,6 +3896,12 @@ abstract class AppLocalizations {
   /// **'Overview'**
   String get ssh_tabOverview;
 
+  /// SSH server detail containers tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Docker'**
+  String get ssh_tabContainers;
+
   /// SSH server detail terminal tab.
   ///
   /// In en, this message translates to:
@@ -3913,6 +3919,330 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Processes'**
   String get ssh_tabProcesses;
+
+  /// Read-only SSH server tools sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Server tools'**
+  String get ssh_tools_title;
+
+  /// SSH server tools sheet subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read-only checks; nothing on the host is modified'**
+  String get ssh_tools_subtitle;
+
+  /// Systemd service inspection entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Systemd services'**
+  String get ssh_tools_services;
+
+  /// Systemd service inspection subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Inspect service state and recent logs'**
+  String get ssh_tools_servicesHint;
+
+  /// Listening ports entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Listening ports'**
+  String get ssh_tools_ports;
+
+  /// Listening ports subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show listening TCP / UDP ports'**
+  String get ssh_tools_portsHint;
+
+  /// Disk details entry.
+  ///
+  /// In en, this message translates to:
+  /// **'Disk details'**
+  String get ssh_tools_disks;
+
+  /// Disk details subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Show filesystem usage'**
+  String get ssh_tools_disksHint;
+
+  /// Running containers filter.
+  ///
+  /// In en, this message translates to:
+  /// **'Running'**
+  String get ssh_containers_running;
+
+  /// All containers filter.
+  ///
+  /// In en, this message translates to:
+  /// **'All'**
+  String get ssh_containers_all;
+
+  /// Empty container list.
+  ///
+  /// In en, this message translates to:
+  /// **'No containers'**
+  String get ssh_containers_empty;
+
+  /// No running containers empty state.
+  ///
+  /// In en, this message translates to:
+  /// **'No running containers'**
+  String get ssh_containers_emptyRunning;
+
+  /// Hint for the running containers empty state.
+  ///
+  /// In en, this message translates to:
+  /// **'Switch to All to see stopped containers'**
+  String get ssh_containers_emptyRunningHint;
+
+  /// Container list load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read containers'**
+  String get ssh_containers_loadFailed;
+
+  /// Docker unavailable state.
+  ///
+  /// In en, this message translates to:
+  /// **'Docker unavailable'**
+  String get ssh_containers_unavailable;
+
+  /// Docker Compose badge.
+  ///
+  /// In en, this message translates to:
+  /// **'Compose'**
+  String get ssh_containers_compose;
+
+  /// Container ports label.
+  ///
+  /// In en, this message translates to:
+  /// **'Ports'**
+  String get ssh_containers_ports;
+
+  /// Container action sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Container actions'**
+  String get ssh_containers_details;
+
+  /// View container logs action.
+  ///
+  /// In en, this message translates to:
+  /// **'View logs'**
+  String get ssh_containers_logs;
+
+  /// View container logs action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Read the most recent 300 lines'**
+  String get ssh_containers_logsHint;
+
+  /// Start container action.
+  ///
+  /// In en, this message translates to:
+  /// **'Start'**
+  String get ssh_containers_start;
+
+  /// Stop container action.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop'**
+  String get ssh_containers_stop;
+
+  /// Restart container action.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart'**
+  String get ssh_containers_restart;
+
+  /// Start container action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Start this container'**
+  String get ssh_containers_startHint;
+
+  /// Stop container action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop the container; its service will go offline'**
+  String get ssh_containers_stopHint;
+
+  /// Restart container action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart the container to apply changes'**
+  String get ssh_containers_restartHint;
+
+  /// Stop container confirmation title.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop container?'**
+  String get ssh_containers_confirmStopTitle;
+
+  /// Stop container confirmation message.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" will stop running. Continue?'**
+  String ssh_containers_confirmStopMessage(String name);
+
+  /// Restart container confirmation title.
+  ///
+  /// In en, this message translates to:
+  /// **'Restart container?'**
+  String get ssh_containers_confirmRestartTitle;
+
+  /// Restart container confirmation message.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" will restart; the service will be briefly interrupted.'**
+  String ssh_containers_confirmRestartMessage(String name);
+
+  /// Container started toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Container started'**
+  String get ssh_containers_started;
+
+  /// Container stopped toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Container stopped'**
+  String get ssh_containers_stopped;
+
+  /// Container restarted toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Container restarted'**
+  String get ssh_containers_restarted;
+
+  /// Container operation failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Container operation failed'**
+  String get ssh_containers_operationFailed;
+
+  /// Container logs sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Container logs'**
+  String get ssh_containers_logsTitle;
+
+  /// Empty container logs.
+  ///
+  /// In en, this message translates to:
+  /// **'No logs'**
+  String get ssh_containers_logsEmpty;
+
+  /// Container logs load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read logs'**
+  String get ssh_containers_logsLoadFailed;
+
+  /// Copy all container logs.
+  ///
+  /// In en, this message translates to:
+  /// **'Copy all'**
+  String get ssh_containers_copyLogs;
+
+  /// Systemd service search placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search services'**
+  String get ssh_services_searchPlaceholder;
+
+  /// Empty systemd service list.
+  ///
+  /// In en, this message translates to:
+  /// **'No matching services'**
+  String get ssh_services_empty;
+
+  /// Systemd service load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read services'**
+  String get ssh_services_loadFailed;
+
+  /// Systemd service status section.
+  ///
+  /// In en, this message translates to:
+  /// **'Service status'**
+  String get ssh_services_statusTitle;
+
+  /// Systemd service logs section.
+  ///
+  /// In en, this message translates to:
+  /// **'Recent logs'**
+  String get ssh_services_logsTitle;
+
+  /// Empty systemd logs.
+  ///
+  /// In en, this message translates to:
+  /// **'No logs'**
+  String get ssh_services_logsEmpty;
+
+  /// Systemd service status load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read service status'**
+  String get ssh_services_statusLoadFailed;
+
+  /// Empty listening ports.
+  ///
+  /// In en, this message translates to:
+  /// **'No listening ports'**
+  String get ssh_ports_empty;
+
+  /// Listening ports load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read listening ports'**
+  String get ssh_ports_loadFailed;
+
+  /// Listening port process label.
+  ///
+  /// In en, this message translates to:
+  /// **'Process'**
+  String get ssh_ports_process;
+
+  /// Empty disk details.
+  ///
+  /// In en, this message translates to:
+  /// **'No disk information'**
+  String get ssh_disks_empty;
+
+  /// Disk details load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read disk information'**
+  String get ssh_disks_loadFailed;
+
+  /// Disk usage summary.
+  ///
+  /// In en, this message translates to:
+  /// **'{used} of {total} used'**
+  String ssh_disks_usedOf(String used, String total);
+
+  /// Delete selected SSH files title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete selected items'**
+  String get ssh_files_deleteSelectedTitle;
+
+  /// Delete selected SSH files confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete the {count} selected items?'**
+  String ssh_files_deleteSelectedConfirm(int count);
+
+  /// Deleted selected SSH files toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted {count} items'**
+  String ssh_files_deletedCount(int count);
 
   /// Terminal connecting status.
   ///

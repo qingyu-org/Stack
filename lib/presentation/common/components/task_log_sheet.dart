@@ -82,6 +82,7 @@ class _TaskLogSheetState extends ConsumerState<_TaskLogSheet> {
   Future<void> _load() async {
     try {
       final log = await widget.reader(widget.taskID);
+      if (!mounted) return;
       final isExecuting = await _resolveExecuting(log);
       if (!mounted) return;
       setState(() {
@@ -114,8 +115,10 @@ class _TaskLogSheetState extends ConsumerState<_TaskLogSheet> {
     // Compatibility: 1Panel v2.0.0 omits taskStatus/isExecuting in task logs.
     // This endpoint only reports whether any task is executing, so it is a
     // coarse fallback and may be affected by unrelated tasks.
+    if (!mounted) return false;
     final serverId = ref.read(activeServerIdProvider);
     final client = await ref.read(dioClientProvider(serverId).future);
+    if (!mounted) return false;
     final count = await LogApi(client).getExecutingTaskCount();
     return count > 0;
   }

@@ -238,7 +238,7 @@ class _ContainerActionList extends ConsumerWidget {
               iconColor: CupertinoColors.systemIndigo,
               title: context.l10n.containers_upgradeContainer,
               subtitle: Text(context.l10n.containers_upgradeContainerSubtitle),
-              onTap: () => openContainerUpgradeDialog(context, ref, container),
+              onTap: () => openContainerUpgradeDialog(context, container),
             ),
           ],
         ),
@@ -261,7 +261,7 @@ class _ContainerActionList extends ConsumerWidget {
               iconColor: CupertinoColors.systemIndigo,
               title: context.l10n.containers_commitImage,
               subtitle: Text(context.l10n.containers_commitImageSubtitle),
-              onTap: () => showContainerCommitSheet(context, ref, container),
+              onTap: () => showContainerCommitSheet(context, container),
             ),
           ],
         ),
@@ -388,7 +388,6 @@ String _getOperationName(BuildContext context, String op) {
 
 Future<void> showContainerCommitSheet(
   BuildContext context,
-  WidgetRef ref,
   ContainerItemDto container,
 ) async {
   final taskID = await showProviderDialog<String>(
@@ -398,13 +397,18 @@ Future<void> showContainerCommitSheet(
   );
 
   if (taskID != null && context.mounted) {
+    // 日志面板会在本面板关闭后继续轮询，必须使用 ProviderContainer 而不是
+    // 本面板的 ref，否则读取日志时会触发 “Cannot use ref after the widget
+    // was disposed”。
+    final providerContainer = ProviderScope.containerOf(context, listen: false);
+    final title = context.l10n.containers_commitImageTask(container.name);
     Navigator.of(context).pop();
 
     showTaskLogSheet(
       context,
-      title: context.l10n.containers_commitImageTask(container.name),
+      title: title,
       taskID: taskID,
-      reader: (id) => ref
+      reader: (id) => providerContainer
           .read(containerRepositoryProvider.future)
           .then((r) => r.readTaskLog(id)),
     );
@@ -413,7 +417,6 @@ Future<void> showContainerCommitSheet(
 
 Future<void> openContainerUpgradeDialog(
   BuildContext context,
-  WidgetRef ref,
   ContainerItemDto container,
 ) async {
   final taskID = await showProviderDialog<String>(
@@ -423,13 +426,16 @@ Future<void> openContainerUpgradeDialog(
   );
 
   if (taskID != null && context.mounted) {
+    // 同 showContainerCommitSheet：本面板关闭后日志面板仍会继续轮询。
+    final providerContainer = ProviderScope.containerOf(context, listen: false);
+    final title = context.l10n.containers_upgradeContainerTask(container.name);
     Navigator.of(context).pop();
 
     showTaskLogSheet(
       context,
-      title: context.l10n.containers_upgradeContainerTask(container.name),
+      title: title,
       taskID: taskID,
-      reader: (id) => ref
+      reader: (id) => providerContainer
           .read(containerRepositoryProvider.future)
           .then((r) => r.readTaskLog(id)),
     );

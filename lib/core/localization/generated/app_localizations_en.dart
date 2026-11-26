@@ -2091,6 +2091,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ssh_tabOverview => 'Overview';
 
   @override
+  String get ssh_tabContainers => 'Docker';
+
+  @override
   String get ssh_tabTerminal => 'Terminal';
 
   @override
@@ -2098,6 +2101,182 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ssh_tabProcesses => 'Processes';
+
+  @override
+  String get ssh_tools_title => 'Server tools';
+
+  @override
+  String get ssh_tools_subtitle =>
+      'Read-only checks; nothing on the host is modified';
+
+  @override
+  String get ssh_tools_services => 'Systemd services';
+
+  @override
+  String get ssh_tools_servicesHint => 'Inspect service state and recent logs';
+
+  @override
+  String get ssh_tools_ports => 'Listening ports';
+
+  @override
+  String get ssh_tools_portsHint => 'Show listening TCP / UDP ports';
+
+  @override
+  String get ssh_tools_disks => 'Disk details';
+
+  @override
+  String get ssh_tools_disksHint => 'Show filesystem usage';
+
+  @override
+  String get ssh_containers_running => 'Running';
+
+  @override
+  String get ssh_containers_all => 'All';
+
+  @override
+  String get ssh_containers_empty => 'No containers';
+
+  @override
+  String get ssh_containers_emptyRunning => 'No running containers';
+
+  @override
+  String get ssh_containers_emptyRunningHint =>
+      'Switch to All to see stopped containers';
+
+  @override
+  String get ssh_containers_loadFailed => 'Failed to read containers';
+
+  @override
+  String get ssh_containers_unavailable => 'Docker unavailable';
+
+  @override
+  String get ssh_containers_compose => 'Compose';
+
+  @override
+  String get ssh_containers_ports => 'Ports';
+
+  @override
+  String get ssh_containers_details => 'Container actions';
+
+  @override
+  String get ssh_containers_logs => 'View logs';
+
+  @override
+  String get ssh_containers_logsHint => 'Read the most recent 300 lines';
+
+  @override
+  String get ssh_containers_start => 'Start';
+
+  @override
+  String get ssh_containers_stop => 'Stop';
+
+  @override
+  String get ssh_containers_restart => 'Restart';
+
+  @override
+  String get ssh_containers_startHint => 'Start this container';
+
+  @override
+  String get ssh_containers_stopHint =>
+      'Stop the container; its service will go offline';
+
+  @override
+  String get ssh_containers_restartHint =>
+      'Restart the container to apply changes';
+
+  @override
+  String get ssh_containers_confirmStopTitle => 'Stop container?';
+
+  @override
+  String ssh_containers_confirmStopMessage(String name) {
+    return '\"$name\" will stop running. Continue?';
+  }
+
+  @override
+  String get ssh_containers_confirmRestartTitle => 'Restart container?';
+
+  @override
+  String ssh_containers_confirmRestartMessage(String name) {
+    return '\"$name\" will restart; the service will be briefly interrupted.';
+  }
+
+  @override
+  String get ssh_containers_started => 'Container started';
+
+  @override
+  String get ssh_containers_stopped => 'Container stopped';
+
+  @override
+  String get ssh_containers_restarted => 'Container restarted';
+
+  @override
+  String get ssh_containers_operationFailed => 'Container operation failed';
+
+  @override
+  String get ssh_containers_logsTitle => 'Container logs';
+
+  @override
+  String get ssh_containers_logsEmpty => 'No logs';
+
+  @override
+  String get ssh_containers_logsLoadFailed => 'Failed to read logs';
+
+  @override
+  String get ssh_containers_copyLogs => 'Copy all';
+
+  @override
+  String get ssh_services_searchPlaceholder => 'Search services';
+
+  @override
+  String get ssh_services_empty => 'No matching services';
+
+  @override
+  String get ssh_services_loadFailed => 'Failed to read services';
+
+  @override
+  String get ssh_services_statusTitle => 'Service status';
+
+  @override
+  String get ssh_services_logsTitle => 'Recent logs';
+
+  @override
+  String get ssh_services_logsEmpty => 'No logs';
+
+  @override
+  String get ssh_services_statusLoadFailed => 'Failed to read service status';
+
+  @override
+  String get ssh_ports_empty => 'No listening ports';
+
+  @override
+  String get ssh_ports_loadFailed => 'Failed to read listening ports';
+
+  @override
+  String get ssh_ports_process => 'Process';
+
+  @override
+  String get ssh_disks_empty => 'No disk information';
+
+  @override
+  String get ssh_disks_loadFailed => 'Failed to read disk information';
+
+  @override
+  String ssh_disks_usedOf(String used, String total) {
+    return '$used of $total used';
+  }
+
+  @override
+  String get ssh_files_deleteSelectedTitle => 'Delete selected items';
+
+  @override
+  String ssh_files_deleteSelectedConfirm(int count) {
+    return 'Delete the $count selected items?';
+  }
+
+  @override
+  String ssh_files_deletedCount(int count) {
+    return 'Deleted $count items';
+  }
 
   @override
   String get ssh_terminal_connecting => 'Opening SSH terminal...';

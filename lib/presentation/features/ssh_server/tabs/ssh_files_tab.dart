@@ -25,7 +25,6 @@ import '../../../common/components/app_action_components.dart';
 import '../../../common/components/app_code_editor.dart';
 import '../../../common/components/app_empty_state.dart';
 import '../../../common/components/skeleton_item.dart';
-import '../../../common/components/swipe_action_cell.dart';
 
 class SshFilesTab extends ConsumerStatefulWidget {
   const SshFilesTab({
@@ -43,13 +42,16 @@ class SshFilesTab extends ConsumerStatefulWidget {
 
 class _SshFilesTabState extends ConsumerState<SshFilesTab> {
   final SshFileService _service = SshFileService();
+  final TextEditingController _searchController = TextEditingController();
 
   String _path = '.';
   List<SshRemoteFile> _files = const [];
+  final Set<String> _selectedPaths = {};
   bool _initializing = true;
   bool _loading = false;
   bool _busy = false;
-  bool _inFlight = false;
+  bool _searching = false;
+  String _query = '';
   Object? _error;
 
   @override
@@ -57,6 +59,22 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
     super.initState();
     _initialize();
   }
+
+  @override
+  void dispose() {
+    _searchController.dispose();
+    super.dispose();
+  }
+
+  List<SshRemoteFile> get _visibleFiles {
+    if (_query.isEmpty) return _files;
+    final query = _query.toLowerCase();
+    return _files
+        .where((file) => file.name.toLowerCase().contains(query))
+        .toList();
+  }
+
+  bool get _selectionMode => _selectedPaths.isNotEmpty;
 
   Future<void> _initialize() async {
     try {
@@ -81,8 +99,8 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
   }
 
   Future<void> _load({bool showLoading = false}) async {
-    if (_inFlight) return;
-    _inFlight = true;
+    // 目录可能在加载期间被切换；只把当前目录的结果写回界面。
+    final path = _path;
     if (showLoading && mounted) {
       setState(() {
         _loading = true;
@@ -93,24 +111,25 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
       final connection = await ref
           .read(sshConnectionManagerProvider)
           .get(widget.serverId);
-      final files = await _service.list(connection, _path);
-      if (!mounted) return;
+      final files = await _service.list(connection, path);
+      if (!mounted || path != _path) return;
       setState(() {
         _files = files;
+        _selectedPaths.removeWhere(
+          (selected) => !files.any((file) => file.path == selected),
+        );
         _loading = false;
         _error = null;
         _initializing = false;
       });
     } catch (error) {
-      if (!mounted) return;
+      if (!mounted || path != _path) return;
       ref.read(sshConnectionManagerProvider).invalidateIfIdle(widget.serverId);
       setState(() {
         _loading = false;
         _error = error;
         _initializing = false;
       });
-    } finally {
-      _inFlight = false;
     }
   }
 
@@ -119,10 +138,96 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
     setState(() {
       _path = path;
       _files = const [];
+      _selectedPaths.clear();
+      _query = '';
+      _searching = false;
+      _searchController.clear();
       _loading = true;
       _error = null;
     });
     await _load();
+  }
+
+  void _toggleSelection(SshRemoteFile file) {
+    setState(() {
+      if (!_selectedPaths.add(file.path)) {
+        _selectedPaths.remove(file.path);
+      }
+    });
+  }
+
+  void _clearSelection() {
+    if (_selectedPaths.isEmpty) return;
+    setState(_selectedPaths.clear);
+  }
+
+  void _toggleSearch() {
+    setState(() {
+      _searching = !_searching;
+      if (!_searching) {
+        _query = '';
+        _searchController.clear();
+      }
+      _selectedPaths.clear();
+    });
+  }
+
+  Future<void> _deleteSelected() async {
+    if (_busy || _selectedPaths.isEmpty) return;
+    final selected = _files
+        .where((file) => _selectedPaths.contains(file.path))
+        .toList(growable: false);
+    if (selected.isEmpty) return;
+    final l10n = context.l10n;
+    final confirmed = await showCupertinoDialog<bool>(
+      context: context,
+      builder: (dialogContext) => CupertinoAlertDialog(
+        title: Text(l10n.ssh_files_deleteSelectedTitle),
+        content: Text(l10n.ssh_files_deleteSelectedConfirm(selected.length)),
+        actions: [
+          CupertinoDialogAction(
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.common_cancel),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l10n.ssh_files_delete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true || !mounted) return;
+
+    setState(() => _busy = true);
+    var deleted = 0;
+    Object? firstError;
+    try {
+      final connection = await ref
+          .read(sshConnectionManagerProvider)
+          .get(widget.serverId);
+      for (final file in selected) {
+        try {
+          await _service.delete(connection, file);
+          deleted++;
+        } catch (error) {
+          firstError ??= error;
+        }
+      }
+      if (!mounted) return;
+      _selectedPaths.clear();
+      await _load();
+      if (!mounted) return;
+      if (firstError != null) {
+        _showError(l10n.ssh_files_actionFailed, firstError);
+      } else {
+        showAppSuccessToast(l10n.ssh_files_deletedCount(deleted));
+      }
+    } catch (error) {
+      if (mounted) _showError(l10n.ssh_files_actionFailed, error);
+    } finally {
+      if (mounted) setState(() => _busy = false);
+    }
   }
 
   Future<void> _openFile(SshRemoteFile file) async {
@@ -472,58 +577,135 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
                 width: 0.5,
               ),
             ),
-            child: Row(
-              children: [
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(36, 36),
-                  onPressed: isRoot
-                      ? null
-                      : () => _navigateTo(sshParentPath(_path)),
-                  child: Icon(
-                    TablerIcons.arrow_up,
-                    size: 17,
-                    color: isRoot
-                        ? AppColors.tertiaryLabel(context)
-                        : AppColors.label(context),
-                  ),
-                ),
-                Expanded(
-                  child: SingleChildScrollView(
-                    scrollDirection: Axis.horizontal,
-                    child: _PathBreadcrumb(
-                      path: _path,
-                      onNavigate: _navigateTo,
-                    ),
-                  ),
-                ),
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(36, 36),
-                  onPressed: _loading ? null : () => _load(showLoading: true),
-                  child: Icon(
-                    TablerIcons.refresh,
-                    size: 17,
-                    color: AppColors.secondaryLabel(context),
-                  ),
-                ),
-                CupertinoButton(
-                  padding: EdgeInsets.zero,
-                  minimumSize: const Size(36, 36),
-                  onPressed: _busy ? null : _showActionsMenu,
-                  child: _busy
-                      ? const CupertinoActivityIndicator(radius: 8)
-                      : Icon(
-                          TablerIcons.dots_vertical,
+            child: _searching
+                ? Row(
+                    children: [
+                      Expanded(
+                        child: SizedBox(
+                          height: 34,
+                          child: CupertinoSearchTextField(
+                            controller: _searchController,
+                            autofocus: true,
+                            placeholder: l10n.files_searchPlaceholder,
+                            backgroundColor: AppColors.tertiaryBackground(
+                              context,
+                            ).withValues(alpha: 0.35),
+                            borderRadius: BorderRadius.circular(11),
+                            placeholderStyle: TextStyle(
+                              fontSize: 12.5,
+                              color: AppColors.tertiaryLabel(context),
+                            ),
+                            itemColor: AppColors.secondaryLabel(context),
+                            style: TextStyle(
+                              fontSize: 13,
+                              color: AppColors.label(context),
+                            ),
+                            onChanged: (value) =>
+                                setState(() => _query = value.trim()),
+                          ),
+                        ),
+                      ),
+                      CupertinoButton(
+                        padding: const EdgeInsets.symmetric(horizontal: 8),
+                        minimumSize: const Size(48, 34),
+                        onPressed: _toggleSearch,
+                        child: Text(
+                          l10n.common_cancel,
+                          style: const TextStyle(fontSize: 13),
+                        ),
+                      ),
+                    ],
+                  )
+                : Row(
+                    children: [
+                      CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(36, 36),
+                        onPressed: isRoot
+                            ? null
+                            : () => _navigateTo(sshParentPath(_path)),
+                        child: Icon(
+                          TablerIcons.arrow_up,
+                          size: 17,
+                          color: isRoot
+                              ? AppColors.tertiaryLabel(context)
+                              : AppColors.label(context),
+                        ),
+                      ),
+                      Expanded(
+                        child: SingleChildScrollView(
+                          scrollDirection: Axis.horizontal,
+                          child: _PathBreadcrumb(
+                            path: _path,
+                            onNavigate: _navigateTo,
+                          ),
+                        ),
+                      ),
+                      CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(34, 36),
+                        onPressed: _selectionMode ? null : _toggleSearch,
+                        child: Icon(
+                          TablerIcons.search,
+                          size: 17,
+                          color: _selectionMode
+                              ? AppColors.tertiaryLabel(context)
+                              : AppColors.secondaryLabel(context),
+                        ),
+                      ),
+                      CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(34, 36),
+                        onPressed: _loading
+                            ? null
+                            : () => _load(showLoading: true),
+                        child: Icon(
+                          TablerIcons.refresh,
                           size: 17,
                           color: AppColors.secondaryLabel(context),
                         ),
-                ),
-              ],
-            ),
+                      ),
+                      CupertinoButton(
+                        padding: EdgeInsets.zero,
+                        minimumSize: const Size(34, 36),
+                        onPressed: _busy ? null : _showActionsMenu,
+                        child: _busy
+                            ? const CupertinoActivityIndicator(radius: 8)
+                            : Icon(
+                                TablerIcons.dots_vertical,
+                                size: 17,
+                                color: AppColors.secondaryLabel(context),
+                              ),
+                      ),
+                    ],
+                  ),
           ),
         ),
         Expanded(child: _buildBody(l10n)),
+        if (_selectionMode)
+          _SelectionBar(
+            count: _selectedPaths.length,
+            allSelected:
+                _visibleFiles.isNotEmpty &&
+                _visibleFiles.every(
+                  (file) => _selectedPaths.contains(file.path),
+                ),
+            onClose: _clearSelection,
+            onSelectAll: () {
+              setState(() {
+                if (_visibleFiles.every(
+                  (file) => _selectedPaths.contains(file.path),
+                )) {
+                  _selectedPaths.clear();
+                } else {
+                  _selectedPaths
+                    ..clear()
+                    ..addAll(_visibleFiles.map((file) => file.path));
+                }
+              });
+            },
+            onDelete: _deleteSelected,
+          ),
       ],
     );
   }
@@ -531,11 +713,11 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
   Widget _buildBody(AppLocalizations l10n) {
     if (_initializing || (_loading && _files.isEmpty && _error == null)) {
       return ListView.builder(
-        padding: const EdgeInsets.fromLTRB(16, 2, 16, 24),
+        padding: const EdgeInsets.only(top: 2, bottom: 24),
         itemCount: 8,
         itemBuilder: (_, _) => const Padding(
-          padding: EdgeInsets.only(bottom: 7),
-          child: SkeletonItem(width: double.infinity, height: 58),
+          padding: EdgeInsets.symmetric(horizontal: 16),
+          child: SkeletonItem(width: double.infinity, height: 54),
         ),
       );
     }
@@ -557,7 +739,9 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
         ],
       );
     }
-    if (_files.isEmpty) {
+
+    final visible = _visibleFiles;
+    if (visible.isEmpty) {
       return ListView(
         physics: const AlwaysScrollableScrollPhysics(
           parent: BouncingScrollPhysics(),
@@ -566,8 +750,13 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
         children: [
           SizedBox(height: MediaQuery.sizeOf(context).height * 0.08),
           AppEmptyState(
-            icon: TablerIcons.folder_open,
-            title: l10n.ssh_files_empty,
+            icon: _query.isEmpty ? TablerIcons.folder_open : TablerIcons.search,
+            title: _query.isEmpty
+                ? l10n.ssh_files_empty
+                : l10n.files_noSearchResultsTitle,
+            subtitle: _query.isEmpty
+                ? null
+                : l10n.files_noSearchResultsSubtitle,
           ),
         ],
       );
@@ -580,33 +769,25 @@ class _SshFilesTabState extends ConsumerState<SshFilesTab> {
       slivers: [
         CupertinoSliverRefreshControl(onRefresh: _load),
         SliverPadding(
-          padding: const EdgeInsets.fromLTRB(16, 2, 16, 24),
+          padding: const EdgeInsets.only(top: 2, bottom: 24),
           sliver: SliverList.builder(
-            itemCount: _files.length,
+            itemCount: visible.length,
             itemBuilder: (context, index) {
-              final file = _files[index];
-              return Padding(
-                padding: const EdgeInsets.only(bottom: 7),
-                child: SwipeActionCell(
-                  actions: [
-                    SwipeAction(
-                      label: l10n.ssh_files_delete,
-                      icon: CupertinoIcons.delete,
-                      color: CupertinoColors.systemRed,
-                      onTap: () => _delete(file),
-                    ),
-                  ],
-                  child: _FileRow(
-                    file: file,
-                    onTap: () {
-                      if (file.isDirectory) {
-                        _navigateTo(file.path);
-                      } else {
-                        _openFile(file);
-                      }
-                    },
-                  ),
-                ),
+              final file = visible[index];
+              return _FileRow(
+                file: file,
+                selected: _selectedPaths.contains(file.path),
+                selectionMode: _selectionMode,
+                onTap: () {
+                  if (_selectionMode) {
+                    _toggleSelection(file);
+                  } else if (file.isDirectory) {
+                    _navigateTo(file.path);
+                  } else {
+                    _openFile(file);
+                  }
+                },
+                onLongPress: () => _toggleSelection(file),
               );
             },
           ),
@@ -684,50 +865,61 @@ class _PathBreadcrumb extends StatelessWidget {
 }
 
 class _FileRow extends StatelessWidget {
-  const _FileRow({required this.file, required this.onTap});
+  const _FileRow({
+    required this.file,
+    required this.selected,
+    required this.selectionMode,
+    required this.onTap,
+    required this.onLongPress,
+  });
 
   final SshRemoteFile file;
+  final bool selected;
+  final bool selectionMode;
   final VoidCallback onTap;
+  final VoidCallback onLongPress;
 
   @override
   Widget build(BuildContext context) {
+    final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
     final color = file.isDirectory
         ? CupertinoColors.systemOrange.resolveFrom(context)
         : _fileColor(context, file.name);
     final icon = file.isDirectory ? TablerIcons.folder : _fileIcon(file.name);
-
     final meta = <String>[
-      if (!file.isDirectory) Formatter.adaptiveBytes(file.size),
       if (file.modifiedAt != null)
         DateFormat('MM-dd HH:mm').format(file.modifiedAt!),
-      if (file.permissions.isNotEmpty) file.permissions,
+      if (file.isDirectory && file.permissions.isNotEmpty) file.permissions,
+      if (!file.isDirectory) Formatter.adaptiveBytes(file.size),
     ];
 
     return GestureDetector(
       onTap: onTap,
+      onLongPress: onLongPress,
       behavior: HitTestBehavior.opaque,
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 12, vertical: 10),
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
         decoration: BoxDecoration(
-          color: AppColors.secondaryBackground(context).withValues(alpha: 0.58),
-          borderRadius: BorderRadius.circular(12),
-          border: Border.all(
-            color: AppColors.separator(context).withValues(alpha: 0.2),
-            width: 0.5,
+          color: selected
+              ? CupertinoColors.activeBlue.withValues(
+                  alpha: isDark ? 0.15 : 0.08,
+                )
+              : null,
+          border: Border(
+            bottom: BorderSide(
+              color: AppColors.separator(context).withValues(alpha: 0.1),
+              width: 0.5,
+            ),
           ),
         ),
         child: Row(
           children: [
-            Container(
-              width: 34,
-              height: 34,
-              decoration: BoxDecoration(
-                color: color.withValues(alpha: 0.1),
-                borderRadius: BorderRadius.circular(9),
-              ),
-              child: Icon(icon, size: 18, color: color),
-            ),
-            const SizedBox(width: 11),
+            if (selectionMode) ...[
+              _SelectionIndicator(selected: selected),
+              const SizedBox(width: 14),
+            ],
+            Icon(icon, size: 32, color: color),
+            const SizedBox(width: 14),
             Expanded(
               child: Column(
                 crossAxisAlignment: CrossAxisAlignment.start,
@@ -737,30 +929,30 @@ class _FileRow extends StatelessWidget {
                     maxLines: 1,
                     overflow: TextOverflow.ellipsis,
                     style: TextStyle(
-                      fontSize: 14,
+                      fontSize: 16,
                       fontWeight: FontWeight.w600,
                       color: AppColors.label(context),
                     ),
                   ),
                   if (meta.isNotEmpty) ...[
-                    const SizedBox(height: 3),
+                    const SizedBox(height: 2),
                     Text(
                       meta.join('  ·  '),
                       maxLines: 1,
                       overflow: TextOverflow.ellipsis,
                       style: TextStyle(
-                        fontSize: 10.5,
-                        color: AppColors.tertiaryLabel(context),
+                        fontSize: 12,
+                        color: AppColors.secondaryLabel(context),
                       ),
                     ),
                   ],
                 ],
               ),
             ),
-            if (file.isDirectory)
+            if (!selectionMode)
               Icon(
-                TablerIcons.chevron_right,
-                size: 15,
+                CupertinoIcons.chevron_right,
+                size: 14,
                 color: AppColors.tertiaryLabel(context),
               ),
           ],
@@ -826,6 +1018,128 @@ class _FileRow extends StatelessWidget {
       return CupertinoColors.systemPurple.resolveFrom(context);
     }
     return AppColors.secondaryLabel(context);
+  }
+}
+
+class _SelectionIndicator extends StatelessWidget {
+  const _SelectionIndicator({required this.selected});
+
+  final bool selected;
+
+  @override
+  Widget build(BuildContext context) {
+    return Container(
+      width: 22,
+      height: 22,
+      decoration: BoxDecoration(
+        shape: BoxShape.circle,
+        color: selected ? CupertinoColors.activeBlue : null,
+        border: Border.all(
+          color: selected
+              ? CupertinoColors.activeBlue
+              : AppColors.separator(context).withValues(alpha: 0.5),
+          width: 1.5,
+        ),
+      ),
+      child: selected
+          ? const Icon(
+              CupertinoIcons.checkmark,
+              size: 14,
+              color: CupertinoColors.white,
+            )
+          : null,
+    );
+  }
+}
+
+class _SelectionBar extends StatelessWidget {
+  const _SelectionBar({
+    required this.count,
+    required this.allSelected,
+    required this.onClose,
+    required this.onSelectAll,
+    required this.onDelete,
+  });
+
+  final int count;
+  final bool allSelected;
+  final VoidCallback onClose;
+  final VoidCallback onSelectAll;
+  final VoidCallback onDelete;
+
+  @override
+  Widget build(BuildContext context) {
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.fromLTRB(16, 6, 16, 8),
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 8),
+        decoration: BoxDecoration(
+          color: AppColors.secondaryBackground(context).withValues(alpha: 0.94),
+          borderRadius: BorderRadius.circular(18),
+          border: Border.all(
+            color: AppColors.separator(context).withValues(alpha: 0.14),
+            width: 0.5,
+          ),
+          boxShadow: [
+            BoxShadow(
+              color: CupertinoColors.black.withValues(alpha: 0.06),
+              blurRadius: 14,
+              offset: const Offset(0, 4),
+            ),
+          ],
+        ),
+        child: Row(
+          children: [
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              minimumSize: const Size(32, 32),
+              onPressed: onClose,
+              child: Icon(
+                CupertinoIcons.xmark_circle_fill,
+                size: 20,
+                color: AppColors.tertiaryLabel(context),
+              ),
+            ),
+            const SizedBox(width: 6),
+            Expanded(
+              child: Text(
+                l10n.files_selectedCount(count),
+                maxLines: 1,
+                overflow: TextOverflow.ellipsis,
+                style: TextStyle(
+                  fontSize: 13.5,
+                  fontWeight: FontWeight.w600,
+                  color: AppColors.label(context),
+                ),
+              ),
+            ),
+            CupertinoButton(
+              padding: const EdgeInsets.symmetric(horizontal: 8),
+              minimumSize: const Size(0, 32),
+              onPressed: onSelectAll,
+              child: Text(
+                allSelected ? l10n.files_clearSelection : l10n.files_selectAll,
+                style: const TextStyle(
+                  fontSize: 13,
+                  fontWeight: FontWeight.w600,
+                ),
+              ),
+            ),
+            CupertinoButton(
+              padding: EdgeInsets.zero,
+              minimumSize: const Size(32, 32),
+              onPressed: onDelete,
+              child: Icon(
+                TablerIcons.trash,
+                size: 19,
+                color: CupertinoColors.systemRed.resolveFrom(context),
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
   }
 }
 

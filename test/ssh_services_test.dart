@@ -3,9 +3,11 @@ import 'dart:typed_data';
 
 import 'package:flutter_test/flutter_test.dart';
 import 'package:mono_dash/data/services/ssh/ssh_connection.dart';
+import 'package:mono_dash/data/services/ssh/ssh_containers.dart';
 import 'package:mono_dash/data/services/ssh/ssh_files.dart';
 import 'package:mono_dash/data/services/ssh/ssh_metrics.dart';
 import 'package:mono_dash/data/services/ssh/ssh_processes.dart';
+import 'package:mono_dash/data/services/ssh/ssh_system.dart';
 import 'package:mono_dash/domain/entities/panel_type.dart';
 import 'package:mono_dash/domain/entities/server.dart';
 
@@ -125,6 +127,115 @@ void main() {
       expect(isValidSshEntryName(r'a\b'), isFalse);
     });
   });
+
+  group('parseSshContainerList', () {
+    test('parses docker ps JSON lines and compose labels', () {
+      final containers = parseSshContainerList(_sampleContainers);
+      expect(containers, hasLength(2));
+      expect(containers.first.name, 'web-nginx-1');
+      expect(containers.first.shortId, '0123456789ab');
+      expect(containers.first.isRunning, isTrue);
+      expect(containers.first.composeProject, 'web');
+      expect(containers.first.composeService, 'nginx');
+      expect(containers.first.ports, contains('80->80/tcp'));
+      expect(containers.last.isRunning, isFalse);
+      expect(containers.last.composeProject, isEmpty);
+    });
+
+    test('ignores non-JSON warning lines', () {
+      final containers = parseSshContainerList(
+        'WARNING: something\n$_sampleContainers',
+      );
+      expect(containers, hasLength(2));
+    });
+  });
+
+  group('parseSshServices', () {
+    test('parses units and sorts failed, running, then others', () {
+      final services = parseSshServices(_sampleServices);
+      expect(services.map((service) => service.unit), [
+        'bad.service',
+        'nginx.service',
+        'ssh.service',
+        'docker.service',
+      ]);
+      expect(services.first.isFailed, isTrue);
+      expect(services[1].isRunning, isTrue);
+      expect(services[1].description, 'A high performance web server');
+      expect(services.last.activeState, 'inactive');
+    });
+
+    test('strips the leading state marker from unit lines', () {
+      final services = parseSshServices(
+        '● api.service loaded active running API server\n',
+      );
+      expect(services.single.unit, 'api.service');
+      expect(services.single.isRunning, isTrue);
+    });
+  });
+
+  group('parseSshPorts', () {
+    test('parses ss output including IPv6 endpoints', () {
+      final ports = parseSshPorts(_sampleSsPorts);
+      expect(ports, hasLength(3));
+      expect(ports.map((port) => port.endpoint), [
+        '0.0.0.0:22',
+        '127.0.0.53:53',
+        '[::]:80',
+      ]);
+      expect(ports[0].process, 'sshd');
+      expect(ports[0].pid, 123);
+      expect(ports[1].protocol, 'udp');
+    });
+
+    test('parses netstat output with numeric pid/process column', () {
+      final ports = parseSshPorts(
+        'tcp 0 0 0.0.0.0:8080 0.0.0.0:* LISTEN 4321/nginx\n',
+      );
+      expect(ports.single.port, 8080);
+      expect(ports.single.process, 'nginx');
+      expect(ports.single.pid, 4321);
+    });
+
+    test('parses ss output when the process column is unavailable', () {
+      final ports = parseSshPorts(
+        'tcp   LISTEN 0      4096         0.0.0.0:22        0.0.0.0:*\n'
+        'udp   UNCONN 0      0                [::]:53           [::]:*\n',
+      );
+      expect(ports.map((port) => port.endpoint), ['0.0.0.0:22', '[::]:53']);
+      expect(ports.every((port) => port.process.isEmpty), isTrue);
+      expect(ports.every((port) => port.pid == null), isTrue);
+    });
+
+    test('parses netstat UDP rows without a state column', () {
+      final ports = parseSshPorts(
+        'udp 0 0 0.0.0.0:68 0.0.0.0:* 1234/dhclient\n'
+        'udp 0 0 127.0.0.1:323 0.0.0.0:* -\n',
+      );
+      expect(ports, hasLength(2));
+      expect(ports.first.port, 68);
+      expect(ports.first.process, 'dhclient');
+      expect(ports.last.port, 323);
+      expect(ports.last.process, isEmpty);
+      expect(ports.last.pid, isNull);
+    });
+  });
+
+  group('parseSshDisks', () {
+    test('parses df output and skips pseudo filesystems', () {
+      final disks = parseSshDisks(_sampleDisks);
+      expect(disks, hasLength(2));
+      expect(disks.first.mount, '/');
+      expect(disks.first.totalBytes, 100000000 * 1024);
+      expect(disks.first.usedPercent, 45);
+      expect(disks.last.mount, '/data');
+    });
+
+    test('derives usage when capacity is unavailable', () {
+      final disks = parseSshDisks('/dev/sda1 1000 250 750 - /mnt\n');
+      expect(disks.single.usedPercent, 25);
+    });
+  });
 }
 
 const _sampleMetrics = '''
@@ -187,4 +298,29 @@ kvm
 __FT_PROXY__
 
 __FT_END__
+''';
+
+const _sampleContainers = '''
+{"Command":"\\"nginx -g 'daemon off;'\\"","CreatedAt":"2026-11-27 08:00:00 +0800 CST","ID":"0123456789abcdef0123456789abcdef0123456789abcdef0123456789abcdef","Image":"nginx:1.27","Labels":"com.docker.compose.project=web,com.docker.compose.service=nginx","LocalVolumes":"0","Mounts":"","Names":"web-nginx-1","Networks":"bridge","Ports":"0.0.0.0:80->80/tcp, :::80->80/tcp","RunningFor":"2 hours ago","Size":"0B","State":"running","Status":"Up 2 hours"}
+{"Command":"\\"redis-server\\"","CreatedAt":"2026-11-26 08:00:00 +0800 CST","ID":"fedcba9876543210fedcba9876543210fedcba9876543210fedcba9876543210","Image":"redis:7","Labels":"","LocalVolumes":"0","Mounts":"","Names":"cache","Networks":"bridge","Ports":"6379/tcp","RunningFor":"3 days ago","Size":"0B","State":"exited","Status":"Exited (0) 2 hours ago"}
+''';
+
+const _sampleServices = '''
+bad.service loaded failed failed Failed unit
+nginx.service loaded active running A high performance web server
+ssh.service loaded active running OpenBSD Secure Shell server
+docker.service loaded inactive dead Docker Application Container Engine
+''';
+
+const _sampleSsPorts = '''
+tcp   LISTEN 0      4096         0.0.0.0:22        0.0.0.0:*    users:(("sshd",pid=123,fd=3))
+tcp   LISTEN 0      4096            [::]:80           [::]:*    users:(("nginx",pid=456,fd=6))
+udp   UNCONN 0      0            127.0.0.53:53        0.0.0.0:*    users:(("systemd-resolve",pid=789,fd=13))
+''';
+
+const _sampleDisks = '''
+Filesystem     1024-blocks      Used Available Capacity Mounted on
+/dev/sda1       100000000  45000000  55000000      45% /
+/dev/sdb1        50000000  10000000  40000000      20% /data
+tmpfs             1000000      1000    999000       1% /run
 ''';

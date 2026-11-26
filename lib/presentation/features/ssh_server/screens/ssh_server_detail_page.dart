@@ -5,13 +5,16 @@ import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/floating_tab_bar.dart';
+import '../../../common/components/frosted_action_button.dart';
 import '../../../common/components/frosted_header.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../servers/providers/servers_provider.dart';
+import '../tabs/ssh_containers_tab.dart';
 import '../tabs/ssh_files_tab.dart';
 import '../tabs/ssh_overview_tab.dart';
 import '../tabs/ssh_processes_tab.dart';
 import '../tabs/ssh_terminal_tab.dart';
+import '../widgets/ssh_tools_sheets.dart';
 
 /// 纯 SSH 服务器详情页。
 ///
@@ -52,14 +55,19 @@ class _SshServerDetailPageState extends ConsumerState<SshServerDetailPage> {
         label: l10n.ssh_tabOverview,
       ),
       FloatingTabItemData(
-        icon: TablerIcons.terminal_2,
-        activeIcon: TablerIcons.terminal_2,
-        label: l10n.ssh_tabTerminal,
+        icon: TablerIcons.box,
+        activeIcon: TablerIcons.box,
+        label: l10n.ssh_tabContainers,
       ),
       FloatingTabItemData(
         icon: TablerIcons.folder,
         activeIcon: TablerIcons.folder,
         label: l10n.ssh_tabFiles,
+      ),
+      FloatingTabItemData(
+        icon: TablerIcons.terminal_2,
+        activeIcon: TablerIcons.terminal_2,
+        label: l10n.ssh_tabTerminal,
       ),
       FloatingTabItemData(
         icon: TablerIcons.cpu,
@@ -97,7 +105,7 @@ class _SshServerDetailPageState extends ConsumerState<SshServerDetailPage> {
                       if (_mountedTabs.contains(1))
                         TickerMode(
                           enabled: _selectedIndex == 1,
-                          child: SshTerminalTab(
+                          child: SshContainersTab(
                             serverId: widget.serverId,
                             isActive: _selectedIndex == 1,
                           ),
@@ -112,9 +120,19 @@ class _SshServerDetailPageState extends ConsumerState<SshServerDetailPage> {
                       else
                         const SizedBox.shrink(),
                       if (_mountedTabs.contains(3))
+                        TickerMode(
+                          enabled: _selectedIndex == 3,
+                          child: SshTerminalTab(
+                            serverId: widget.serverId,
+                            isActive: _selectedIndex == 3,
+                          ),
+                        )
+                      else
+                        const SizedBox.shrink(),
+                      if (_mountedTabs.contains(4))
                         SshProcessesTab(
                           serverId: widget.serverId,
-                          isActive: _selectedIndex == 3,
+                          isActive: _selectedIndex == 4,
                         )
                       else
                         const SizedBox.shrink(),
@@ -146,6 +164,16 @@ class _SshServerDetailPageState extends ConsumerState<SshServerDetailPage> {
             child: FrostedHeader(
               title: title,
               onBack: () => Navigator.of(context).maybePop(),
+              trailingBuilder: _selectedIndex == 0
+                  ? (isDark, isOverlapping) => FrostedActionButton(
+                      text: '',
+                      icon: TablerIcons.tool,
+                      isDark: isDark,
+                      isOverlapping: isOverlapping,
+                      onTap: () =>
+                          showSshToolsSheet(context, serverId: widget.serverId),
+                    )
+                  : null,
             ),
           ),
         ],

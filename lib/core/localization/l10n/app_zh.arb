@@ -633,9 +633,102 @@
   "ssh_saved": "SSH 服务器已保存",
   "ssh_connecting": "正在连接",
   "ssh_tabOverview": "概览",
+  "ssh_tabContainers": "容器",
   "ssh_tabTerminal": "终端",
   "ssh_tabFiles": "文件",
   "ssh_tabProcesses": "进程",
+  "ssh_tools_title": "运维工具",
+  "ssh_tools_subtitle": "只读检查，不会修改主机",
+  "ssh_tools_services": "Systemd 服务",
+  "ssh_tools_servicesHint": "查看服务状态与最近日志",
+  "ssh_tools_ports": "监听端口",
+  "ssh_tools_portsHint": "查看 TCP / UDP 监听端口",
+  "ssh_tools_disks": "磁盘详情",
+  "ssh_tools_disksHint": "查看文件系统使用情况",
+  "ssh_containers_running": "运行中",
+  "ssh_containers_all": "全部",
+  "ssh_containers_empty": "没有容器",
+  "ssh_containers_emptyRunning": "没有运行中的容器",
+  "ssh_containers_emptyRunningHint": "切换到「全部」查看已停止的容器",
+  "ssh_containers_loadFailed": "读取容器失败",
+  "ssh_containers_unavailable": "Docker 不可用",
+  "ssh_containers_compose": "Compose",
+  "ssh_containers_ports": "端口",
+  "ssh_containers_details": "容器操作",
+  "ssh_containers_logs": "查看日志",
+  "ssh_containers_logsHint": "读取最近 300 行日志",
+  "ssh_containers_start": "启动",
+  "ssh_containers_stop": "停止",
+  "ssh_containers_restart": "重启",
+  "ssh_containers_startHint": "启动这个容器",
+  "ssh_containers_stopHint": "停止容器，服务将中断",
+  "ssh_containers_restartHint": "重启容器使配置生效",
+  "ssh_containers_confirmStopTitle": "停止容器？",
+  "ssh_containers_confirmStopMessage": "「{name}」将停止运行，确定继续吗？",
+  "@ssh_containers_confirmStopMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "ssh_containers_confirmRestartTitle": "重启容器？",
+  "ssh_containers_confirmRestartMessage": "「{name}」将重启，期间服务会短暂中断。",
+  "@ssh_containers_confirmRestartMessage": {
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "ssh_containers_started": "容器已启动",
+  "ssh_containers_stopped": "容器已停止",
+  "ssh_containers_restarted": "容器已重启",
+  "ssh_containers_operationFailed": "容器操作失败",
+  "ssh_containers_logsTitle": "容器日志",
+  "ssh_containers_logsEmpty": "暂无日志",
+  "ssh_containers_logsLoadFailed": "读取日志失败",
+  "ssh_containers_copyLogs": "复制全部",
+  "ssh_services_searchPlaceholder": "搜索服务",
+  "ssh_services_empty": "没有匹配的服务",
+  "ssh_services_loadFailed": "读取服务失败",
+  "ssh_services_statusTitle": "服务状态",
+  "ssh_services_logsTitle": "最近日志",
+  "ssh_services_logsEmpty": "暂无日志",
+  "ssh_services_statusLoadFailed": "读取服务状态失败",
+  "ssh_ports_empty": "没有监听端口",
+  "ssh_ports_loadFailed": "读取监听端口失败",
+  "ssh_ports_process": "进程",
+  "ssh_disks_empty": "没有磁盘信息",
+  "ssh_disks_loadFailed": "读取磁盘信息失败",
+  "ssh_disks_usedOf": "已用 {used} / {total}",
+  "@ssh_disks_usedOf": {
+    "placeholders": {
+      "used": {
+        "type": "String"
+      },
+      "total": {
+        "type": "String"
+      }
+    }
+  },
+  "ssh_files_deleteSelectedTitle": "删除所选项目",
+  "ssh_files_deleteSelectedConfirm": "确定删除选中的 {count} 个项目吗？",
+  "@ssh_files_deleteSelectedConfirm": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
+  "ssh_files_deletedCount": "已删除 {count} 个项目",
+  "@ssh_files_deletedCount": {
+    "placeholders": {
+      "count": {
+        "type": "int"
+      }
+    }
+  },
   "ssh_terminal_connecting": "正在建立 SSH 终端…",
   "ssh_terminal_connected": "已连接",
   "ssh_terminal_disconnected": "连接已断开",

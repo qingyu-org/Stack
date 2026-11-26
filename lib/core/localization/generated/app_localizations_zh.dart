@@ -2036,6 +2036,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ssh_tabOverview => '概览';
 
   @override
+  String get ssh_tabContainers => '容器';
+
+  @override
   String get ssh_tabTerminal => '终端';
 
   @override
@@ -2043,6 +2046,178 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ssh_tabProcesses => '进程';
+
+  @override
+  String get ssh_tools_title => '运维工具';
+
+  @override
+  String get ssh_tools_subtitle => '只读检查，不会修改主机';
+
+  @override
+  String get ssh_tools_services => 'Systemd 服务';
+
+  @override
+  String get ssh_tools_servicesHint => '查看服务状态与最近日志';
+
+  @override
+  String get ssh_tools_ports => '监听端口';
+
+  @override
+  String get ssh_tools_portsHint => '查看 TCP / UDP 监听端口';
+
+  @override
+  String get ssh_tools_disks => '磁盘详情';
+
+  @override
+  String get ssh_tools_disksHint => '查看文件系统使用情况';
+
+  @override
+  String get ssh_containers_running => '运行中';
+
+  @override
+  String get ssh_containers_all => '全部';
+
+  @override
+  String get ssh_containers_empty => '没有容器';
+
+  @override
+  String get ssh_containers_emptyRunning => '没有运行中的容器';
+
+  @override
+  String get ssh_containers_emptyRunningHint => '切换到「全部」查看已停止的容器';
+
+  @override
+  String get ssh_containers_loadFailed => '读取容器失败';
+
+  @override
+  String get ssh_containers_unavailable => 'Docker 不可用';
+
+  @override
+  String get ssh_containers_compose => 'Compose';
+
+  @override
+  String get ssh_containers_ports => '端口';
+
+  @override
+  String get ssh_containers_details => '容器操作';
+
+  @override
+  String get ssh_containers_logs => '查看日志';
+
+  @override
+  String get ssh_containers_logsHint => '读取最近 300 行日志';
+
+  @override
+  String get ssh_containers_start => '启动';
+
+  @override
+  String get ssh_containers_stop => '停止';
+
+  @override
+  String get ssh_containers_restart => '重启';
+
+  @override
+  String get ssh_containers_startHint => '启动这个容器';
+
+  @override
+  String get ssh_containers_stopHint => '停止容器，服务将中断';
+
+  @override
+  String get ssh_containers_restartHint => '重启容器使配置生效';
+
+  @override
+  String get ssh_containers_confirmStopTitle => '停止容器？';
+
+  @override
+  String ssh_containers_confirmStopMessage(String name) {
+    return '「$name」将停止运行，确定继续吗？';
+  }
+
+  @override
+  String get ssh_containers_confirmRestartTitle => '重启容器？';
+
+  @override
+  String ssh_containers_confirmRestartMessage(String name) {
+    return '「$name」将重启，期间服务会短暂中断。';
+  }
+
+  @override
+  String get ssh_containers_started => '容器已启动';
+
+  @override
+  String get ssh_containers_stopped => '容器已停止';
+
+  @override
+  String get ssh_containers_restarted => '容器已重启';
+
+  @override
+  String get ssh_containers_operationFailed => '容器操作失败';
+
+  @override
+  String get ssh_containers_logsTitle => '容器日志';
+
+  @override
+  String get ssh_containers_logsEmpty => '暂无日志';
+
+  @override
+  String get ssh_containers_logsLoadFailed => '读取日志失败';
+
+  @override
+  String get ssh_containers_copyLogs => '复制全部';
+
+  @override
+  String get ssh_services_searchPlaceholder => '搜索服务';
+
+  @override
+  String get ssh_services_empty => '没有匹配的服务';
+
+  @override
+  String get ssh_services_loadFailed => '读取服务失败';
+
+  @override
+  String get ssh_services_statusTitle => '服务状态';
+
+  @override
+  String get ssh_services_logsTitle => '最近日志';
+
+  @override
+  String get ssh_services_logsEmpty => '暂无日志';
+
+  @override
+  String get ssh_services_statusLoadFailed => '读取服务状态失败';
+
+  @override
+  String get ssh_ports_empty => '没有监听端口';
+
+  @override
+  String get ssh_ports_loadFailed => '读取监听端口失败';
+
+  @override
+  String get ssh_ports_process => '进程';
+
+  @override
+  String get ssh_disks_empty => '没有磁盘信息';
+
+  @override
+  String get ssh_disks_loadFailed => '读取磁盘信息失败';
+
+  @override
+  String ssh_disks_usedOf(String used, String total) {
+    return '已用 $used / $total';
+  }
+
+  @override
+  String get ssh_files_deleteSelectedTitle => '删除所选项目';
+
+  @override
+  String ssh_files_deleteSelectedConfirm(int count) {
+    return '确定删除选中的 $count 个项目吗？';
+  }
+
+  @override
+  String ssh_files_deletedCount(int count) {
+    return '已删除 $count 个项目';
+  }
 
   @override
   String get ssh_terminal_connecting => '正在建立 SSH 终端…';
