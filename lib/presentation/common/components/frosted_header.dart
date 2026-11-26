@@ -62,7 +62,7 @@ class FrostedHeader extends StatelessWidget {
 
     // 标题必须以整条 header 为基准居中。左右操作区宽度可能不同，
     // 因此使用对称避让宽度，避免在不等宽区域内居中造成视觉偏移。
-    final leftAvoidance = onBack != null ? 82.0 : 20.0;
+    final leftAvoidance = onBack != null ? 96.0 : 20.0;
     final rightAvoidance = trailingBuilder != null ? this.rightAvoidance : 20.0;
     final horizontalPadding = leftAvoidance > rightAvoidance
         ? leftAvoidance

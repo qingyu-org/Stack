@@ -58,9 +58,10 @@ void main() {
             width: 360,
             child: FrostedHeader(
               title: '清羽面板',
-              titleSuffix: SizedBox(key: suffixKey, width: 100, height: 26),
+              rightAvoidance: 100,
+              titleSuffix: SizedBox(key: suffixKey, width: 91, height: 26),
               trailingBuilder: (isDark, isOverlapping) =>
-                  SizedBox(key: trailingKey, width: 34, height: 34),
+                  SizedBox(key: trailingKey, width: 76, height: 34),
             ),
           ),
         ),

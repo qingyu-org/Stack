@@ -259,7 +259,7 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
               isOverlapping: isOverlapping,
               onBack: _isSearchMode ? null : () => Navigator.of(context).pop(),
               fadeOutDistance: 24,
-              rightAvoidance: _isSearchMode ? 102 : 64,
+              rightAvoidance: _isSearchMode ? 102 : 100,
               trailingBuilder: _buildTrailingBuilder(),
             ),
           ),
@@ -326,7 +326,7 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
       minimumSize: Size.zero,
       onPressed: () => _showNodePicker(server, nodes, activeNode),
       child: Container(
-        padding: const EdgeInsets.symmetric(horizontal: 9, vertical: 5),
+        padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 5),
         decoration: BoxDecoration(
           color: AppColors.secondaryBackground(context).withValues(alpha: 0.72),
           borderRadius: BorderRadius.circular(20),
@@ -338,14 +338,8 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
         child: Row(
           mainAxisSize: MainAxisSize.min,
           children: [
-            Icon(
-              CupertinoIcons.arrow_left_right,
-              size: 11,
-              color: AppColors.secondaryLabel(context),
-            ),
-            const SizedBox(width: 4),
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 76),
+              constraints: const BoxConstraints(maxWidth: 64),
               child: Text(
                 label,
                 maxLines: 1,
