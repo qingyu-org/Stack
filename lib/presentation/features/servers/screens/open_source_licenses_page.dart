@@ -69,6 +69,7 @@ class _OpenSourceLicensesPageState extends State<OpenSourceLicensesPage> {
                               child: Image.asset(
                                 AppIconVariant.defaultIcon.assetPath,
                                 fit: BoxFit.cover,
+                                filterQuality: FilterQuality.high,
                               ),
                             ),
                             title: l10n.app_title,

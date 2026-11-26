@@ -86,6 +86,7 @@ class AppIconSettingsPage extends ConsumerWidget {
                                   width: 56,
                                   height: 56,
                                   fit: BoxFit.cover,
+                                  filterQuality: FilterQuality.high,
                                 ),
                               ),
                             ),
