@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter_test/flutter_test.dart';
 import 'package:inspire_blur/inspire_blur.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
+import 'package:mono_dash/core/performance/performance_mode.dart';
 import 'package:mono_dash/core/widgets/app_toggle_switch.dart';
 import 'package:mono_dash/presentation/common/components/frosted_action_button.dart';
 import 'package:mono_dash/presentation/common/components/frosted_header.dart';
@@ -42,6 +43,121 @@ void main() {
       tester.getSize(find.byType(FrostedActionButton)),
       const Size.square(34),
     );
+  });
+
+  testWidgets('icon-only frosted actions center their icon', (tester) async {
+    await tester.pumpWidget(
+      const CupertinoApp(
+        home: Center(
+          child: FrostedActionButton(text: '', icon: CupertinoIcons.add),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    final buttonCenter = tester.getCenter(find.byType(FrostedActionButton));
+    final iconCenter = tester.getCenter(find.byIcon(CupertinoIcons.add));
+    expect(iconCenter.dx, moreOrLessEquals(buttonCenter.dx, epsilon: 0.5));
+    expect(iconCenter.dy, moreOrLessEquals(buttonCenter.dy, epsilon: 0.5));
+  });
+
+  testWidgets('performance mode skips blur and keeps basic layout', (
+    tester,
+  ) async {
+    await tester.pumpWidget(
+      const CupertinoApp(
+        home: PerformanceModeScope(
+          enabled: true,
+          child: Center(
+            child: FrostedActionButton(text: '', icon: CupertinoIcons.add),
+          ),
+        ),
+      ),
+    );
+    await tester.pumpAndSettle();
+
+    expect(
+      find.descendant(
+        of: find.byType(FrostedActionButton),
+        matching: find.byType(BackdropFilter),
+      ),
+      findsNothing,
+    );
+    expect(
+      tester.getSize(find.byType(FrostedActionButton)),
+      const Size.square(34),
+    );
+  });
+
+  testWidgets('performance mode drops the header shader blur', (tester) async {
+    await tester.pumpWidget(
+      const CupertinoApp(
+        home: PerformanceModeScope(
+          enabled: true,
+          child: FrostedHeader(title: 'Mono Dash'),
+        ),
+      ),
+    );
+
+    expect(find.byType(InspireBackdropBlur), findsNothing);
+    expect(find.byType(BackdropFilter), findsNothing);
+    expect(find.text('Mono Dash'), findsOneWidget);
+  });
+
+  testWidgets('performance mode swaps glass toggles for system switches', (
+    tester,
+  ) async {
+    var value = false;
+
+    await tester.pumpWidget(
+      CupertinoApp(
+        home: PerformanceModeScope(
+          enabled: true,
+          child: Center(
+            child: AppToggleSwitch(
+              value: value,
+              onChanged: (next) => value = next,
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(find.byType(CupertinoSwitch), findsOneWidget);
+    expect(find.byType(GlassSwitch), findsNothing);
+
+    await tester.tap(find.byType(CupertinoSwitch));
+    expect(value, isTrue);
+  });
+
+  testWidgets('performance mode reaches overlay menu entries', (tester) async {
+    bool? seen;
+    await tester.pumpWidget(
+      CupertinoApp(
+        builder: (context, child) => PerformanceModeScope(
+          enabled: true,
+          child: child ?? const SizedBox.shrink(),
+        ),
+        home: Builder(
+          builder: (context) => CupertinoButton(
+            onPressed: () {
+              showCupertinoModalPopup<void>(
+                context: context,
+                builder: (popupContext) {
+                  seen = PerformanceModeScope.of(popupContext);
+                  return const SizedBox.shrink();
+                },
+              );
+            },
+            child: const Text('open'),
+          ),
+        ),
+      ),
+    );
+
+    await tester.tap(find.text('open'));
+    await tester.pump();
+    expect(seen, isTrue);
   });
 
   testWidgets('header title suffix stays clear of trailing actions', (

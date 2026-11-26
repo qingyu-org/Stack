@@ -2730,6 +2730,10 @@
     "description": "Server host field placeholder."
   },
   "servers_port": "Port",
+  "servers_portInvalid": "Port must be a number between 1 and 65535",
+  "@servers_portInvalid": {
+    "description": "Validation error shown when the panel port is outside the valid range."
+  },
   "@servers_port": {
     "description": "Server port field label."
   },
@@ -3194,6 +3198,18 @@
   "settings_appearance_pinTabBarSubtitleOff": "Hide the bottom tab bar while scrolling",
   "@settings_appearance_pinTabBarSubtitleOff": {
     "description": "Subtitle shown when the bottom tab bar auto-hides."
+  },
+  "settings_appearance_performanceTitle": "Disable Advanced Materials",
+  "@settings_appearance_performanceTitle": {
+    "description": "Settings switch title for turning off frosted/liquid glass and decorative motion."
+  },
+  "settings_appearance_performanceSubtitleOn": "Frosted glass, liquid glass and decorative motion are off",
+  "@settings_appearance_performanceSubtitleOn": {
+    "description": "Subtitle shown when advanced materials are disabled."
+  },
+  "settings_appearance_performanceSubtitleOff": "Full materials and effects are on; enable this for smoother performance",
+  "@settings_appearance_performanceSubtitleOff": {
+    "description": "Subtitle shown when performance mode is disabled."
   },
   "settings_language_title": "Language",
   "@settings_language_title": {
@@ -9079,6 +9095,35 @@
     "description": "Generic website type fallback label."
   },
   "websites_statusRunning": "Running",
+  "websites_start": "Start Website",
+  "@websites_start": {
+    "description": "Swipe action label to start a stopped website."
+  },
+  "websites_stop": "Stop Website",
+  "@websites_stop": {
+    "description": "Swipe action label to stop a running website."
+  },
+  "websites_startSuccess": "Website started",
+  "@websites_startSuccess": {
+    "description": "Toast shown after a website starts successfully."
+  },
+  "websites_stopSuccess": "Website stopped",
+  "@websites_stopSuccess": {
+    "description": "Toast shown after a website stops successfully."
+  },
+  "websites_deleteWebsiteTitle": "Delete Website",
+  "@websites_deleteWebsiteTitle": {
+    "description": "Confirmation dialog title for deleting a website."
+  },
+  "websites_deleteWebsiteConfirm": "Delete \"{domain}\"?\nThe site configuration and files in its directory will be deleted. This cannot be undone.",
+  "@websites_deleteWebsiteConfirm": {
+    "description": "Confirmation dialog body for deleting a website.",
+    "placeholders": {
+      "domain": {
+        "type": "String"
+      }
+    }
+  },
   "@websites_statusRunning": {
     "description": "Website status running label."
   },

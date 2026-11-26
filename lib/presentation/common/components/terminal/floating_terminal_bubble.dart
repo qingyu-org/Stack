@@ -6,6 +6,7 @@ import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../action_sheet_launcher.dart';
 import '../action_sheet_scaffold.dart';
@@ -119,6 +120,7 @@ class _FloatingTerminalBubbleState extends State<_FloatingTerminalBubble>
 
   // 缩放进入动画
   bool _appeared = false;
+  bool _reduceEffects = false;
 
   // 交互状态机
   bool _isDragging = false;
@@ -202,6 +204,20 @@ class _FloatingTerminalBubbleState extends State<_FloatingTerminalBubble>
         });
       });
     });
+  }
+
+  @override
+  void didChangeDependencies() {
+    super.didChangeDependencies();
+    final reduceEffects = PerformanceModeScope.of(context);
+    if (reduceEffects == _reduceEffects) return;
+    _reduceEffects = reduceEffects;
+    // 性能模式停止光晕呼吸动画，避免持续重绘。
+    if (reduceEffects) {
+      _pulseController.stop();
+    } else if (!_pulseController.isAnimating) {
+      _pulseController.repeat(reverse: true);
+    }
   }
 
   @override
@@ -556,7 +572,7 @@ class _FloatingTerminalBubbleState extends State<_FloatingTerminalBubble>
                         color: backgroundColor,
                         borderColor: borderColor,
                         isDark: isDark,
-                        glowValue: _pulseAnimation.value,
+                        glowValue: _reduceEffects ? 0.0 : _pulseAnimation.value,
                       ),
                       child: SizedBox(
                         width: _bubbleSize,

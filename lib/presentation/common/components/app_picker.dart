@@ -1,8 +1,8 @@
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../core/localization/l10n_x.dart';
+import '../../../core/performance/performance_mode.dart';
 import '../../../core/theme/app_theme.dart';
 import 'overlay_menu_mixin.dart';
 
@@ -703,8 +703,8 @@ class _AppOverlayPickerState<T> extends State<AppOverlayPicker<T>>
                 ),
                 child: ClipRRect(
                   borderRadius: BorderRadius.circular(12),
-                  child: BackdropFilter(
-                    filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                  child: PerformanceAwareBlur(
+                    sigma: 12,
                     child: Container(
                       padding: const EdgeInsets.symmetric(vertical: 4),
                       decoration: BoxDecoration(

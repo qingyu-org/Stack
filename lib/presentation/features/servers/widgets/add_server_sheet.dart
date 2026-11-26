@@ -143,7 +143,8 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
   Future<void> _submit() async {
     FocusScope.of(context).unfocus();
 
-    final host = normalizeServerHostInput(_hostController.text);
+    final address = parseServerAddressInput(_hostController.text);
+    final host = address.host;
     if (host.isEmpty || (!_isEditing && _apiKeyController.text.isEmpty)) {
       final l10n = context.l10n;
       showAppErrorToast(
@@ -154,11 +155,19 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
       return;
     }
 
+    final portText = _portController.text.trim();
+    final port =
+        address.port ?? (portText.isEmpty ? 10000 : int.tryParse(portText));
+    if (address.isPortInvalid || port == null || port < 1 || port > 65535) {
+      showAppErrorToast(context.l10n.servers_portInvalid);
+      return;
+    }
+
     final cancelToken = CancelToken();
     _connectionCancelToken = cancelToken;
     setState(() => _isLoading = true);
     try {
-      final port = int.tryParse(_portController.text) ?? 10000;
+      final isHttps = address.isHttps ?? _isHttps;
       final apiKey = _apiKeyController.text;
       final shouldTestConnection = !_isEditing || apiKey.isNotEmpty;
       PanelProbeResult? probe;
@@ -169,7 +178,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
               host: host,
               port: port,
               apiKey: apiKey,
-              isHttps: _isHttps,
+              isHttps: isHttps,
               allowInsecureConnections: _allowInsecureConnections,
               cancelToken: cancelToken,
             );
@@ -185,7 +194,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
           host: host,
           port: port,
           apiKey: apiKey,
-          isHttps: _isHttps,
+          isHttps: isHttps,
           allowInsecureConnections: _allowInsecureConnections,
           probe: probe,
           editionOverride: _editionOverride,
@@ -196,7 +205,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
           host: host,
           port: port,
           apiKey: apiKey,
-          isHttps: _isHttps,
+          isHttps: isHttps,
           allowInsecureConnections: _allowInsecureConnections,
           probe: probe,
         );
@@ -317,6 +326,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
                   focusNode: _hostFocusNode,
                   keyboardType: TextInputType.url,
                   textInputAction: TextInputAction.next,
+                  onChanged: _handleHostTextChanged,
                   onSubmitted: (_) => _portFocusNode.requestFocus(),
                 ),
               ),
@@ -440,6 +450,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
     TextInputType keyboardType = TextInputType.text,
     FocusNode? focusNode,
     TextInputAction? textInputAction,
+    ValueChanged<String>? onChanged,
     ValueChanged<String>? onSubmitted,
     List<TextInputFormatter>? inputFormatters,
   }) {
@@ -452,6 +463,7 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
         keyboardType: keyboardType,
         focusNode: focusNode,
         textInputAction: textInputAction,
+        onChanged: onChanged,
         onSubmitted: onSubmitted,
         onTapOutside: (_) => FocusScope.of(context).unfocus(),
         inputFormatters: inputFormatters,
@@ -483,6 +495,30 @@ class _AddServerSheetState extends ConsumerState<AddServerSheet> {
         ],
       ),
     );
+  }
+
+  /// 粘贴完整地址时自动识别协议与端口，例如
+  /// `https://[2409:8a00::1]:10000` 或 `panel.example.com:8080`。
+  void _handleHostTextChanged(String value) {
+    final address = parseServerAddressInput(value);
+    var needsRebuild = false;
+
+    final detectedPort = address.port;
+    if (detectedPort != null) {
+      final portText = detectedPort.toString();
+      if (_portController.text != portText) {
+        _portController.text = portText;
+      }
+    }
+
+    final detectedHttps = address.isHttps;
+    if (detectedHttps != null && detectedHttps != _isHttps) {
+      _isHttps = detectedHttps;
+      if (!_isHttps) _allowInsecureConnections = false;
+      needsRebuild = true;
+    }
+
+    if (needsRebuild) setState(() {});
   }
 
   void _setAllowInsecureConnections(bool value) {

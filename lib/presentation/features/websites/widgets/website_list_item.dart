@@ -6,9 +6,11 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/app_toast.dart';
 import '../../../common/components/skeleton_item.dart';
+import '../../../common/components/swipe_action_cell.dart';
 import '../../../../data/dto/website/website_dto.dart';
 import '../../files/screens/files_page.dart';
 import '../../server_detail/providers/active_server_provider.dart';
+import '../providers/websites_provider.dart';
 import 'website_action_sheet.dart';
 
 class WebsiteListItem extends ConsumerWidget {
@@ -27,40 +29,123 @@ class WebsiteListItem extends ConsumerWidget {
     final cardBackground = isDark
         ? AppColors.tertiaryBackground(context)
         : AppColors.secondaryBackground(context);
+    final isRunning = website.status.toLowerCase() == 'running';
+    final isStopped = !loading && !isRunning;
 
-    return Padding(
-      padding: const EdgeInsets.only(bottom: 10),
-      child: GestureDetector(
-        onTap: () => showWebsiteActionSheet(context, ref, website),
-        behavior: HitTestBehavior.opaque,
-        child: Container(
-          padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
-          decoration: BoxDecoration(
-            color: cardBackground,
-            borderRadius: BorderRadius.circular(16),
-            boxShadow: [
-              BoxShadow(
-                color: CupertinoColors.black.withValues(alpha: 0.05),
-                blurRadius: 2,
-                offset: const Offset(0, 1),
-              ),
-            ],
-          ),
-          child: Column(
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              _HeaderRow(website: website, ref: ref, loading: loading),
-              const SizedBox(height: 8),
-              _DomainRow(website: website, loading: loading),
-              const SizedBox(height: 8),
-              _InfoRow(website: website, ref: ref, loading: loading),
-              const SizedBox(height: 8),
-              _FooterRow(website: website, loading: loading),
-            ],
-          ),
+    final card = GestureDetector(
+      onTap: () => showWebsiteActionSheet(context, ref, website),
+      behavior: HitTestBehavior.opaque,
+      child: Container(
+        padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 12),
+        decoration: BoxDecoration(
+          color: cardBackground,
+          borderRadius: BorderRadius.circular(16),
+          boxShadow: [
+            BoxShadow(
+              color: CupertinoColors.black.withValues(alpha: 0.05),
+              blurRadius: 2,
+              offset: const Offset(0, 1),
+            ),
+          ],
+        ),
+        child: Column(
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            _HeaderRow(website: website, ref: ref, loading: loading),
+            const SizedBox(height: 8),
+            _DomainRow(website: website, loading: loading),
+            const SizedBox(height: 8),
+            _InfoRow(website: website, ref: ref, loading: loading),
+            const SizedBox(height: 8),
+            _FooterRow(website: website, loading: loading),
+          ],
         ),
       ),
     );
+
+    // 已停止的网站在列表中以灰色弱化，与运行中的站点区分。
+    final themedCard = Opacity(opacity: isStopped ? 0.62 : 1, child: card);
+
+    if (loading) {
+      return Padding(
+        padding: const EdgeInsets.only(bottom: 10),
+        child: themedCard,
+      );
+    }
+
+    final l10n = context.l10n;
+    return Padding(
+      padding: const EdgeInsets.only(bottom: 10),
+      child: SwipeActionCell(
+        actions: [
+          SwipeAction(
+            label: isRunning ? l10n.websites_stop : l10n.websites_start,
+            icon: isRunning
+                ? CupertinoIcons.stop_fill
+                : CupertinoIcons.play_fill,
+            color: isRunning
+                ? CupertinoColors.systemOrange
+                : CupertinoColors.systemGreen,
+            onTap: () => _setRunning(context, ref, !isRunning),
+          ),
+          SwipeAction(
+            label: l10n.common_delete,
+            icon: CupertinoIcons.delete,
+            color: CupertinoColors.systemRed,
+            onTap: () => _confirmDelete(context, ref),
+          ),
+        ],
+        child: themedCard,
+      ),
+    );
+  }
+
+  Future<void> _setRunning(
+    BuildContext context,
+    WidgetRef ref,
+    bool running,
+  ) async {
+    final l10n = context.l10n;
+    final ok = await ref
+        .read(websitesControllerProvider.notifier)
+        .setWebsiteRunning(website.id, running);
+    if (!ok) return;
+    showAppSuccessToast(
+      running ? l10n.websites_startSuccess : l10n.websites_stopSuccess,
+    );
+  }
+
+  Future<void> _confirmDelete(BuildContext context, WidgetRef ref) async {
+    final l10n = context.l10n;
+    final domain = website.primaryDomain.isEmpty
+        ? l10n.websites_unnamedWebsite
+        : website.primaryDomain;
+    final confirmed = await showCupertinoDialog<bool>(
+      context: context,
+      builder: (dialogContext) => CupertinoAlertDialog(
+        title: Text(l10n.websites_deleteWebsiteTitle),
+        content: Text(l10n.websites_deleteWebsiteConfirm(domain)),
+        actions: [
+          CupertinoDialogAction(
+            isDefaultAction: true,
+            onPressed: () => Navigator.of(dialogContext).pop(false),
+            child: Text(l10n.common_cancel),
+          ),
+          CupertinoDialogAction(
+            isDestructiveAction: true,
+            onPressed: () => Navigator.of(dialogContext).pop(true),
+            child: Text(l10n.common_delete),
+          ),
+        ],
+      ),
+    );
+    if (confirmed != true) return;
+
+    final ok = await ref
+        .read(websitesControllerProvider.notifier)
+        .deleteWebsite(website.id);
+    if (!ok) return;
+    showAppSuccessToast(l10n.websites_deleteSuccess);
   }
 
   static String expireText(BuildContext context, String value) {
@@ -177,10 +262,14 @@ class _HeaderRow extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final isRunning = website.status.toLowerCase() == 'running';
+    final status = website.status.toLowerCase();
+    final isRunning = status == 'running';
+    final isError = status == 'error';
     final statusColor = isRunning
         ? CupertinoColors.systemGreen.resolveFrom(context)
-        : CupertinoColors.systemRed.resolveFrom(context);
+        : isError
+        ? CupertinoColors.systemRed.resolveFrom(context)
+        : CupertinoColors.systemGrey.resolveFrom(context);
 
     return Row(
       children: [

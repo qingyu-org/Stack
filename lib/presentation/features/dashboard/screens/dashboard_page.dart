@@ -25,16 +25,18 @@ class DashboardPage extends ConsumerStatefulWidget {
 }
 
 class _DashboardPageState extends ConsumerState<DashboardPage>
-    with SingleTickerProviderStateMixin {
+    with SingleTickerProviderStateMixin, WidgetsBindingObserver {
   static const _pollInterval = Duration(seconds: 1);
 
   final _nowNotifier = ValueNotifier<DateTime>(DateTime.now());
   late final Ticker _ticker;
   Timer? _pollTimer;
+  bool _isForeground = true;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _ticker = createTicker((_) {
       _nowNotifier.value = DateTime.now();
     });
@@ -43,6 +45,14 @@ class _DashboardPageState extends ConsumerState<DashboardPage>
       _pollInterval,
       (_) => _refreshCurrentIfActive(),
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final isForeground = state == AppLifecycleState.resumed;
+    if (isForeground == _isForeground) return;
+    _isForeground = isForeground;
+    if (isForeground) _refreshCurrentIfActive();
   }
 
   @override
@@ -55,6 +65,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage>
 
   @override
   void dispose() {
+    WidgetsBinding.instance.removeObserver(this);
     _pollTimer?.cancel();
     _ticker.dispose();
     _nowNotifier.dispose();
@@ -62,7 +73,7 @@ class _DashboardPageState extends ConsumerState<DashboardPage>
   }
 
   void _refreshCurrentIfActive() {
-    if (!mounted || !widget.isActive) return;
+    if (!mounted || !widget.isActive || !_isForeground) return;
     ref.read(dashboardControllerProvider.notifier).refreshCurrent();
   }
 

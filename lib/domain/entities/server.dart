@@ -1,3 +1,4 @@
+import '../../core/utils/server_host_normalizer.dart';
 import 'panel_node.dart';
 
 /// 用户对面板版本的覆盖设置。
@@ -79,13 +80,18 @@ class Server {
     if (name != null && name!.isNotEmpty) {
       return name!;
     }
-    return '$host:$port';
+    return displayAddress;
   }
 
-  Uri get baseUrl {
-    final scheme = isHttps ? 'https' : 'http';
-    return Uri.parse('$scheme://$host:$port');
+  /// `host:port`，IPv6 自动加方括号，便于展示与复制。
+  String get displayAddress {
+    final value = host.trim();
+    if (value.contains(':')) return '[$value]:$port';
+    return '$value:$port';
   }
+
+  Uri get baseUrl =>
+      Uri.parse(buildServerBaseUrl(host: host, port: port, isHttps: isHttps));
 
   Map<String, Object?> toJson() {
     return {

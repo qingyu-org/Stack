@@ -1,10 +1,10 @@
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../utils/file_icon_utils.dart';
 import '../../../../core/utils/file_type_utils.dart';
@@ -239,8 +239,8 @@ class _FileContextMenuOverlayState
             onTap: _dismiss,
             child: FadeTransition(
               opacity: _fadeAnimation,
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+              child: PerformanceAwareBlur(
+                sigma: 10,
                 child: Container(
                   color: widget.isDark
                       ? CupertinoColors.black.withValues(alpha: 0.25)

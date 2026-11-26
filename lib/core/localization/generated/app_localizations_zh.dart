@@ -1912,6 +1912,9 @@ class AppLocalizationsZh extends AppLocalizations {
   String get servers_port => '端口';
 
   @override
+  String get servers_portInvalid => '端口需为 1–65535 之间的数字';
+
+  @override
   String get servers_securityAuth => '安全认证';
 
   @override
@@ -2179,6 +2182,17 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get settings_appearance_pinTabBarSubtitleOff => '滚动页面时自动隐藏底部菜单';
+
+  @override
+  String get settings_appearance_performanceTitle => '关闭高级材质';
+
+  @override
+  String get settings_appearance_performanceSubtitleOn =>
+      '已关闭毛玻璃、液态玻璃与装饰动画，界面更流畅';
+
+  @override
+  String get settings_appearance_performanceSubtitleOff =>
+      '当前为完整材质与动效，打开开关可换取更流畅的体验';
 
   @override
   String get settings_language_title => '语言';
@@ -6389,6 +6403,26 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get websites_statusRunning => '运行中';
+
+  @override
+  String get websites_start => '启动网站';
+
+  @override
+  String get websites_stop => '停止网站';
+
+  @override
+  String get websites_startSuccess => '网站已启动';
+
+  @override
+  String get websites_stopSuccess => '网站已停止';
+
+  @override
+  String get websites_deleteWebsiteTitle => '删除网站';
+
+  @override
+  String websites_deleteWebsiteConfirm(String domain) {
+    return '确定要删除「$domain」吗？\n网站配置与网站目录中的文件都会被删除，此操作不可撤销。';
+  }
 
   @override
   String get websites_statusStopped => '已停止';

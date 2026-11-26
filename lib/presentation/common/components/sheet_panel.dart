@@ -1,5 +1,6 @@
 import 'dart:ui';
 import 'package:flutter/cupertino.dart';
+import '../../../core/performance/performance_mode.dart';
 import '../../../core/theme/app_theme.dart';
 
 /// ActionSheet 的背景面板，支持磨砂玻璃效果和性能优化开关。
@@ -21,10 +22,11 @@ class ActionSheetPanel extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final blur = enableBlur && !PerformanceModeScope.of(context);
     final decorated = Container(
       decoration: BoxDecoration(
         color: (backgroundColor ?? AppColors.background(context)).withValues(
-          alpha: backgroundAlpha ?? (enableBlur ? 0.88 : 0.98),
+          alpha: backgroundAlpha ?? (blur ? 0.88 : 0.98),
         ),
         borderRadius: borderRadius,
         border: Border(
@@ -39,7 +41,7 @@ class ActionSheetPanel extends StatelessWidget {
 
     return ClipRRect(
       borderRadius: borderRadius,
-      child: enableBlur
+      child: blur
           ? BackdropFilter(
               filter: ImageFilter.blur(sigmaX: 16, sigmaY: 16),
               child: decorated,

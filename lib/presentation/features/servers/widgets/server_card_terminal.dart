@@ -170,8 +170,7 @@ class _FallbackCardContent extends StatelessWidget {
         ),
         const SizedBox(height: 9),
         _SubtitleLine(
-          text: subtitleOverride ??
-              '${server.isHttps ? 'https' : 'http'}://${server.host}:${server.port}',
+          text: subtitleOverride ?? server.baseUrl.toString(),
           loading: loading,
         ),
         const SizedBox(height: 16),

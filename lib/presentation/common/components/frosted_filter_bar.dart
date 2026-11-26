@@ -2,6 +2,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 
 /// 过滤器项数据模型
@@ -40,6 +41,7 @@ class FrostedFilterBar extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
+    final reduceEffects = PerformanceModeScope.of(context);
     final glassSettings = LiquidGlassSettings.figma(
       refraction: 42,
       depth: 35,
@@ -49,6 +51,52 @@ class FrostedFilterBar extends StatelessWidget {
           ? const Color(0xFF2C2C2E).withValues(alpha: 0.42)
           : const Color(0xFFE5E5EA).withValues(alpha: 0.55),
       lightIntensity: 76,
+    );
+    // 性能模式下去掉液态玻璃着色器，改用接近不透明的实色表面。
+    final surfaceColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.95)
+              : const Color(0xFFFFFFFF).withValues(alpha: 0.95))
+        : (isDark
+              ? const Color(0xFF3A3A3C).withValues(alpha: 0.78)
+              : const Color(0xFFFFFFFF).withValues(alpha: 0.65));
+
+    final content = ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: surfaceColor,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                  color: isDark
+                      ? CupertinoColors.white.withValues(alpha: 0.08)
+                      : const Color(0xFFE8E8E8),
+                  width: 0.5,
+                ),
+              ),
+            ),
+          ),
+          ListView.builder(
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 8, vertical: 7),
+            itemCount: items.length,
+            itemBuilder: (context, index) {
+              final item = items[index];
+              final selected = item.value == selectedValue;
+              return _FilterButton(
+                label: item.label,
+                icon: item.icon,
+                selected: selected,
+                onPressed: () => onSelected(item.value),
+              );
+            },
+          ),
+        ],
+      ),
     );
 
     return Padding(
@@ -68,55 +116,16 @@ class FrostedFilterBar extends StatelessWidget {
                 ]
               : null,
         ),
-        child: LiquidGlassLayer(
-          settings: glassSettings,
-          child: AdaptiveGlass.grouped(
-            quality: GlassQuality.premium,
-            shape: const LiquidRoundedRectangle(borderRadius: 18),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF3A3A3C).withValues(alpha: 0.78)
-                            : const Color(0xFFFFFFFF).withValues(alpha: 0.65),
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: isDark
-                              ? CupertinoColors.white.withValues(alpha: 0.08)
-                              : const Color(0xFFE8E8E8),
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                  ListView.builder(
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 8,
-                      vertical: 7,
-                    ),
-                    itemCount: items.length,
-                    itemBuilder: (context, index) {
-                      final item = items[index];
-                      final selected = item.value == selectedValue;
-                      return _FilterButton(
-                        label: item.label,
-                        icon: item.icon,
-                        selected: selected,
-                        onPressed: () => onSelected(item.value),
-                      );
-                    },
-                  ),
-                ],
+        child: reduceEffects
+            ? content
+            : LiquidGlassLayer(
+                settings: glassSettings,
+                child: AdaptiveGlass.grouped(
+                  quality: GlassQuality.premium,
+                  shape: const LiquidRoundedRectangle(borderRadius: 18),
+                  child: content,
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

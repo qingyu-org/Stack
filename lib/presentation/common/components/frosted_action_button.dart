@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 
 /// 磨砂玻璃风格的单一操作按钮。
@@ -33,6 +34,7 @@ class FrostedActionButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reduceEffects = PerformanceModeScope.of(context);
     final color =
         foregroundColor ??
         (_isEnabled
@@ -50,9 +52,18 @@ class FrostedActionButton extends StatelessWidget {
           ]
         : null;
 
-    final containerColor = isDark
-        ? CupertinoColors.white.withValues(alpha: 0.15)
-        : CupertinoColors.white.withValues(alpha: 0.5);
+    // 性能模式下去掉实时背景模糊，改用接近不透明的实色表面。
+    final containerColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.94)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.96))
+        : (isDark
+              ? CupertinoColors.white.withValues(alpha: 0.15)
+              : CupertinoColors.white.withValues(alpha: 0.5));
+
+    final body = _buildBody(context, containerColor, color);
 
     return GestureDetector(
       onTap: _isEnabled
@@ -68,13 +79,15 @@ class FrostedActionButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           boxShadow: glowShadows,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(18),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-            child: _buildBody(context, containerColor, color),
-          ),
-        ),
+        child: reduceEffects
+            ? body
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(18),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                  child: body,
+                ),
+              ),
       ),
     );
   }
@@ -83,6 +96,7 @@ class FrostedActionButton extends StatelessWidget {
     return Container(
       height: 34,
       width: text.isEmpty ? 34 : null,
+      alignment: Alignment.center,
       padding: EdgeInsets.symmetric(horizontal: text.isEmpty ? 0 : 14),
       decoration: BoxDecoration(
         color: containerColor,

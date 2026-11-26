@@ -5,6 +5,7 @@ import 'package:flutter/services.dart';
 import 'package:inspire_blur/inspire_blur.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/utils/format_utils.dart';
 
@@ -55,6 +56,7 @@ class FrostedHeader extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
+    final reduceEffects = PerformanceModeScope.of(context);
     final statusBarHeight = MediaQuery.paddingOf(context).top;
     final contentHeight = statusBarHeight + headerHeight;
     // 渐变额外向下延伸，实现非常平滑的毛玻璃淡出效果
@@ -86,36 +88,58 @@ class FrostedHeader extends StatelessWidget {
       child: Stack(
         children: [
           // 1. 与 Nezha-Dash 相同的 GPU 渐进背景模糊层。
+          //    性能模式下去掉实时模糊，仅保留一层更实的渐变遮罩，
+          //    标题依然清晰，滚动时不再每帧采样背景。
           if (showBlur)
             Positioned.fill(
               child: RepaintBoundary(
                 child: IgnorePointer(
-                  child: InspireBackdropBlur(
-                    config: InspireBlurConfig.topToBottom(
-                      sigma: 12,
-                      fadeCurve: Curves.easeInSine,
-                      extent: 1,
-                    ),
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        gradient: LinearGradient(
-                          begin: Alignment.topCenter,
-                          end: Alignment.bottomCenter,
-                          colors: [
-                            (isDark
-                                    ? CupertinoColors.black
-                                    : CupertinoColors.white)
-                                .withValues(alpha: 0.10),
-                            (isDark
-                                    ? CupertinoColors.black
-                                    : CupertinoColors.white)
-                                .withValues(alpha: 0),
-                          ],
+                  child: reduceEffects
+                      ? DecoratedBox(
+                          decoration: BoxDecoration(
+                            gradient: LinearGradient(
+                              begin: Alignment.topCenter,
+                              end: Alignment.bottomCenter,
+                              colors: [
+                                (isDark
+                                        ? CupertinoColors.black
+                                        : CupertinoColors.white)
+                                    .withValues(alpha: isDark ? 0.55 : 0.7),
+                                (isDark
+                                        ? CupertinoColors.black
+                                        : CupertinoColors.white)
+                                    .withValues(alpha: 0),
+                              ],
+                            ),
+                          ),
+                          child: const SizedBox.expand(),
+                        )
+                      : InspireBackdropBlur(
+                          config: InspireBlurConfig.topToBottom(
+                            sigma: 12,
+                            fadeCurve: Curves.easeInSine,
+                            extent: 1,
+                          ),
+                          child: DecoratedBox(
+                            decoration: BoxDecoration(
+                              gradient: LinearGradient(
+                                begin: Alignment.topCenter,
+                                end: Alignment.bottomCenter,
+                                colors: [
+                                  (isDark
+                                          ? CupertinoColors.black
+                                          : CupertinoColors.white)
+                                      .withValues(alpha: 0.10),
+                                  (isDark
+                                          ? CupertinoColors.black
+                                          : CupertinoColors.white)
+                                      .withValues(alpha: 0),
+                                ],
+                              ),
+                            ),
+                            child: const SizedBox.expand(),
+                          ),
                         ),
-                      ),
-                      child: const SizedBox.expand(),
-                    ),
-                  ),
                 ),
               ),
             ),
@@ -279,6 +303,7 @@ class _FrostedBackButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reduceEffects = PerformanceModeScope.of(context);
     // 根据重叠状态调整颜色和发光
     final color = foregroundColor ?? AppColors.label(context);
     final glowShadows = isOverlapping
@@ -292,11 +317,59 @@ class _FrostedBackButton extends StatelessWidget {
           ]
         : null;
 
-    final containerColor = isDark
-        ? CupertinoColors.white.withValues(alpha: 0.15)
-        : CupertinoColors.white.withValues(alpha: 0.5);
+    final containerColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.94)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.96))
+        : (isDark
+              ? CupertinoColors.white.withValues(alpha: 0.15)
+              : CupertinoColors.white.withValues(alpha: 0.5));
 
     final progressColor = CupertinoColors.activeBlue.resolveFrom(context);
+
+    final content = CustomPaint(
+      foregroundPainter: swipeProgress > 0.01
+          ? _SwipeProgressPainter(
+              progress: swipeProgress,
+              color: progressColor,
+              borderRadius: _borderRadius,
+              strokeWidth: 2.0,
+            )
+          : null,
+      child: AnimatedContainer(
+        duration: const Duration(milliseconds: 200),
+        height: _height,
+        padding: const EdgeInsets.symmetric(horizontal: 14),
+        decoration: BoxDecoration(
+          color: containerColor,
+          borderRadius: BorderRadius.circular(_borderRadius),
+          border: Border.all(
+            color: isDark
+                ? CupertinoColors.white.withValues(alpha: 0.08)
+                : CupertinoColors.black.withValues(alpha: 0.1),
+            width: 0.5,
+          ),
+        ),
+        child: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            Icon(CupertinoIcons.chevron_back, size: 18, color: color),
+            const SizedBox(width: 4),
+            Text(
+              context.l10n.common_back,
+              style: TextStyle(
+                fontSize: 15,
+                fontWeight: FontWeight.w500,
+                letterSpacing: -0.2,
+                color: color,
+              ),
+            ),
+          ],
+        ),
+      ),
+    );
 
     // 使用更高纯度的模糊与强调色设计
     return GestureDetector(
@@ -311,53 +384,15 @@ class _FrostedBackButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(_borderRadius),
           boxShadow: glowShadows,
         ),
-        child: ClipRRect(
-          borderRadius: BorderRadius.circular(_borderRadius),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
-            child: CustomPaint(
-              foregroundPainter: swipeProgress > 0.01
-                  ? _SwipeProgressPainter(
-                      progress: swipeProgress,
-                      color: progressColor,
-                      borderRadius: _borderRadius,
-                      strokeWidth: 2.0,
-                    )
-                  : null,
-              child: AnimatedContainer(
-                duration: const Duration(milliseconds: 200),
-                height: _height,
-                padding: const EdgeInsets.symmetric(horizontal: 14),
-                decoration: BoxDecoration(
-                  color: containerColor,
-                  borderRadius: BorderRadius.circular(_borderRadius),
-                  border: Border.all(
-                    color: isDark
-                        ? CupertinoColors.white.withValues(alpha: 0.08)
-                        : CupertinoColors.black.withValues(alpha: 0.1),
-                    width: 0.5,
-                  ),
-                ),
-                child: Row(
-                  mainAxisSize: MainAxisSize.min,
-                  children: [
-                    Icon(CupertinoIcons.chevron_back, size: 18, color: color),
-                    const SizedBox(width: 4),
-                    Text(
-                      context.l10n.common_back,
-                      style: TextStyle(
-                        fontSize: 15,
-                        fontWeight: FontWeight.w500,
-                        letterSpacing: -0.2,
-                        color: color,
-                      ),
-                    ),
-                  ],
+        child: reduceEffects
+            ? content
+            : ClipRRect(
+                borderRadius: BorderRadius.circular(_borderRadius),
+                child: BackdropFilter(
+                  filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
+                  child: content,
                 ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

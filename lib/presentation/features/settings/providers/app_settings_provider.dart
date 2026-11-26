@@ -116,6 +116,7 @@ class AppSettings {
     this.serversAutoRefreshEnabled = true,
     this.serversRefreshIntervalSeconds = 5,
     this.pinTabBar = true,
+    this.performanceMode = false,
     this.customHeaders = const {},
   });
 
@@ -128,6 +129,10 @@ class AppSettings {
 
   /// 是否固定底部菜单：开启后滚动页面不再自动隐藏悬浮 Tab 栏。
   final bool pinTabBar;
+
+  /// 性能模式：关闭毛玻璃模糊、液态玻璃与装饰性动画，优先保证流畅度。
+  /// 页面转场、淡入淡出等基础动画仍会保留。
+  final bool performanceMode;
   final Map<String, String> customHeaders;
 
   AppSettings copyWith({
@@ -138,6 +143,7 @@ class AppSettings {
     bool? serversAutoRefreshEnabled,
     int? serversRefreshIntervalSeconds,
     bool? pinTabBar,
+    bool? performanceMode,
     Map<String, String>? customHeaders,
   }) {
     return AppSettings(
@@ -151,6 +157,7 @@ class AppSettings {
       serversRefreshIntervalSeconds:
           serversRefreshIntervalSeconds ?? this.serversRefreshIntervalSeconds,
       pinTabBar: pinTabBar ?? this.pinTabBar,
+      performanceMode: performanceMode ?? this.performanceMode,
       customHeaders: customHeaders ?? this.customHeaders,
     );
   }
@@ -166,6 +173,7 @@ class AppSettingsController extends _$AppSettingsController {
   static const _serversRefreshIntervalSecondsKey =
       'servers_refresh_interval_seconds';
   static const _pinTabBarKey = 'pin_tab_bar';
+  static const _performanceModeKey = 'performance_mode';
   static const _customHeadersKey = 'custom_headers';
   static const defaultRequestTimeoutSeconds = 60;
   static const defaultServersRefreshIntervalSeconds = 5;
@@ -192,6 +200,7 @@ class AppSettingsController extends _$AppSettingsController {
           prefs.getInt(_serversRefreshIntervalSecondsKey) ??
           defaultServersRefreshIntervalSeconds,
       pinTabBar: prefs.getBool(_pinTabBarKey) ?? true,
+      performanceMode: prefs.getBool(_performanceModeKey) ?? false,
       customHeaders: _decodeHeaders(prefs.getString(_customHeadersKey)),
     );
     return settings;
@@ -265,6 +274,14 @@ class AppSettingsController extends _$AppSettingsController {
 
     final prefs = await SharedPreferences.getInstance();
     await prefs.setBool(_pinTabBarKey, pinned);
+  }
+
+  Future<void> setPerformanceMode(bool enabled) async {
+    final previous = state.valueOrNull ?? const AppSettings();
+    state = AsyncValue.data(previous.copyWith(performanceMode: enabled));
+
+    final prefs = await SharedPreferences.getInstance();
+    await prefs.setBool(_performanceModeKey, enabled);
   }
 
   Future<void> setCustomHeaders(Map<String, String> headers) async {

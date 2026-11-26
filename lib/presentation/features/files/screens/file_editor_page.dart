@@ -1,5 +1,3 @@
-import 'dart:ui';
-
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
@@ -11,6 +9,7 @@ import 'package:re_highlight/styles/atom-one-dark.dart';
 import 'package:re_highlight/styles/atom-one-light.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../data/dto/file/file_item_dto.dart';
 import '../../../common/app_toast.dart';
@@ -470,8 +469,8 @@ class _FileEditorPageState extends ConsumerState<FileEditorPage> {
               .withValues(alpha: 0.88);
 
     return ClipRect(
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+      child: PerformanceAwareBlur(
+        sigma: 24,
         child: DecoratedBox(
           decoration: BoxDecoration(
             color: panelColor,

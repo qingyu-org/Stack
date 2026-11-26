@@ -1,5 +1,6 @@
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_animate/flutter_animate.dart';
+import '../../../core/performance/performance_mode.dart';
 import '../../../core/theme/app_theme.dart';
 
 class SkeletonItem extends StatelessWidget {
@@ -27,10 +28,12 @@ class SkeletonItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    final baseColor = AppColors.tertiaryBackground(context).withValues(alpha: 0.6);
+    final baseColor = AppColors.tertiaryBackground(
+      context,
+    ).withValues(alpha: 0.6);
     final highlightColor = AppColors.label(context).withValues(alpha: 0.05);
 
-    return Container(
+    final skeleton = Container(
       width: width,
       height: height,
       decoration: BoxDecoration(
@@ -38,11 +41,11 @@ class SkeletonItem extends StatelessWidget {
         borderRadius: isCircle ? null : BorderRadius.circular(borderRadius),
         shape: isCircle ? BoxShape.circle : BoxShape.rectangle,
       ),
-    )
-    .animate(onPlay: (controller) => controller.repeat())
-    .shimmer(
-      duration: 1500.ms,
-      color: highlightColor,
     );
+    // 性能模式下去掉无限循环的微光扫过动画，保留静态占位。
+    if (PerformanceModeScope.of(context)) return skeleton;
+    return skeleton
+        .animate(onPlay: (controller) => controller.repeat())
+        .shimmer(duration: 1500.ms, color: highlightColor);
   }
 }

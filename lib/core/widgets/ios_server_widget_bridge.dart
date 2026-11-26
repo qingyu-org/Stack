@@ -127,7 +127,7 @@ class IosServerWidgetBridge {
     return {
       ..._serverPayload(server),
       'title': title,
-      'subtitle': subtitle.isEmpty ? '${server.host}:${server.port}' : subtitle,
+      'subtitle': subtitle.isEmpty ? server.displayAddress : subtitle,
       'osName': _osName(base),
       'uptimeSeconds': current.uptimeSeconds,
       'cpuPercent': current.cpuUsedPercent,

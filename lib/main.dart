@@ -10,6 +10,7 @@ import 'package:toastification/toastification.dart';
 
 import 'core/localization/generated/app_localizations.dart';
 import 'core/localization/locale_controller.dart';
+import 'core/performance/performance_mode.dart';
 import 'core/router/app_router.dart';
 import 'core/storage/storage_service.dart';
 import 'core/theme/app_theme.dart';
@@ -49,6 +50,7 @@ class MyApp extends ConsumerWidget {
         settingsAsync.valueOrNull?.appearanceMode ?? AppAppearanceMode.system;
     final appIconVariant =
         settingsAsync.valueOrNull?.appIconVariant ?? AppIconVariant.defaultIcon;
+    final performanceMode = settingsAsync.valueOrNull?.performanceMode ?? false;
     final effectiveBrightness = switch (appearanceMode) {
       AppAppearanceMode.system =>
         WidgetsBinding.instance.platformDispatcher.platformBrightness,
@@ -77,9 +79,12 @@ class MyApp extends ConsumerWidget {
               AppAppearanceMode.dark => AppTheme.darkTheme,
             },
             routerConfig: appRouter,
-            builder: (context, child) => AppLockGate(
-              child: FloatingTerminalOverlay(
-                child: child ?? const SizedBox.shrink(),
+            builder: (context, child) => PerformanceModeScope(
+              enabled: performanceMode,
+              child: AppLockGate(
+                child: FloatingTerminalOverlay(
+                  child: child ?? const SizedBox.shrink(),
+                ),
               ),
             ),
             locale: localeOption.toLocale(),

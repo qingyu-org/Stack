@@ -5,6 +5,7 @@ import 'package:flutter_animate/flutter_animate.dart';
 import 'package:flutter/services.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import 'overlay_menu_mixin.dart';
 
@@ -92,6 +93,8 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
 
     showOverlayMenu(
       contentBuilder: (ctx) {
+        // 在浮层内读取，开关变化时浮层也能即时更新。
+        final reduceEffects = PerformanceModeScope.of(ctx);
         const mainMenuWidth = 220.0;
         const submenuWidth = 174.0;
         const gap = 8.0;
@@ -127,7 +130,10 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
                     reverseCurve: Curves.easeIn,
                   ),
                 ),
-                child: _buildMenuPanel(widget.items),
+                child: _buildMenuPanel(
+                  widget.items,
+                  reduceEffects: reduceEffects,
+                ),
               ),
             ),
           ),
@@ -151,6 +157,7 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
                     submenuItem!.children,
                     width: submenuWidth,
                     isSubmenu: true,
+                    reduceEffects: reduceEffects,
                   ),
                 ),
               ),
@@ -184,14 +191,54 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
     List<FrostedMenuItem> items, {
     double width = 220,
     bool isSubmenu = false,
+    bool reduceEffects = false,
   }) {
+    final panelColor = reduceEffects
+        ? (widget.isDark
+              ? CupertinoColors.systemBackground.darkColor.withValues(
+                  alpha: 0.98,
+                )
+              : CupertinoColors.systemBackground.color.withValues(alpha: 0.98))
+        : (widget.isDark
+              ? CupertinoColors.systemBackground.darkColor.withValues(
+                  alpha: 0.65,
+                )
+              : CupertinoColors.systemBackground.color.withValues(alpha: 0.75));
+
+    final panel = Column(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        for (int i = 0; i < items.length; i++) ...[
+          _FrostedMenuItemWidget(
+            item: items[i],
+            isDark: widget.isDark,
+            isSubmenuActive: !isSubmenu && _activeSubmenuIndex == i,
+            onTap: () {
+              if (!isSubmenu && items[i].hasSubmenu) {
+                setState(() => _activeSubmenuIndex = i);
+                rebuildOverlay();
+                return;
+              }
+              _closeMenu();
+              items[i].action();
+            },
+          ),
+          if (i < items.length - 1)
+            Container(
+              height: 0.5,
+              color: widget.isDark
+                  ? CupertinoColors.white.withValues(alpha: 0.1)
+                  : CupertinoColors.black.withValues(alpha: 0.08),
+            ),
+        ],
+      ],
+    );
+
     return Container(
       width: width,
       decoration: BoxDecoration(
         borderRadius: BorderRadius.circular(16),
-        color: widget.isDark
-            ? CupertinoColors.systemBackground.darkColor.withValues(alpha: 0.65)
-            : CupertinoColors.systemBackground.color.withValues(alpha: 0.75),
+        color: panelColor,
         border: Border.all(
           color: widget.isDark
               ? CupertinoColors.white.withValues(alpha: 0.15)
@@ -210,37 +257,12 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(16),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
-          child: Column(
-            mainAxisSize: MainAxisSize.min,
-            children: [
-              for (int i = 0; i < items.length; i++) ...[
-                _FrostedMenuItemWidget(
-                  item: items[i],
-                  isDark: widget.isDark,
-                  isSubmenuActive: !isSubmenu && _activeSubmenuIndex == i,
-                  onTap: () {
-                    if (!isSubmenu && items[i].hasSubmenu) {
-                      setState(() => _activeSubmenuIndex = i);
-                      rebuildOverlay();
-                      return;
-                    }
-                    _closeMenu();
-                    items[i].action();
-                  },
-                ),
-                if (i < items.length - 1)
-                  Container(
-                    height: 0.5,
-                    color: widget.isDark
-                        ? CupertinoColors.white.withValues(alpha: 0.1)
-                        : CupertinoColors.black.withValues(alpha: 0.08),
-                  ),
-              ],
-            ],
-          ),
-        ),
+        child: reduceEffects
+            ? panel
+            : BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 30, sigmaY: 30),
+                child: panel,
+              ),
       ),
     );
   }
@@ -258,9 +280,16 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
           ]
         : null;
 
-    final containerColor = widget.isDark
-        ? CupertinoColors.white.withValues(alpha: 0.15)
-        : CupertinoColors.white.withValues(alpha: 0.5);
+    final reduceEffects = PerformanceModeScope.of(context);
+    final containerColor = reduceEffects
+        ? (widget.isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.94)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.96))
+        : (widget.isDark
+              ? CupertinoColors.white.withValues(alpha: 0.15)
+              : CupertinoColors.white.withValues(alpha: 0.5));
     final glassSettings = LiquidGlassSettings.figma(
       refraction: 42,
       depth: 26,
@@ -271,6 +300,70 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
           : const Color(0xFFE5E5EA).withValues(alpha: 0.54),
       lightIntensity: 76,
     );
+    final isHighlighted = isOverlayMenuOpen || widget.isActive;
+
+    Widget button = AnimatedContainer(
+      duration: const Duration(milliseconds: 200),
+      height: 34,
+      padding: const EdgeInsets.symmetric(horizontal: 14),
+      decoration: BoxDecoration(
+        color: containerColor,
+        borderRadius: BorderRadius.circular(18),
+        border: Border.all(
+          color: reduceEffects && isHighlighted
+              ? CupertinoColors.activeBlue
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.6)
+              : (widget.isDark
+                    ? CupertinoColors.white.withValues(alpha: 0.08)
+                    : CupertinoColors.black.withValues(alpha: 0.1)),
+          width: 0.5,
+        ),
+      ),
+      child: Row(
+        mainAxisSize: MainAxisSize.min,
+        children: [
+          Text(
+            widget.label ?? context.l10n.common_menu,
+            style: TextStyle(
+              fontSize: 15,
+              fontWeight: FontWeight.w500,
+              letterSpacing: -0.2,
+              color: AppColors.label(context),
+            ),
+          ),
+          const SizedBox(width: 4),
+          AnimatedRotation(
+            turns: isOverlayMenuOpen ? -0.5 : 0,
+            duration: const Duration(milliseconds: 250),
+            curve: Curves.easeOutBack,
+            child: Icon(
+              CupertinoIcons.chevron_down,
+              size: 14,
+              color: AppColors.secondaryLabel(context),
+            ),
+          ),
+        ],
+      ),
+    );
+
+    // 流光边框是持续运行的装饰动画，性能模式下直接跳过。
+    if (!reduceEffects && isHighlighted) {
+      button = button
+          .animate(onPlay: (c) => c.repeat())
+          .custom(
+            duration: 2000.ms,
+            builder: (context, value, child) {
+              return CustomPaint(
+                foregroundPainter: _FlowingBorderPainter(
+                  value * 2 * math.pi,
+                  widget.isDark,
+                ),
+                child: child,
+              );
+            },
+          );
+    }
 
     return GestureDetector(
       onTap: () {
@@ -284,76 +377,16 @@ class _FrostedOverlayMenuButtonState extends State<FrostedOverlayMenuButton>
           borderRadius: BorderRadius.circular(18),
           boxShadow: glowShadows,
         ),
-        child: LiquidGlassLayer(
-          settings: glassSettings,
-          child: AdaptiveGlass.grouped(
-            quality: GlassQuality.premium,
-            shape: const LiquidRoundedRectangle(borderRadius: 18),
-            child: Builder(
-              builder: (context) {
-                Widget button = AnimatedContainer(
-                  duration: const Duration(milliseconds: 200),
-                  height: 34,
-                  padding: const EdgeInsets.symmetric(horizontal: 14),
-                  decoration: BoxDecoration(
-                    color: containerColor,
-                    borderRadius: BorderRadius.circular(18),
-                    border: Border.all(
-                      color: widget.isDark
-                          ? CupertinoColors.white.withValues(alpha: 0.08)
-                          : CupertinoColors.black.withValues(alpha: 0.1),
-                      width: 0.5,
-                    ),
-                  ),
-                  child: Row(
-                    mainAxisSize: MainAxisSize.min,
-                    children: [
-                      Text(
-                        widget.label ?? context.l10n.common_menu,
-                        style: TextStyle(
-                          fontSize: 15,
-                          fontWeight: FontWeight.w500,
-                          letterSpacing: -0.2,
-                          color: AppColors.label(context),
-                        ),
-                      ),
-                      const SizedBox(width: 4),
-                      AnimatedRotation(
-                        turns: isOverlayMenuOpen ? -0.5 : 0,
-                        duration: const Duration(milliseconds: 250),
-                        curve: Curves.easeOutBack,
-                        child: Icon(
-                          CupertinoIcons.chevron_down,
-                          size: 14,
-                          color: AppColors.secondaryLabel(context),
-                        ),
-                      ),
-                    ],
-                  ),
-                );
-
-                if (isOverlayMenuOpen || widget.isActive) {
-                  button = button
-                      .animate(onPlay: (c) => c.repeat())
-                      .custom(
-                        duration: 2000.ms,
-                        builder: (context, value, child) {
-                          return CustomPaint(
-                            foregroundPainter: _FlowingBorderPainter(
-                              value * 2 * math.pi,
-                              widget.isDark,
-                            ),
-                            child: child,
-                          );
-                        },
-                      );
-                }
-
-                return button;
-              },
-            ),
-          ),
-        ),
+        child: reduceEffects
+            ? button
+            : LiquidGlassLayer(
+                settings: glassSettings,
+                child: AdaptiveGlass.grouped(
+                  quality: GlassQuality.premium,
+                  shape: const LiquidRoundedRectangle(borderRadius: 18),
+                  child: button,
+                ),
+              ),
       ),
     );
   }

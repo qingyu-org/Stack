@@ -3650,6 +3650,12 @@ abstract class AppLocalizations {
   /// **'Port'**
   String get servers_port;
 
+  /// Validation error shown when the panel port is outside the valid range.
+  ///
+  /// In en, this message translates to:
+  /// **'Port must be a number between 1 and 65535'**
+  String get servers_portInvalid;
+
   /// Add server sheet security authentication section title.
   ///
   /// In en, this message translates to:
@@ -4165,6 +4171,24 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Hide the bottom tab bar while scrolling'**
   String get settings_appearance_pinTabBarSubtitleOff;
+
+  /// Settings switch title for turning off frosted/liquid glass and decorative motion.
+  ///
+  /// In en, this message translates to:
+  /// **'Disable Advanced Materials'**
+  String get settings_appearance_performanceTitle;
+
+  /// Subtitle shown when advanced materials are disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Frosted glass, liquid glass and decorative motion are off'**
+  String get settings_appearance_performanceSubtitleOn;
+
+  /// Subtitle shown when performance mode is disabled.
+  ///
+  /// In en, this message translates to:
+  /// **'Full materials and effects are on; enable this for smoother performance'**
+  String get settings_appearance_performanceSubtitleOff;
 
   /// Settings row and page title for language selection.
   ///
@@ -12037,6 +12061,42 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Running'**
   String get websites_statusRunning;
+
+  /// Swipe action label to start a stopped website.
+  ///
+  /// In en, this message translates to:
+  /// **'Start Website'**
+  String get websites_start;
+
+  /// Swipe action label to stop a running website.
+  ///
+  /// In en, this message translates to:
+  /// **'Stop Website'**
+  String get websites_stop;
+
+  /// Toast shown after a website starts successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Website started'**
+  String get websites_startSuccess;
+
+  /// Toast shown after a website stops successfully.
+  ///
+  /// In en, this message translates to:
+  /// **'Website stopped'**
+  String get websites_stopSuccess;
+
+  /// Confirmation dialog title for deleting a website.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete Website'**
+  String get websites_deleteWebsiteTitle;
+
+  /// Confirmation dialog body for deleting a website.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{domain}\"?\nThe site configuration and files in its directory will be deleted. This cannot be undone.'**
+  String websites_deleteWebsiteConfirm(String domain);
 
   /// Website status stopped label.
   ///

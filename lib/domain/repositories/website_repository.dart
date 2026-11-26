@@ -45,7 +45,7 @@ abstract interface class WebsiteRepository {
 
   /// 更新 OpenResty 性能调整参数
   Future<void> updateOpenRestyPerformance(Map<String, String> params);
-  
+
   /// 查询 OpenResty 主配置文件内容
   Future<WebsiteConfigFileDto> getOpenRestyConfig();
 
@@ -75,6 +75,18 @@ abstract interface class WebsiteRepository {
 
   /// 创建网站
   Future<void> createWebsite(WebsiteCreateReq req);
+
+  /// 启动/停止网站。`operate` 取值为 `start` 或 `stop`。
+  Future<void> operateWebsite(int id, String operate);
+
+  /// 删除网站（默认保留网站目录文件）。
+  Future<void> deleteWebsite(
+    int id, {
+    bool deleteApp = false,
+    bool deleteBackup = false,
+    bool forceDelete = false,
+    bool deleteDB = false,
+  });
 
   /// 查询网站域名列表
   Future<List<WebsiteDomainDto>> listDomains(int websiteId);
@@ -206,6 +218,7 @@ abstract interface class WebsiteRepository {
     required String operate,
     String? content,
   });
+
   /// 获取网站重定向规则列表
   Future<List<WebsiteRedirectDto>> getWebsiteRedirects(int websiteId);
 
@@ -213,7 +226,11 @@ abstract interface class WebsiteRepository {
   Future<void> updateWebsiteRedirect(Map<String, dynamic> req);
 
   /// 保存重定向规则源文件
-  Future<void> saveWebsiteRedirectFile(int websiteId, String name, String content);
+  Future<void> saveWebsiteRedirectFile(
+    int websiteId,
+    String name,
+    String content,
+  );
 
   /// 获取网站域名列表
   /// 获取网站 HTTPS 配置
@@ -296,9 +313,7 @@ abstract interface class WebsiteRepository {
   // ===========================================================================
 
   /// 搜索 DNS 账号（分页）
-  Future<PageResult<DnsAccountDto>> searchDnsAccounts(
-    Map<String, dynamic> req,
-  );
+  Future<PageResult<DnsAccountDto>> searchDnsAccounts(Map<String, dynamic> req);
 
   /// 创建 DNS 账号
   Future<void> createDnsAccount(DnsAccountCreateReq req);

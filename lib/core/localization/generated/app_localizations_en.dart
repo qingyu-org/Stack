@@ -1960,6 +1960,9 @@ class AppLocalizationsEn extends AppLocalizations {
   String get servers_port => 'Port';
 
   @override
+  String get servers_portInvalid => 'Port must be a number between 1 and 65535';
+
+  @override
   String get servers_securityAuth => 'Security Authentication';
 
   @override
@@ -2233,6 +2236,18 @@ class AppLocalizationsEn extends AppLocalizations {
   @override
   String get settings_appearance_pinTabBarSubtitleOff =>
       'Hide the bottom tab bar while scrolling';
+
+  @override
+  String get settings_appearance_performanceTitle =>
+      'Disable Advanced Materials';
+
+  @override
+  String get settings_appearance_performanceSubtitleOn =>
+      'Frosted glass, liquid glass and decorative motion are off';
+
+  @override
+  String get settings_appearance_performanceSubtitleOff =>
+      'Full materials and effects are on; enable this for smoother performance';
 
   @override
   String get settings_language_title => 'Language';
@@ -6598,6 +6613,26 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get websites_statusRunning => 'Running';
+
+  @override
+  String get websites_start => 'Start Website';
+
+  @override
+  String get websites_stop => 'Stop Website';
+
+  @override
+  String get websites_startSuccess => 'Website started';
+
+  @override
+  String get websites_stopSuccess => 'Website stopped';
+
+  @override
+  String get websites_deleteWebsiteTitle => 'Delete Website';
+
+  @override
+  String websites_deleteWebsiteConfirm(String domain) {
+    return 'Delete \"$domain\"?\nThe site configuration and files in its directory will be deleted. This cannot be undone.';
+  }
 
   @override
   String get websites_statusStopped => 'Stopped';

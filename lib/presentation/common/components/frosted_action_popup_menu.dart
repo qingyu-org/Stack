@@ -2,6 +2,7 @@ import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import 'frosted_overlay_menu.dart';
 
@@ -64,13 +65,75 @@ class _FrostedActionPopupMenuState extends State<FrostedActionPopupMenu>
   @override
   Widget build(BuildContext context) {
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
-    final glassColor = CupertinoDynamicColor.resolve(
-      CupertinoColors.systemGrey6,
-      context,
-    ).withValues(alpha: isDark ? 0.5 : 0.34);
+    final reduceEffects = PerformanceModeScope.of(context);
+    final glassColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.98)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.98))
+        : CupertinoDynamicColor.resolve(
+            CupertinoColors.systemGrey6,
+            context,
+          ).withValues(alpha: isDark ? 0.5 : 0.34);
     final borderColor = AppColors.separator(
       context,
     ).withValues(alpha: isDark ? 0.22 : 0.16);
+
+    final decorated = DecoratedBox(
+      decoration: BoxDecoration(
+        color: glassColor,
+        borderRadius: BorderRadius.circular(14),
+        border: Border.all(color: borderColor, width: 0.5),
+      ),
+      child: ScaleTransition(
+        scale: _contentScaleAnimation,
+        alignment: widget.alignment,
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            for (int i = 0; i < widget.items.length; i++) ...[
+              CupertinoButton(
+                padding: const EdgeInsets.symmetric(
+                  horizontal: 16,
+                  vertical: 12,
+                ),
+                onPressed: () => widget.onSelect(widget.items[i].action),
+                child: Row(
+                  children: [
+                    widget.items[i].iconWidget ??
+                        Icon(
+                          widget.items[i].icon,
+                          size: 18,
+                          color: AppColors.label(context),
+                        ),
+                    const SizedBox(width: 12),
+                    Expanded(
+                      child: Text(
+                        widget.items[i].text,
+                        style: TextStyle(
+                          fontSize: 15,
+                          color: AppColors.label(context),
+                          fontWeight: FontWeight.w400,
+                        ),
+                        maxLines: 1,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                    ),
+                  ],
+                ),
+              ),
+              if (i < widget.items.length - 1)
+                Container(
+                  height: 0.5,
+                  margin: const EdgeInsets.only(left: 46),
+                  color: AppColors.separator(context).withValues(alpha: 0.1),
+                ),
+            ],
+          ],
+        ),
+      ),
+    );
 
     return Container(
       width: widget.width,
@@ -86,65 +149,12 @@ class _FrostedActionPopupMenuState extends State<FrostedActionPopupMenu>
       ),
       child: ClipRRect(
         borderRadius: BorderRadius.circular(14),
-        child: BackdropFilter(
-          filter: ImageFilter.blur(sigmaX: 36, sigmaY: 36),
-          child: DecoratedBox(
-            decoration: BoxDecoration(
-              color: glassColor,
-              borderRadius: BorderRadius.circular(14),
-              border: Border.all(color: borderColor, width: 0.5),
-            ),
-            child: ScaleTransition(
-              scale: _contentScaleAnimation,
-              alignment: widget.alignment,
-              child: Column(
-                mainAxisSize: MainAxisSize.min,
-                children: [
-                  for (int i = 0; i < widget.items.length; i++) ...[
-                    CupertinoButton(
-                      padding: const EdgeInsets.symmetric(
-                        horizontal: 16,
-                        vertical: 12,
-                      ),
-                      onPressed: () => widget.onSelect(widget.items[i].action),
-                      child: Row(
-                        children: [
-                          widget.items[i].iconWidget ??
-                              Icon(
-                                widget.items[i].icon,
-                                size: 18,
-                                color: AppColors.label(context),
-                              ),
-                          const SizedBox(width: 12),
-                          Expanded(
-                            child: Text(
-                              widget.items[i].text,
-                              style: TextStyle(
-                                fontSize: 15,
-                                color: AppColors.label(context),
-                                fontWeight: FontWeight.w400,
-                              ),
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
-                          ),
-                        ],
-                      ),
-                    ),
-                    if (i < widget.items.length - 1)
-                      Container(
-                        height: 0.5,
-                        margin: const EdgeInsets.only(left: 46),
-                        color: AppColors.separator(
-                          context,
-                        ).withValues(alpha: 0.1),
-                      ),
-                  ],
-                ],
+        child: reduceEffects
+            ? decorated
+            : BackdropFilter(
+                filter: ImageFilter.blur(sigmaX: 36, sigmaY: 36),
+                child: decorated,
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

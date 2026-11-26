@@ -8,6 +8,7 @@ import 'package:flutter_shaders/flutter_shaders.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../domain/entities/server.dart';
 import '../../../common/app_toast.dart';
@@ -62,6 +63,7 @@ class _ServerMemoCurlCardState extends ConsumerState<ServerMemoCurlCard> {
           isSelected: widget.isSelected,
         );
 
+    final reduceEffects = PerformanceModeScope.of(context);
     if (!widget.enabled) return frontCard;
 
     return LayoutBuilder(
@@ -88,11 +90,17 @@ class _ServerMemoCurlCardState extends ConsumerState<ServerMemoCurlCard> {
               ),
               IgnorePointer(
                 ignoring: progress > 0.55,
-                child: _PageCurlShader(
-                  progress: progress,
-                  cornerRadius: 14,
-                  child: frontCard,
-                ),
+                // 性能模式跳过页面卷曲着色器与离屏采样，改用基础位移。
+                child: reduceEffects
+                    ? Transform.translate(
+                        offset: Offset(-progress * _maxDrag, 0),
+                        child: frontCard,
+                      )
+                    : _PageCurlShader(
+                        progress: progress,
+                        cornerRadius: 14,
+                        child: frontCard,
+                      ),
               ),
             ],
           ),

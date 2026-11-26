@@ -207,7 +207,10 @@ class _WebsitesPageState extends ConsumerState<WebsitesPage>
                     );
                   }
                   final website = state.websites[index];
-                  return WebsiteListItem(website: website);
+                  return WebsiteListItem(
+                    key: ValueKey('website-${website.id}'),
+                    website: website,
+                  );
                 },
               ),
             );

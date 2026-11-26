@@ -4,6 +4,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../providers/files_provider.dart';
 
@@ -61,6 +62,7 @@ class _FilePathBarState extends ConsumerState<FilePathBar> {
 
     final segments = viewState.pathSegments;
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
+    final reduceEffects = PerformanceModeScope.of(context);
     final glassSettings = LiquidGlassSettings.figma(
       refraction: 42,
       depth: 35,
@@ -70,6 +72,86 @@ class _FilePathBarState extends ConsumerState<FilePathBar> {
           ? const Color(0xFF2C2C2E).withValues(alpha: 0.42)
           : const Color(0xFFE5E5EA).withValues(alpha: 0.55),
       lightIntensity: 76,
+    );
+    // 性能模式下去掉液态玻璃着色器，改用接近不透明的实色表面。
+    final surfaceColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.95)
+              : const Color(0xFFFFFFFF).withValues(alpha: 0.95))
+        : (isDark
+              ? const Color(0xFF3A3A3C).withValues(alpha: 0.78)
+              : const Color(0xFFFFFFFF).withValues(alpha: 0.65));
+
+    final content = ClipRRect(
+      borderRadius: BorderRadius.circular(18),
+      child: Stack(
+        children: [
+          Positioned.fill(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                color: surfaceColor,
+                borderRadius: BorderRadius.circular(18),
+                border: Border.all(
+                  color: isDark
+                      ? CupertinoColors.white.withValues(alpha: 0.08)
+                      : const Color(0xFFE8E8E8),
+                  width: 0.5,
+                ),
+              ),
+            ),
+          ),
+          ListView.builder(
+            controller: _scrollController,
+            scrollDirection: Axis.horizontal,
+            physics: const BouncingScrollPhysics(),
+            padding: const EdgeInsets.symmetric(horizontal: 10, vertical: 7),
+            itemCount: segments.length,
+            itemBuilder: (context, index) {
+              final segment = segments[index];
+              final isLast = index == segments.length - 1;
+
+              return Row(
+                mainAxisSize: MainAxisSize.min,
+                children: [
+                  _PathSegmentButton(
+                    label: segment.name == '/'
+                        ? context.l10n.files_rootDirectory
+                        : segment.name,
+                    isActive: isLast,
+                    onPressed: () {
+                      if (!isLast) {
+                        final scrollController = PrimaryScrollController.of(
+                          context,
+                        );
+                        final offset = scrollController.hasClients
+                            ? scrollController.offset
+                            : null;
+                        ref
+                            .read(filesControllerProvider.notifier)
+                            .navigateTo(
+                              segment.fullPath,
+                              currentOffset: offset,
+                            );
+                      } else {
+                        ref.read(filesControllerProvider.notifier).refresh();
+                      }
+                    },
+                  ),
+                  if (!isLast)
+                    Padding(
+                      padding: const EdgeInsets.symmetric(horizontal: 4),
+                      child: Icon(
+                        CupertinoIcons.chevron_right,
+                        size: 10,
+                        color: AppColors.tertiaryLabel(context),
+                      ),
+                    ),
+                ],
+              );
+            },
+          ),
+        ],
+      ),
     );
 
     return Padding(
@@ -89,92 +171,16 @@ class _FilePathBarState extends ConsumerState<FilePathBar> {
                 ]
               : null,
         ),
-        child: LiquidGlassLayer(
-          settings: glassSettings,
-          child: AdaptiveGlass.grouped(
-            quality: GlassQuality.premium,
-            shape: const LiquidRoundedRectangle(borderRadius: 18),
-            child: ClipRRect(
-              borderRadius: BorderRadius.circular(18),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: DecoratedBox(
-                      decoration: BoxDecoration(
-                        color: isDark
-                            ? const Color(0xFF3A3A3C).withValues(alpha: 0.78)
-                            : const Color(0xFFFFFFFF).withValues(alpha: 0.65),
-                        borderRadius: BorderRadius.circular(18),
-                        border: Border.all(
-                          color: isDark
-                              ? CupertinoColors.white.withValues(alpha: 0.08)
-                              : const Color(0xFFE8E8E8),
-                          width: 0.5,
-                        ),
-                      ),
-                    ),
-                  ),
-                  ListView.builder(
-                    controller: _scrollController,
-                    scrollDirection: Axis.horizontal,
-                    physics: const BouncingScrollPhysics(),
-                    padding: const EdgeInsets.symmetric(
-                      horizontal: 10,
-                      vertical: 7,
-                    ),
-                    itemCount: segments.length,
-                    itemBuilder: (context, index) {
-                      final segment = segments[index];
-                      final isLast = index == segments.length - 1;
-
-                      return Row(
-                        mainAxisSize: MainAxisSize.min,
-                        children: [
-                          _PathSegmentButton(
-                            label: segment.name == '/'
-                                ? context.l10n.files_rootDirectory
-                                : segment.name,
-                            isActive: isLast,
-                            onPressed: () {
-                              if (!isLast) {
-                                final scrollController =
-                                    PrimaryScrollController.of(context);
-                                final offset = scrollController.hasClients
-                                    ? scrollController.offset
-                                    : null;
-                                ref
-                                    .read(filesControllerProvider.notifier)
-                                    .navigateTo(
-                                      segment.fullPath,
-                                      currentOffset: offset,
-                                    );
-                              } else {
-                                ref
-                                    .read(filesControllerProvider.notifier)
-                                    .refresh();
-                              }
-                            },
-                          ),
-                          if (!isLast)
-                            Padding(
-                              padding: const EdgeInsets.symmetric(
-                                horizontal: 4,
-                              ),
-                              child: Icon(
-                                CupertinoIcons.chevron_right,
-                                size: 10,
-                                color: AppColors.tertiaryLabel(context),
-                              ),
-                            ),
-                        ],
-                      );
-                    },
-                  ),
-                ],
+        child: reduceEffects
+            ? content
+            : LiquidGlassLayer(
+                settings: glassSettings,
+                child: AdaptiveGlass.grouped(
+                  quality: GlassQuality.premium,
+                  shape: const LiquidRoundedRectangle(borderRadius: 18),
+                  child: content,
+                ),
               ),
-            ),
-          ),
-        ),
       ),
     );
   }

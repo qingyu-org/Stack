@@ -29,7 +29,8 @@ class ServersPage extends ConsumerStatefulWidget {
   ConsumerState<ServersPage> createState() => _ServersPageState();
 }
 
-class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
+class _ServersPageState extends ConsumerState<ServersPage>
+    with RouteAware, WidgetsBindingObserver {
   List<FloatingTabItemData> _tabItems(BuildContext context) => [
     FloatingTabItemData(
       icon: CupertinoIcons.rectangle_stack,
@@ -53,16 +54,34 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   int _refreshIntervalSeconds =
       AppSettingsController.defaultServersRefreshIntervalSeconds;
   bool _isCurrentRoute = true;
+  bool _isForeground = true;
   DateTime? _lastNodeRefreshAt;
 
   @override
   void initState() {
     super.initState();
+    WidgetsBinding.instance.addObserver(this);
     _settingsSubscription = ref.listenManual<AsyncValue<AppSettings>>(
       appSettingsControllerProvider,
       (_, next) => _applyRefreshSettings(next.valueOrNull),
       fireImmediately: true,
     );
+  }
+
+  @override
+  void didChangeAppLifecycleState(AppLifecycleState state) {
+    final isForeground = state == AppLifecycleState.resumed;
+    if (isForeground == _isForeground) return;
+    _isForeground = isForeground;
+    if (!isForeground) {
+      _stopTimer();
+      _popRefreshTimer?.cancel();
+      return;
+    }
+    if (_isCurrentRoute) {
+      _syncTimerWithSettings();
+      _refreshServerSnapshots();
+    }
   }
 
   @override
@@ -99,7 +118,7 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   }
 
   void _syncTimerWithSettings() {
-    if (!_isCurrentRoute || !_autoRefreshEnabled) {
+    if (!_isCurrentRoute || !_isForeground || !_autoRefreshEnabled) {
       _stopTimer();
       return;
     }
@@ -119,6 +138,7 @@ class _ServersPageState extends ConsumerState<ServersPage> with RouteAware {
   @override
   void dispose() {
     routeObserver.unsubscribe(this);
+    WidgetsBinding.instance.removeObserver(this);
     _settingsSubscription?.close();
     _popRefreshTimer?.cancel();
     _stopTimer();

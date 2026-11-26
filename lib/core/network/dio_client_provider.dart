@@ -2,6 +2,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:riverpod_annotation/riverpod_annotation.dart';
 
 import '../storage/storage_service.dart';
+import '../utils/server_host_normalizer.dart';
 import '../../presentation/features/servers/providers/node_selection_provider.dart';
 import '../../presentation/features/settings/providers/app_settings_provider.dart';
 import 'dio_client.dart';
@@ -99,10 +100,10 @@ Future<DioClient> createProbeClient({
   bool allowInsecureConnections = false,
   String currentNodeName = '',
 }) async {
-  final scheme = isHttps ? 'https' : 'http';
   final userAgent = await DioClient.defaultUserAgent();
+  final baseUrl = buildServerBaseUrl(host: host, port: port, isHttps: isHttps);
   return DioClient(
-    baseUrl: '$scheme://$host:$port',
+    baseUrl: baseUrl,
     apiKey: apiKey,
     requestTimeout: Duration(seconds: requestTimeoutSeconds),
     customHeaders: customHeaders,

@@ -1,8 +1,8 @@
-import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../common/components/action_sheet_launcher.dart';
 import '../../../common/components/action_sheet_scaffold.dart';
@@ -14,7 +14,6 @@ import 'file_move_copy_sheet.dart';
 import '../../server_detail/providers/active_server_provider.dart';
 import '../providers/download_manager_provider.dart';
 import 'download_progress_sheet.dart';
-import '../../../common/app_toast.dart';
 import '../../../../data/repositories_impl/file_repository_impl.dart';
 
 class FileMultiSelectBar extends ConsumerWidget {
@@ -97,8 +96,8 @@ class FileMultiSelectBar extends ConsumerWidget {
 
     final bar = ClipRRect(
       borderRadius: borderRadius,
-      child: BackdropFilter(
-        filter: ImageFilter.blur(sigmaX: 20, sigmaY: 20),
+      child: PerformanceAwareBlur(
+        sigma: 20,
         child: Container(
           padding: const EdgeInsets.symmetric(horizontal: 16, vertical: 10),
           decoration: BoxDecoration(

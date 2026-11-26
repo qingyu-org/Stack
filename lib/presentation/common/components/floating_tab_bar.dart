@@ -4,6 +4,7 @@ import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
 
+import '../../../core/performance/performance_mode.dart';
 import '../../../core/theme/app_theme.dart';
 
 class FloatingTabItemData {
@@ -48,6 +49,53 @@ class FloatingTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.paddingOf(context).bottom;
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
+    final reduceEffects = PerformanceModeScope.of(context);
+
+    // 性能模式下去掉实时背景模糊，改用接近不透明的表面色。
+    final surfaceColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.95)
+              : const Color(0xFFFFFFFF).withValues(alpha: 0.95))
+        : (isDark
+              ? const Color(0xFF3A3A3C).withValues(alpha: 0.78)
+              : const Color(0xFFFFFFFF).withValues(alpha: 0.65));
+
+    final tabStack = Stack(
+      children: [
+        Positioned.fill(
+          child: IgnorePointer(
+            child: DecoratedBox(
+              decoration: BoxDecoration(
+                borderRadius: BorderRadius.circular(28),
+                color: surfaceColor,
+                border: Border.all(
+                  color: isDark
+                      ? CupertinoColors.white.withValues(alpha: 0.08)
+                      : const Color(0xFFE8E8E8),
+                  width: 0.5,
+                ),
+              ),
+            ),
+          ),
+        ),
+        Padding(
+          padding: EdgeInsets.symmetric(horizontal: contentHorizontalPadding),
+          child: expandItems
+              ? Row(
+                  mainAxisSize: MainAxisSize.max,
+                  children: _buildTabChildren(expandItems: true),
+                )
+              : SingleChildScrollView(
+                  scrollDirection: Axis.horizontal,
+                  physics: const BouncingScrollPhysics(),
+                  child: Row(
+                    mainAxisSize: MainAxisSize.min,
+                    children: _buildTabChildren(expandItems: false),
+                  ),
+                ),
+        ),
+      ],
+    );
 
     return Center(
       child: Container(
@@ -79,52 +127,15 @@ class FloatingTabBar extends StatelessWidget {
               ),
             ],
           ),
-          child: ClipRRect(
-            borderRadius: BorderRadius.circular(28),
-            child: BackdropFilter(
-              filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
-              child: Stack(
-                children: [
-                  Positioned.fill(
-                    child: IgnorePointer(
-                      child: DecoratedBox(
-                        decoration: BoxDecoration(
-                          borderRadius: BorderRadius.circular(28),
-                          color: isDark
-                              ? const Color(0xFF3A3A3C).withValues(alpha: 0.78)
-                              : const Color(0xFFFFFFFF).withValues(alpha: 0.65),
-                          border: Border.all(
-                            color: isDark
-                                ? CupertinoColors.white.withValues(alpha: 0.08)
-                                : const Color(0xFFE8E8E8),
-                            width: 0.5,
-                          ),
-                        ),
-                      ),
-                    ),
+          child: reduceEffects
+              ? tabStack
+              : ClipRRect(
+                  borderRadius: BorderRadius.circular(28),
+                  child: BackdropFilter(
+                    filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
+                    child: tabStack,
                   ),
-                  Padding(
-                    padding: EdgeInsets.symmetric(
-                      horizontal: contentHorizontalPadding,
-                    ),
-                    child: expandItems
-                        ? Row(
-                            mainAxisSize: MainAxisSize.max,
-                            children: _buildTabChildren(expandItems: true),
-                          )
-                        : SingleChildScrollView(
-                            scrollDirection: Axis.horizontal,
-                            physics: const BouncingScrollPhysics(),
-                            child: Row(
-                              mainAxisSize: MainAxisSize.min,
-                              children: _buildTabChildren(expandItems: false),
-                            ),
-                          ),
-                  ),
-                ],
-              ),
-            ),
-          ),
+                ),
         ),
       ),
     );
@@ -174,9 +185,15 @@ class _FloatingTabItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reduceEffects = PerformanceModeScope.of(context);
     final color = isSelected
         ? CupertinoColors.activeBlue.resolveFrom(context)
         : AppColors.secondaryLabel(context);
+    final iconWidget = Icon(
+      isSelected ? activeIcon : icon,
+      color: color,
+      size: 22,
+    );
 
     return GestureDetector(
       onTap: () {
@@ -197,19 +214,16 @@ class _FloatingTabItem extends StatelessWidget {
                 clipBehavior: Clip.none,
                 children: [
                   Center(
-                    child:
-                        Icon(
-                              isSelected ? activeIcon : icon,
-                              color: color,
-                              size: 22,
-                            )
-                            .animate(target: isSelected ? 1 : 0)
-                            .scaleXY(
-                              begin: 1,
-                              end: 1.15,
-                              duration: 250.ms,
-                              curve: Curves.easeOutBack,
-                            ),
+                    child: reduceEffects
+                        ? iconWidget
+                        : iconWidget
+                              .animate(target: isSelected ? 1 : 0)
+                              .scaleXY(
+                                begin: 1,
+                                end: 1.15,
+                                duration: 250.ms,
+                                curve: Curves.easeOutBack,
+                              ),
                   ),
                   if (showDot)
                     Positioned(

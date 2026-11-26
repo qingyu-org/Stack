@@ -56,4 +56,25 @@ class WebsiteDto {
       dbType: json['dbType'] as String? ?? '',
     );
   }
+
+  WebsiteDto copyWith({String? status}) {
+    return WebsiteDto(
+      id: id,
+      primaryDomain: primaryDomain,
+      status: status ?? this.status,
+      type: type,
+      protocol: protocol,
+      expireDate: expireDate,
+      sslExpireDate: sslExpireDate,
+      remark: remark,
+      createdAt: createdAt,
+      updatedAt: updatedAt,
+      siteDir: siteDir,
+      sitePath: sitePath,
+      runtimeName: runtimeName,
+      websiteRuntimeType: websiteRuntimeType,
+      dbID: dbID,
+      dbType: dbType,
+    );
+  }
 }

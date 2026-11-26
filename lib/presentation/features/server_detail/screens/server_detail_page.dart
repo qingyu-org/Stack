@@ -224,23 +224,38 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
               index: _selectedIndex,
               children: [
                 if (_mountedTabs.contains(0))
-                  DashboardPage(isActive: _selectedIndex == 0)
+                  TickerMode(
+                    enabled: _selectedIndex == 0,
+                    child: DashboardPage(isActive: _selectedIndex == 0),
+                  )
                 else
                   const SizedBox.shrink(),
                 if (_mountedTabs.contains(1))
-                  WebsitesPage(isActive: _selectedIndex == 1)
+                  TickerMode(
+                    enabled: _selectedIndex == 1,
+                    child: WebsitesPage(isActive: _selectedIndex == 1),
+                  )
                 else
                   const SizedBox.shrink(),
                 if (_mountedTabs.contains(2))
-                  FilesPage(tabBarVisible: showTabBar)
+                  TickerMode(
+                    enabled: _selectedIndex == 2,
+                    child: FilesPage(tabBarVisible: showTabBar),
+                  )
                 else
                   const SizedBox.shrink(),
                 if (_mountedTabs.contains(3))
-                  ContainersPage(isActive: _selectedIndex == 3)
+                  TickerMode(
+                    enabled: _selectedIndex == 3,
+                    child: ContainersPage(isActive: _selectedIndex == 3),
+                  )
                 else
                   const SizedBox.shrink(),
                 if (_mountedTabs.contains(4))
-                  MorePage(onOpenFilesPath: _openFilesPath)
+                  TickerMode(
+                    enabled: _selectedIndex == 4,
+                    child: MorePage(onOpenFilesPath: _openFilesPath),
+                  )
                 else
                   const SizedBox.shrink(),
               ],

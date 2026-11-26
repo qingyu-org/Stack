@@ -1,6 +1,5 @@
 import 'dart:async';
 import 'dart:convert';
-import 'dart:ui';
 
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart' show Tooltip;
@@ -14,6 +13,7 @@ import '../../../../core/localization/locale_controller.dart';
 import '../../../../core/network/api_compatibility.dart';
 import '../../../../core/network/one_panel_auth.dart';
 import '../../../../core/network/web_socket_connector.dart';
+import '../../../../core/performance/performance_mode.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../core/storage/storage_service.dart';
 import '../frosted_header.dart';
@@ -705,6 +705,7 @@ class _FrostedFloatButton extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
+    final reduceEffects = PerformanceModeScope.of(context);
     final glowShadows = isOverlapping
         ? [
             BoxShadow(
@@ -716,13 +717,19 @@ class _FrostedFloatButton extends StatelessWidget {
           ]
         : null;
 
-    final containerColor = isDark
-        ? CupertinoColors.systemGrey6.darkColor.withValues(
-            alpha: isOverlapping ? 0.6 : 0.35,
-          )
-        : CupertinoColors.systemGrey6.color.withValues(
-            alpha: isOverlapping ? 0.7 : 0.5,
-          );
+    final containerColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.95)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.96))
+        : (isDark
+              ? CupertinoColors.systemGrey6.darkColor.withValues(
+                  alpha: isOverlapping ? 0.6 : 0.35,
+                )
+              : CupertinoColors.systemGrey6.color.withValues(
+                  alpha: isOverlapping ? 0.7 : 0.5,
+                ));
 
     return GestureDetector(
       onTap: () {
@@ -737,8 +744,8 @@ class _FrostedFloatButton extends StatelessWidget {
         ),
         child: ClipRRect(
           borderRadius: BorderRadius.circular(18),
-          child: BackdropFilter(
-            filter: ImageFilter.blur(sigmaX: 35, sigmaY: 35),
+          child: PerformanceAwareBlur(
+            sigma: 35,
             child: Container(
               height: 34,
               padding: const EdgeInsets.symmetric(horizontal: 14),

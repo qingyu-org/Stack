@@ -34,9 +34,7 @@ final appRouter = GoRouter(
         return CupertinoPage<void>(
           key: state.pageKey,
           child: ProviderScope(
-            overrides: [
-              activeServerIdProvider.overrideWithValue(id),
-            ],
+            overrides: [activeServerIdProvider.overrideWithValue(id)],
             child: const ServerDetailPage(),
           ),
         );

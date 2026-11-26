@@ -55,7 +55,7 @@ class SimpleServerCard extends StatelessWidget {
     final subtitle =
         subtitleOverride ??
         (base == null
-            ? '${server.host}:${server.port}'
+            ? server.displayAddress
             : serverSubtitle(
                 distro: base.prettyDistro,
                 ip: base.ipV4Addr,

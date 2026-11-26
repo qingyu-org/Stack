@@ -3,6 +3,7 @@ import 'dart:ui';
 import 'package:flutter/cupertino.dart';
 
 import '../../../core/localization/l10n_x.dart';
+import '../../../core/performance/performance_mode.dart';
 import '../../../core/theme/app_theme.dart';
 
 /// Header search field used inside [FrostedScaffold.trailingBuilder].
@@ -34,6 +35,7 @@ class AppHeaderSearchField extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
+    final reduceEffects = PerformanceModeScope.of(context);
     final width = MediaQuery.sizeOf(context).width - 32;
     final fieldBorderColor = isDark
         ? CupertinoColors.white.withValues(alpha: 0.10)
@@ -41,16 +43,62 @@ class AppHeaderSearchField extends StatelessWidget {
     final buttonBorderColor = isDark
         ? CupertinoColors.white.withValues(alpha: 0.08)
         : CupertinoColors.white.withValues(alpha: 0.62);
-    final surfaceColor = isDark
-        ? const Color(0xFF1C1C1E).withValues(alpha: 0.86)
-        : CupertinoColors.systemBackground
-              .resolveFrom(context)
-              .withValues(alpha: 0.94);
-    final cancelSurfaceColor = isDark
-        ? const Color(0xFF2C2C2E).withValues(alpha: 0.42)
-        : CupertinoColors.systemBackground
-              .resolveFrom(context)
-              .withValues(alpha: 0.54);
+    final surfaceColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF1C1C1E).withValues(alpha: 0.98)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.98))
+        : (isDark
+              ? const Color(0xFF1C1C1E).withValues(alpha: 0.86)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.94));
+    final cancelSurfaceColor = reduceEffects
+        ? (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.98)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.98))
+        : (isDark
+              ? const Color(0xFF2C2C2E).withValues(alpha: 0.42)
+              : CupertinoColors.systemBackground
+                    .resolveFrom(context)
+                    .withValues(alpha: 0.54));
+
+    final searchField = CupertinoSearchTextField(
+      controller: controller,
+      focusNode: focusNode,
+      placeholder: placeholder,
+      autocorrect: false,
+      backgroundColor: surfaceColor,
+      borderRadius: BorderRadius.circular(11),
+      style: TextStyle(fontSize: 15, color: AppColors.label(context)),
+      placeholderStyle: TextStyle(
+        fontSize: 15,
+        color: AppColors.secondaryLabel(context),
+      ),
+      onChanged: onChanged,
+      onSubmitted: onSubmitted,
+      onSuffixTap: () {
+        controller.clear();
+        onClear?.call();
+      },
+    );
+
+    final cancelButton = CupertinoButton(
+      padding: const EdgeInsets.symmetric(horizontal: 9),
+      minimumSize: const Size(48, 32),
+      onPressed: onCancel,
+      child: Text(
+        context.l10n.common_cancel,
+        style: TextStyle(
+          fontSize: 15,
+          fontWeight: FontWeight.w500,
+          color: CupertinoColors.activeBlue.resolveFrom(context),
+        ),
+      ),
+    );
 
     return SizedBox(
       width: width,
@@ -74,31 +122,12 @@ class AppHeaderSearchField extends StatelessWidget {
               ),
               child: ClipRRect(
                 borderRadius: BorderRadius.circular(11),
-                child: BackdropFilter(
-                  filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
-                  child: CupertinoSearchTextField(
-                    controller: controller,
-                    focusNode: focusNode,
-                    placeholder: placeholder,
-                    autocorrect: false,
-                    backgroundColor: surfaceColor,
-                    borderRadius: BorderRadius.circular(11),
-                    style: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.label(context),
-                    ),
-                    placeholderStyle: TextStyle(
-                      fontSize: 15,
-                      color: AppColors.secondaryLabel(context),
-                    ),
-                    onChanged: onChanged,
-                    onSubmitted: onSubmitted,
-                    onSuffixTap: () {
-                      controller.clear();
-                      onClear?.call();
-                    },
-                  ),
-                ),
+                child: reduceEffects
+                    ? searchField
+                    : BackdropFilter(
+                        filter: ImageFilter.blur(sigmaX: 24, sigmaY: 24),
+                        child: searchField,
+                      ),
               ),
             ),
           ),
@@ -112,22 +141,12 @@ class AppHeaderSearchField extends StatelessWidget {
             ),
             child: ClipRRect(
               borderRadius: BorderRadius.circular(10),
-              child: BackdropFilter(
-                filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
-                child: CupertinoButton(
-                  padding: const EdgeInsets.symmetric(horizontal: 9),
-                  minimumSize: const Size(48, 32),
-                  onPressed: onCancel,
-                  child: Text(
-                    context.l10n.common_cancel,
-                    style: TextStyle(
-                      fontSize: 15,
-                      fontWeight: FontWeight.w500,
-                      color: CupertinoColors.activeBlue.resolveFrom(context),
+              child: reduceEffects
+                  ? cancelButton
+                  : BackdropFilter(
+                      filter: ImageFilter.blur(sigmaX: 12, sigmaY: 12),
+                      child: cancelButton,
                     ),
-                  ),
-                ),
-              ),
             ),
           ),
         ],

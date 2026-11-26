@@ -128,6 +128,85 @@ class WebsitesController extends _$WebsitesController {
     }
   }
 
+  /// 启动或停止网站。先乐观更新列表状态，失败时只回滚该网站。
+  Future<bool> setWebsiteRunning(int id, bool running) async {
+    final previous = state.valueOrNull;
+    if (previous == null) return false;
+
+    String? previousStatus;
+    for (final website in previous.websites) {
+      if (website.id == id) {
+        previousStatus = website.status;
+        break;
+      }
+    }
+    if (previousStatus == null) return false;
+
+    final optimisticStatus = running ? 'Running' : 'Stopped';
+    final operate = running ? 'start' : 'stop';
+    state = AsyncData(
+      previous.copyWith(
+        websites: [
+          for (final website in previous.websites)
+            website.id == id
+                ? website.copyWith(status: optimisticStatus)
+                : website,
+        ],
+      ),
+    );
+
+    try {
+      final repo = await ref.read(websiteRepositoryProvider.future);
+      await repo.operateWebsite(id, operate);
+      return true;
+    } catch (error) {
+      // 回滚时基于最新 state，避免覆盖期间的刷新、搜索或删除结果。
+      final current = state.valueOrNull;
+      if (current != null) {
+        state = AsyncData(
+          current.copyWith(
+            websites: [
+              for (final website in current.websites)
+                if (website.id == id && website.status == optimisticStatus)
+                  website.copyWith(status: previousStatus)
+                else
+                  website,
+            ],
+          ),
+        );
+      }
+      showAppErrorToast(
+        running ? 'Failed to start website' : 'Failed to stop website',
+        description: '$error',
+      );
+      return false;
+    }
+  }
+
+  /// 删除网站。成功后从列表移除；失败时保留原列表。
+  Future<bool> deleteWebsite(int id) async {
+    try {
+      final repo = await ref.read(websiteRepositoryProvider.future);
+      await repo.deleteWebsite(id);
+    } catch (error) {
+      showAppErrorToast('Failed to delete website', description: '$error');
+      return false;
+    }
+
+    final current = state.valueOrNull;
+    if (current != null) {
+      state = AsyncData(
+        current.copyWith(
+          websites: [
+            for (final website in current.websites)
+              if (website.id != id) website,
+          ],
+        ),
+      );
+    }
+    return true;
+  }
+
   Future<void> loadMore() async {
     final current = state.valueOrNull;
     if (current == null || current.isLoadingMore || !current.hasMore) return;

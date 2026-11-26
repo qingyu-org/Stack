@@ -6,6 +6,7 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
+import '../../../../core/performance/performance_mode.dart';
 
 class ServerContextMenu {
   const ServerContextMenu._();
@@ -193,14 +194,19 @@ class _ServerContextMenuOverlayState extends State<_ServerContextMenuOverlay>
   }
 
   Widget _buildBackdrop({Rect? hole}) {
-    final content = BackdropFilter(
-      filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
-      child: Container(
-        color: widget.isDark
-            ? CupertinoColors.black.withValues(alpha: 0.25)
-            : CupertinoColors.white.withValues(alpha: 0.15),
-      ),
+    final reduceEffects = PerformanceModeScope.of(context);
+    // 性能模式下去掉背景实时模糊，仅用更深的压暗遮罩聚焦锚定卡片。
+    Widget content = Container(
+      color: widget.isDark
+          ? CupertinoColors.black.withValues(alpha: reduceEffects ? 0.4 : 0.25)
+          : CupertinoColors.white.withValues(alpha: reduceEffects ? 0.3 : 0.15),
     );
+    if (!reduceEffects) {
+      content = BackdropFilter(
+        filter: ImageFilter.blur(sigmaX: 10, sigmaY: 10),
+        child: content,
+      );
+    }
     if (hole == null) return content;
     return ClipPath(clipper: _BackdropHoleClipper(hole), child: content);
   }

@@ -83,6 +83,7 @@ class ServersSettingsTab extends ConsumerWidget {
         AppSettingsController.defaultServersRefreshIntervalSeconds;
     final customHeaders = settings?.customHeaders ?? const {};
     final pinTabBar = settings?.pinTabBar ?? true;
+    final performanceMode = settings?.performanceMode ?? false;
     final localeOption = ref.watch(localeControllerProvider);
 
     return FrostedScaffold(
@@ -251,6 +252,20 @@ class ServersSettingsTab extends ConsumerWidget {
                           : (value) => ref
                                 .read(appSettingsControllerProvider.notifier)
                                 .setPinTabBar(value),
+                    ),
+                    _SettingsSwitchRow(
+                      icon: CupertinoIcons.bolt_fill,
+                      iconColor: CupertinoColors.systemOrange,
+                      title: l10n.settings_appearance_performanceTitle,
+                      subtitle: performanceMode
+                          ? l10n.settings_appearance_performanceSubtitleOn
+                          : l10n.settings_appearance_performanceSubtitleOff,
+                      value: performanceMode,
+                      onChanged: settingsAsync.isLoading
+                          ? null
+                          : (value) => ref
+                                .read(appSettingsControllerProvider.notifier)
+                                .setPerformanceMode(value),
                     ),
                     _SettingsRow(
                       icon: CupertinoIcons.globe,

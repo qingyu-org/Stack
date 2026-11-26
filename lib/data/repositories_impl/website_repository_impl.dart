@@ -111,6 +111,25 @@ class WebsiteRepositoryImpl implements WebsiteRepository {
       _websiteApi.createWebsite(req);
 
   @override
+  Future<void> operateWebsite(int id, String operate) =>
+      _websiteApi.operateWebsite(id, operate);
+
+  @override
+  Future<void> deleteWebsite(
+    int id, {
+    bool deleteApp = false,
+    bool deleteBackup = false,
+    bool forceDelete = false,
+    bool deleteDB = false,
+  }) => _websiteApi.deleteWebsite(
+    id,
+    deleteApp: deleteApp,
+    deleteBackup: deleteBackup,
+    forceDelete: forceDelete,
+    deleteDB: deleteDB,
+  );
+
+  @override
   Future<List<WebsiteDomainDto>> listDomains(int websiteId) =>
       _websiteApi.listDomains(websiteId);
 
@@ -352,17 +371,16 @@ class WebsiteRepositoryImpl implements WebsiteRepository {
     String? description,
     int? domainId,
     int? websiteSSLId,
-  }) =>
-      _websiteApi.uploadSsl(
-        type: type,
-        certificate: certificate,
-        privateKey: privateKey,
-        certificatePath: certificatePath,
-        privateKeyPath: privateKeyPath,
-        description: description,
-        domainId: domainId,
-        websiteSSLId: websiteSSLId,
-      );
+  }) => _websiteApi.uploadSsl(
+    type: type,
+    certificate: certificate,
+    privateKey: privateKey,
+    certificatePath: certificatePath,
+    privateKeyPath: privateKeyPath,
+    description: description,
+    domainId: domainId,
+    websiteSSLId: websiteSSLId,
+  );
 
   @override
   Future<void> uploadSslByFile({
@@ -370,13 +388,12 @@ class WebsiteRepositoryImpl implements WebsiteRepository {
     required String privateKeyPath,
     String? description,
     int? websiteSSLId,
-  }) =>
-      _websiteApi.uploadSslByFile(
-        certificatePath: certificatePath,
-        privateKeyPath: privateKeyPath,
-        description: description,
-        websiteSSLId: websiteSSLId,
-      );
+  }) => _websiteApi.uploadSslByFile(
+    certificatePath: certificatePath,
+    privateKeyPath: privateKeyPath,
+    description: description,
+    websiteSSLId: websiteSSLId,
+  );
 
   @override
   Future<Response<dynamic>> downloadSsl(int id) => _websiteApi.downloadSsl(id);
@@ -388,8 +405,7 @@ class WebsiteRepositoryImpl implements WebsiteRepository {
   @override
   Future<PageResult<WebsiteAcmeAccountDto>> searchAcmeAccountsPaged(
     Map<String, dynamic> req,
-  ) =>
-      _websiteApi.searchAcmeAccountsPaged(req);
+  ) => _websiteApi.searchAcmeAccountsPaged(req);
 
   @override
   Future<void> createAcmeAccount(AcmeAccountCreateReq req) =>
@@ -409,8 +425,7 @@ class WebsiteRepositoryImpl implements WebsiteRepository {
   @override
   Future<PageResult<DnsAccountDto>> searchDnsAccounts(
     Map<String, dynamic> req,
-  ) =>
-      _websiteApi.searchDnsAccounts(req);
+  ) => _websiteApi.searchDnsAccounts(req);
 
   @override
   Future<void> createDnsAccount(DnsAccountCreateReq req) =>
