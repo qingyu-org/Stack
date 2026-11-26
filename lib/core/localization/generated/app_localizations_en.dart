@@ -12180,13 +12180,13 @@ class AppLocalizationsEn extends AppLocalizations {
   String get pro_waf_title => 'WAF';
 
   @override
-  String get pro_waf_subtitle => 'Attacks and blocked requests (view only)';
+  String get pro_waf_subtitle => 'Attacks and blocked requests';
 
   @override
   String get pro_monitor_title => 'Website monitoring';
 
   @override
-  String get pro_monitor_subtitle => 'Visitors, QPS and trends (view only)';
+  String get pro_monitor_subtitle => 'Visitors, QPS and trends';
 
   @override
   String get pro_opsReport_title => 'Operations report';

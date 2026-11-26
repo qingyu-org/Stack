@@ -8,7 +8,7 @@ import 'package:mono_dash/presentation/common/components/frosted_header.dart';
 import 'package:mono_dash/presentation/common/components/frosted_scaffold.dart';
 
 void main() {
-  testWidgets('frosted actions use premium adaptive glass', (tester) async {
+  testWidgets('frosted actions use a blurred backdrop', (tester) async {
     var tapped = false;
 
     await tester.pumpWidget(
@@ -19,8 +19,13 @@ void main() {
       ),
     );
 
-    final glass = tester.widget<AdaptiveGlass>(find.byType(AdaptiveGlass));
-    expect(glass.quality, GlassQuality.premium);
+    expect(
+      find.descendant(
+        of: find.byType(FrostedActionButton),
+        matching: find.byType(BackdropFilter),
+      ),
+      findsOneWidget,
+    );
 
     await tester.tap(find.text('Save'));
     expect(tapped, isTrue);
@@ -32,7 +37,40 @@ void main() {
         ),
       ),
     );
-    expect(tester.getSize(find.byType(GlassButton)), const Size.square(34));
+    await tester.pumpAndSettle();
+    expect(
+      tester.getSize(find.byType(FrostedActionButton)),
+      const Size.square(34),
+    );
+  });
+
+  testWidgets('header title suffix stays clear of trailing actions', (
+    tester,
+  ) async {
+    final suffixKey = GlobalKey();
+    final trailingKey = GlobalKey();
+
+    await tester.pumpWidget(
+      CupertinoApp(
+        home: Align(
+          alignment: Alignment.topLeft,
+          child: SizedBox(
+            width: 360,
+            child: FrostedHeader(
+              title: '清羽面板',
+              titleSuffix: SizedBox(key: suffixKey, width: 100, height: 26),
+              trailingBuilder: (isDark, isOverlapping) =>
+                  SizedBox(key: trailingKey, width: 34, height: 34),
+            ),
+          ),
+        ),
+      ),
+    );
+
+    expect(tester.takeException(), isNull);
+    final suffixRight = tester.getTopRight(find.byKey(suffixKey)).dx;
+    final trailingLeft = tester.getTopLeft(find.byKey(trailingKey)).dx;
+    expect(suffixRight, lessThanOrEqualTo(trailingLeft));
   });
 
   testWidgets('app toggles use blue premium glass switches', (tester) async {

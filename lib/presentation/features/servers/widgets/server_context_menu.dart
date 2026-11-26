@@ -6,21 +6,15 @@ import 'package:flutter_riverpod/flutter_riverpod.dart';
 import 'package:flutter_tabler_icons/flutter_tabler_icons.dart';
 
 import '../../../../core/localization/l10n_x.dart';
-import '../../../../domain/entities/server.dart';
-import '../../settings/providers/app_settings_provider.dart';
-import 'server_card.dart';
 
 class ServerContextMenu {
   const ServerContextMenu._();
 
   static void show(
-    BuildContext context,
-    Server server, {
-    required ServerCardStyle style,
+    BuildContext context, {
     required VoidCallback onSort,
     required VoidCallback onEdit,
     required VoidCallback onDelete,
-    bool showPreview = true,
   }) {
     HapticFeedback.mediumImpact();
 
@@ -36,12 +30,9 @@ class ServerContextMenu {
       builder: (_) => UncontrolledProviderScope(
         container: container,
         child: _ServerContextMenuOverlay(
-          server: server,
-          style: style,
           isDark: isDark,
           anchorOffset: offset,
           anchorSize: size,
-          showPreview: showPreview,
           onSort: onSort,
           onEdit: onEdit,
           onDelete: onDelete,
@@ -56,24 +47,18 @@ class ServerContextMenu {
 
 class _ServerContextMenuOverlay extends StatefulWidget {
   const _ServerContextMenuOverlay({
-    required this.server,
-    required this.style,
     required this.isDark,
     required this.anchorOffset,
     required this.anchorSize,
-    this.showPreview = true,
     required this.onSort,
     required this.onEdit,
     required this.onDelete,
     required this.onDismiss,
   });
 
-  final Server server;
-  final ServerCardStyle style;
   final bool isDark;
   final Offset anchorOffset;
   final Size anchorSize;
-  final bool showPreview;
   final VoidCallback onSort;
   final VoidCallback onEdit;
   final VoidCallback onDelete;
@@ -129,17 +114,13 @@ class _ServerContextMenuOverlayState extends State<_ServerContextMenuOverlay>
     const menuHeight = 145.0;
     const gap = 10.0;
 
-    double previewTop = widget.anchorOffset.dy;
-    double menuTop = previewTop + widget.anchorSize.height + gap;
+    final anchorTop = widget.anchorOffset.dy;
+    var menuTop = anchorTop + widget.anchorSize.height + gap;
     var isMenuAbove = false;
     if (menuTop + menuHeight > screenSize.height - 24) {
-      menuTop = previewTop - menuHeight - gap;
       isMenuAbove = true;
-      if (menuTop < 50) {
-        final overflow = 50 - menuTop;
-        menuTop += overflow;
-        previewTop += overflow;
-      }
+      menuTop = anchorTop - menuHeight - gap;
+      if (menuTop < 50) menuTop = 50;
     }
 
     var menuLeft =
@@ -181,40 +162,18 @@ class _ServerContextMenuOverlayState extends State<_ServerContextMenuOverlay>
             child: FadeTransition(
               opacity: _fadeAnimation,
               child: _buildBackdrop(
-                // 分组/节点卡不绘制预览时，在锚定卡片位置留出透明孔洞，
-                // 让被长按的卡片保持清晰，只压暗周围区域。
-                hole: widget.showPreview
-                    ? null
-                    : Rect.fromLTWH(
-                        widget.anchorOffset.dx,
-                        widget.anchorOffset.dy,
-                        widget.anchorSize.width,
-                        widget.anchorSize.height,
-                      ),
-              ),
-            ),
-          ),
-        ),
-        if (widget.showPreview)
-          Positioned(
-            left: widget.anchorOffset.dx,
-            top: previewTop,
-            width: widget.anchorSize.width,
-            child: FadeTransition(
-              opacity: _fadeAnimation,
-              child: ScaleTransition(
-                scale: _scaleAnimation,
-                alignment: isMenuAbove
-                    ? Alignment.topCenter
-                    : Alignment.bottomCenter,
-                child: _ServerPreviewItem(
-                  server: widget.server,
-                  style: widget.style,
-                  isDark: widget.isDark,
+                // 在锚定的整张卡片位置留出透明孔洞，让被长按的卡片
+                // 保持清晰，只压暗周围区域。
+                hole: Rect.fromLTWH(
+                  widget.anchorOffset.dx,
+                  widget.anchorOffset.dy,
+                  widget.anchorSize.width,
+                  widget.anchorSize.height,
                 ),
               ),
             ),
           ),
+        ),
         Positioned(
           left: menuLeft,
           top: menuTop,
@@ -315,37 +274,7 @@ class _BackdropHoleClipper extends CustomClipper<Path> {
   }
 
   @override
-  bool shouldReclip(_BackdropHoleClipper oldClipper) =>
-      oldClipper.hole != hole;
-}
-
-class _ServerPreviewItem extends StatelessWidget {
-  const _ServerPreviewItem({
-    required this.server,
-    required this.style,
-    required this.isDark,
-  });
-
-  final Server server;
-  final ServerCardStyle style;
-  final bool isDark;
-
-  @override
-  Widget build(BuildContext context) {
-    return DecoratedBox(
-      decoration: BoxDecoration(
-        borderRadius: BorderRadius.circular(14),
-        boxShadow: [
-          BoxShadow(
-            color: CupertinoColors.black.withValues(alpha: isDark ? 0.3 : 0.12),
-            blurRadius: 20,
-            offset: const Offset(0, 6),
-          ),
-        ],
-      ),
-      child: ServerCard(server: server, style: style),
-    );
-  }
+  bool shouldReclip(_BackdropHoleClipper oldClipper) => oldClipper.hole != hole;
 }
 
 class _MenuItemData {

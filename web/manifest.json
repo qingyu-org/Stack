@@ -3,7 +3,7 @@
     "short_name": "FeatherStack",
     "start_url": ".",
     "display": "standalone",
-    "background_color": "#F5F1E8",
+    "background_color": "#FFFFFF",
     "theme_color": "#0E4A3A",
     "description": "FeatherStack is a third-party mobile client for 1Panel.",
     "orientation": "portrait-primary",

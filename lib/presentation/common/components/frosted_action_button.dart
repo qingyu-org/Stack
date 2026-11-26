@@ -1,6 +1,7 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../core/theme/app_theme.dart';
 
@@ -52,36 +53,6 @@ class FrostedActionButton extends StatelessWidget {
     final containerColor = isDark
         ? CupertinoColors.white.withValues(alpha: 0.15)
         : CupertinoColors.white.withValues(alpha: 0.5);
-    final glassSettings = LiquidGlassSettings.figma(
-      refraction: 42,
-      depth: 26,
-      dispersion: 5,
-      frost: 1,
-      glassColor: isDark
-          ? const Color(0xFF2C2C2E).withValues(alpha: 0.42)
-          : const Color(0xFFE5E5EA).withValues(alpha: 0.54),
-      lightIntensity: 76,
-    );
-
-    if (text.isEmpty && icon != null && !isLoading) {
-      return GlassButton(
-        label: text,
-        icon: Icon(icon),
-        iconColor: color,
-        iconSize: 16,
-        width: 34,
-        height: 34,
-        settings: glassSettings,
-        quality: GlassQuality.premium,
-        useOwnLayer: true,
-        stretch: 0.15,
-        enabled: _isEnabled,
-        onTap: () {
-          HapticFeedback.lightImpact();
-          onTap?.call();
-        },
-      );
-    }
 
     return GestureDetector(
       onTap: _isEnabled
@@ -97,11 +68,10 @@ class FrostedActionButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(18),
           boxShadow: glowShadows,
         ),
-        child: LiquidGlassLayer(
-          settings: glassSettings,
-          child: AdaptiveGlass.grouped(
-            quality: GlassQuality.premium,
-            shape: const LiquidRoundedRectangle(borderRadius: 18),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(18),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
             child: _buildBody(context, containerColor, color),
           ),
         ),
@@ -110,8 +80,7 @@ class FrostedActionButton extends StatelessWidget {
   }
 
   Widget _buildBody(BuildContext context, Color containerColor, Color color) {
-    return AnimatedContainer(
-      duration: const Duration(milliseconds: 200),
+    return Container(
       height: 34,
       width: text.isEmpty ? 34 : null,
       padding: EdgeInsets.symmetric(horizontal: text.isEmpty ? 0 : 14),

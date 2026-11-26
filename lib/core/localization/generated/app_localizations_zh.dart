@@ -11696,13 +11696,13 @@ class AppLocalizationsZh extends AppLocalizations {
   String get pro_waf_title => 'WAF';
 
   @override
-  String get pro_waf_subtitle => '攻击与拦截概览（仅查看）';
+  String get pro_waf_subtitle => '攻击与拦截概览';
 
   @override
   String get pro_monitor_title => '网站监控';
 
   @override
-  String get pro_monitor_subtitle => '访客、QPS 与趋势（仅查看）';
+  String get pro_monitor_subtitle => '访客、QPS 与趋势';
 
   @override
   String get pro_opsReport_title => '运维报表';

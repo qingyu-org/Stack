@@ -1,7 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:inspire_blur/inspire_blur.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/theme/app_theme.dart';
@@ -18,6 +19,10 @@ class FrostedHeader extends StatelessWidget {
   final String title;
   final VoidCallback? onBack;
   final Widget Function(bool isDark, bool isOverlapping)? trailingBuilder;
+
+  /// 标题右侧的小组件（例如节点切换胶囊）。它会和标题一起参与居中，
+  /// 并在标题过长时挤压标题，而不是覆盖在标题上。
+  final Widget? titleSuffix;
   final double fadeOutDistance;
   final bool isOverlapping;
   final bool showBlur;
@@ -26,11 +31,15 @@ class FrostedHeader extends StatelessWidget {
   final Widget? titleWidget;
   final double titleOpacity;
 
+  /// 右侧操作区的避让宽度。搜索框等宽组件需要更大的值。
+  final double rightAvoidance;
+
   const FrostedHeader({
     super.key,
     required this.title,
     this.onBack,
     this.trailingBuilder,
+    this.titleSuffix,
     this.fadeOutDistance = 12.0,
     this.isOverlapping = false,
     this.showBlur = true,
@@ -38,6 +47,7 @@ class FrostedHeader extends StatelessWidget {
     this.useMiddleTruncate = true,
     this.titleWidget,
     this.titleOpacity = 1,
+    this.rightAvoidance = 102.0,
   });
 
   static const double headerHeight = 44.0;
@@ -53,7 +63,7 @@ class FrostedHeader extends StatelessWidget {
     // 标题必须以整条 header 为基准居中。左右操作区宽度可能不同，
     // 因此使用对称避让宽度，避免在不等宽区域内居中造成视觉偏移。
     final leftAvoidance = onBack != null ? 82.0 : 20.0;
-    final rightAvoidance = trailingBuilder != null ? 102.0 : 20.0;
+    final rightAvoidance = trailingBuilder != null ? this.rightAvoidance : 20.0;
     final horizontalPadding = leftAvoidance > rightAvoidance
         ? leftAvoidance
         : rightAvoidance;
@@ -143,11 +153,7 @@ class FrostedHeader extends StatelessWidget {
                               letterSpacing: -0.4,
                               shadows: textShadows,
                             ),
-                            child: Text(
-                              displayTitle,
-                              maxLines: 1,
-                              overflow: TextOverflow.ellipsis,
-                            ),
+                            child: _buildTitleRow(displayTitle),
                           );
                         },
                       ),
@@ -178,6 +184,24 @@ class FrostedHeader extends StatelessWidget {
             ),
         ],
       ),
+    );
+  }
+
+  Widget _buildTitleRow(String displayTitle) {
+    final text = Text(
+      displayTitle,
+      maxLines: 1,
+      overflow: TextOverflow.ellipsis,
+    );
+    final suffix = titleSuffix;
+    if (suffix == null) return text;
+    return Row(
+      mainAxisSize: MainAxisSize.min,
+      children: [
+        Flexible(child: text),
+        const SizedBox(width: 8),
+        suffix,
+      ],
     );
   }
 }
@@ -271,16 +295,6 @@ class _FrostedBackButton extends StatelessWidget {
     final containerColor = isDark
         ? CupertinoColors.white.withValues(alpha: 0.15)
         : CupertinoColors.white.withValues(alpha: 0.5);
-    final glassSettings = LiquidGlassSettings.figma(
-      refraction: 42,
-      depth: 26,
-      dispersion: 5,
-      frost: 1,
-      glassColor: isDark
-          ? const Color(0xFF2C2C2E).withValues(alpha: 0.42)
-          : const Color(0xFFE5E5EA).withValues(alpha: 0.54),
-      lightIntensity: 76,
-    );
 
     final progressColor = CupertinoColors.activeBlue.resolveFrom(context);
 
@@ -297,11 +311,10 @@ class _FrostedBackButton extends StatelessWidget {
           borderRadius: BorderRadius.circular(_borderRadius),
           boxShadow: glowShadows,
         ),
-        child: LiquidGlassLayer(
-          settings: glassSettings,
-          child: AdaptiveGlass.grouped(
-            quality: GlassQuality.premium,
-            shape: const LiquidRoundedRectangle(borderRadius: _borderRadius),
+        child: ClipRRect(
+          borderRadius: BorderRadius.circular(_borderRadius),
+          child: BackdropFilter(
+            filter: ImageFilter.blur(sigmaX: 18, sigmaY: 18),
             child: CustomPaint(
               foregroundPainter: swipeProgress > 0.01
                   ? _SwipeProgressPainter(

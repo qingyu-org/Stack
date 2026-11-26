@@ -16370,7 +16370,7 @@
   "@pro_waf_title": {
     "description": "WAF feature title."
   },
-  "pro_waf_subtitle": "Attacks and blocked requests (view only)",
+  "pro_waf_subtitle": "Attacks and blocked requests",
   "@pro_waf_subtitle": {
     "description": "WAF feature subtitle."
   },
@@ -16378,7 +16378,7 @@
   "@pro_monitor_title": {
     "description": "Website monitoring feature title."
   },
-  "pro_monitor_subtitle": "Visitors, QPS and trends (view only)",
+  "pro_monitor_subtitle": "Visitors, QPS and trends",
   "@pro_monitor_subtitle": {
     "description": "Website monitoring feature subtitle."
   },

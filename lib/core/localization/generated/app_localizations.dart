@@ -22204,7 +22204,7 @@ abstract class AppLocalizations {
   /// WAF feature subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Attacks and blocked requests (view only)'**
+  /// **'Attacks and blocked requests'**
   String get pro_waf_subtitle;
 
   /// Website monitoring feature title.
@@ -22216,7 +22216,7 @@ abstract class AppLocalizations {
   /// Website monitoring feature subtitle.
   ///
   /// In en, this message translates to:
-  /// **'Visitors, QPS and trends (view only)'**
+  /// **'Visitors, QPS and trends'**
   String get pro_monitor_subtitle;
 
   /// Operations report feature title.

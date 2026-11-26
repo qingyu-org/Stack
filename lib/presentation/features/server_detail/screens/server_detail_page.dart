@@ -206,10 +206,7 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
     final nodes =
         nodesAsync?.valueOrNull ?? activeServer?.nodes ?? const <PanelNode>[];
     final showNodeSwitcher = isProPanel && nodes.length > 1;
-    final nodeLabel = activeNodeName == PanelNode.localName
-        ? l10n.nodes_local
-        : activeNodeName;
-    final title = isProPanel ? '$baseTitle · $nodeLabel' : baseTitle;
+    final title = baseTitle;
     final currentScroll = _scrollOffsets[_selectedIndex] ?? 0;
     final isOverlapping = currentScroll > 20;
     final bottomInset = MediaQuery.viewInsetsOf(context).bottom;
@@ -255,15 +252,15 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
             right: 0,
             child: FrostedHeader(
               title: _isSearchMode ? '' : title,
+              titleSuffix:
+                  !_isSearchMode && showNodeSwitcher && activeServer != null
+                  ? _buildNodeChip(activeServer!, nodes, activeNodeName)
+                  : null,
               isOverlapping: isOverlapping,
               onBack: _isSearchMode ? null : () => Navigator.of(context).pop(),
               fadeOutDistance: 24,
-              trailingBuilder: _buildTrailingBuilder(
-                activeServer,
-                nodes,
-                activeNodeName,
-                showNodeSwitcher,
-              ),
+              rightAvoidance: _isSearchMode ? 102 : 64,
+              trailingBuilder: _buildTrailingBuilder(),
             ),
           ),
           AnimatedPositioned(
@@ -308,32 +305,11 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
     );
   }
 
-  Widget Function(bool isDark, bool isOverlapping)? _buildTrailingBuilder(
-    Server? server,
-    List<PanelNode> nodes,
-    String activeNode,
-    bool showNodeSwitcher,
-  ) {
-    final Widget Function(bool isDark, bool isOverlapping)? base =
-        switch (_selectedIndex) {
-          1 => _buildWebsitesMenu,
-          2 => _buildFilesTrailing,
-          _ => null,
-        };
-
-    if (!showNodeSwitcher || server == null) return base;
-    return (isDark, isOverlapping) {
-      // 搜索框需要占满整行，搜索模式下先隐藏节点胶囊。
-      final chip = _buildNodeChip(server, nodes, activeNode);
-      final trailing =
-          (_selectedIndex == 1 || _selectedIndex == 2) && _isSearchMode
-          ? null
-          : base?.call(isDark, isOverlapping);
-      if (trailing == null) return chip;
-      return Row(
-        mainAxisSize: MainAxisSize.min,
-        children: [chip, const SizedBox(width: 8), trailing],
-      );
+  Widget Function(bool isDark, bool isOverlapping)? _buildTrailingBuilder() {
+    return switch (_selectedIndex) {
+      1 => _buildWebsitesMenu,
+      2 => _buildFilesTrailing,
+      _ => null,
     };
   }
 
@@ -369,7 +345,7 @@ class _ServerDetailPageState extends ConsumerState<ServerDetailPage> {
             ),
             const SizedBox(width: 4),
             ConstrainedBox(
-              constraints: const BoxConstraints(maxWidth: 92),
+              constraints: const BoxConstraints(maxWidth: 76),
               child: Text(
                 label,
                 maxLines: 1,

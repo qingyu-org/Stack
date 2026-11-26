@@ -1,7 +1,8 @@
+import 'dart:ui';
+
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/services.dart';
 import 'package:flutter_animate/flutter_animate.dart';
-import 'package:liquid_glass_widgets/liquid_glass_widgets.dart';
 
 import '../../../core/theme/app_theme.dart';
 
@@ -47,16 +48,6 @@ class FloatingTabBar extends StatelessWidget {
   Widget build(BuildContext context) {
     final bottomInset = MediaQuery.paddingOf(context).bottom;
     final isDark = CupertinoTheme.brightnessOf(context) == Brightness.dark;
-    final glassSettings = LiquidGlassSettings.figma(
-      refraction: 42,
-      depth: 35,
-      dispersion: 5,
-      frost: 1,
-      glassColor: isDark
-          ? const Color(0xFF2C2C2E).withValues(alpha: 0.42)
-          : const Color(0xFFE5E5EA).withValues(alpha: 0.55),
-      lightIntensity: 76,
-    );
 
     return Center(
       child: Container(
@@ -88,59 +79,49 @@ class FloatingTabBar extends StatelessWidget {
               ),
             ],
           ),
-          child: LiquidGlassLayer(
-            settings: glassSettings,
-            child: AdaptiveGlass.grouped(
-              quality: GlassQuality.premium,
-              shape: const LiquidRoundedRectangle(borderRadius: 28),
-              child: ClipRRect(
-                borderRadius: BorderRadius.circular(28),
-                child: Stack(
-                  children: [
-                    Positioned.fill(
-                      child: IgnorePointer(
-                        child: DecoratedBox(
-                          decoration: BoxDecoration(
-                            borderRadius: BorderRadius.circular(28),
+          child: ClipRRect(
+            borderRadius: BorderRadius.circular(28),
+            child: BackdropFilter(
+              filter: ImageFilter.blur(sigmaX: 22, sigmaY: 22),
+              child: Stack(
+                children: [
+                  Positioned.fill(
+                    child: IgnorePointer(
+                      child: DecoratedBox(
+                        decoration: BoxDecoration(
+                          borderRadius: BorderRadius.circular(28),
+                          color: isDark
+                              ? const Color(0xFF3A3A3C).withValues(alpha: 0.78)
+                              : const Color(0xFFFFFFFF).withValues(alpha: 0.65),
+                          border: Border.all(
                             color: isDark
-                                ? const Color(
-                                    0xFF3A3A3C,
-                                  ).withValues(alpha: 0.78)
-                                : const Color(
-                                    0xFFFFFFFF,
-                                  ).withValues(alpha: 0.65),
-                            border: Border.all(
-                              color: isDark
-                                  ? CupertinoColors.white.withValues(
-                                      alpha: 0.08,
-                                    )
-                                  : const Color(0xFFE8E8E8),
-                              width: 0.5,
-                            ),
+                                ? CupertinoColors.white.withValues(alpha: 0.08)
+                                : const Color(0xFFE8E8E8),
+                            width: 0.5,
                           ),
                         ),
                       ),
                     ),
-                    Padding(
-                      padding: EdgeInsets.symmetric(
-                        horizontal: contentHorizontalPadding,
-                      ),
-                      child: expandItems
-                          ? Row(
-                              mainAxisSize: MainAxisSize.max,
-                              children: _buildTabChildren(expandItems: true),
-                            )
-                          : SingleChildScrollView(
-                              scrollDirection: Axis.horizontal,
-                              physics: const BouncingScrollPhysics(),
-                              child: Row(
-                                mainAxisSize: MainAxisSize.min,
-                                children: _buildTabChildren(expandItems: false),
-                              ),
-                            ),
+                  ),
+                  Padding(
+                    padding: EdgeInsets.symmetric(
+                      horizontal: contentHorizontalPadding,
                     ),
-                  ],
-                ),
+                    child: expandItems
+                        ? Row(
+                            mainAxisSize: MainAxisSize.max,
+                            children: _buildTabChildren(expandItems: true),
+                          )
+                        : SingleChildScrollView(
+                            scrollDirection: Axis.horizontal,
+                            physics: const BouncingScrollPhysics(),
+                            child: Row(
+                              mainAxisSize: MainAxisSize.min,
+                              children: _buildTabChildren(expandItems: false),
+                            ),
+                          ),
+                  ),
+                ],
               ),
             ),
           ),

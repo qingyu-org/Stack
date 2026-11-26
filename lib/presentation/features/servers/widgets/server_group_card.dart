@@ -50,36 +50,36 @@ class ServerGroupCard extends ConsumerWidget {
     final onlineCount = nodes.where((node) => node.isOnline).length;
     final hasProNode = nodes.any((node) => node.isPro);
 
-    return Container(
-      padding: const EdgeInsets.fromLTRB(12, 12, 12, 14),
-      decoration: BoxDecoration(
-        color: AppColors.secondaryBackground(context).withValues(alpha: 0.64),
-        borderRadius: BorderRadius.circular(24),
-        border: Border.all(
-          color: isSelected
-              ? CupertinoColors.activeBlue.withValues(alpha: 0.55)
-              : AppColors.separator(context).withValues(alpha: 0.16),
-          width: isSelected ? 1.2 : 0.6,
-        ),
-        boxShadow: [
-          BoxShadow(
-            color: CupertinoColors.black.withValues(
-              alpha: CupertinoTheme.brightnessOf(context) == Brightness.dark
-                  ? 0.2
-                  : 0.035,
-            ),
-            blurRadius: 18,
-            offset: const Offset(0, 8),
+    return Builder(
+      builder: (cardContext) => Container(
+        padding: const EdgeInsets.fromLTRB(12, 12, 12, 14),
+        decoration: BoxDecoration(
+          color: AppColors.secondaryBackground(context).withValues(alpha: 0.64),
+          borderRadius: BorderRadius.circular(24),
+          border: Border.all(
+            color: isSelected
+                ? CupertinoColors.activeBlue.withValues(alpha: 0.55)
+                : AppColors.separator(context).withValues(alpha: 0.16),
+            width: isSelected ? 1.2 : 0.6,
           ),
-        ],
-      ),
-      child: Column(
-        mainAxisSize: MainAxisSize.min,
-        children: [
-          Builder(
-            builder: (headerContext) => GestureDetector(
+          boxShadow: [
+            BoxShadow(
+              color: CupertinoColors.black.withValues(
+                alpha: CupertinoTheme.brightnessOf(context) == Brightness.dark
+                    ? 0.2
+                    : 0.035,
+              ),
+              blurRadius: 18,
+              offset: const Offset(0, 8),
+            ),
+          ],
+        ),
+        child: Column(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            GestureDetector(
               behavior: HitTestBehavior.opaque,
-              onLongPress: () => onLongPressHeader?.call(headerContext),
+              onLongPress: () => onLongPressHeader?.call(cardContext),
               child: Padding(
                 padding: const EdgeInsets.fromLTRB(2, 0, 2, 10),
                 child: Row(
@@ -147,22 +147,25 @@ class ServerGroupCard extends ConsumerWidget {
                 ),
               ),
             ),
-          ),
-          nodesAsync.when(
-            data: (liveNodes) => _buildNodes(context, liveNodes, activeNode),
-            loading: () => _buildNodes(context, nodes, activeNode),
-            error: (error, _) => _NodeError(
-              message: l10n.nodes_loadFailed,
-              onRetry: () => ref.invalidate(serverNodesProvider(server.id)),
+            nodesAsync.when(
+              data: (liveNodes) =>
+                  _buildNodes(context, cardContext, liveNodes, activeNode),
+              loading: () =>
+                  _buildNodes(context, cardContext, nodes, activeNode),
+              error: (error, _) => _NodeError(
+                message: l10n.nodes_loadFailed,
+                onRetry: () => ref.invalidate(serverNodesProvider(server.id)),
+              ),
             ),
-          ),
-        ],
+          ],
+        ),
       ),
     );
   }
 
   Widget _buildNodes(
     BuildContext context,
+    BuildContext cardContext,
     List<PanelNode> nodes,
     String? activeNode,
   ) {
@@ -182,17 +185,15 @@ class ServerGroupCard extends ConsumerWidget {
       children: [
         for (var i = 0; i < nodes.length; i++) ...[
           if (i > 0) const SizedBox(height: 9),
-          Builder(
-            builder: (nodeContext) => NodeServerCard(
-              server: server,
-              node: nodes[i],
-              isSelected: (activeNode ?? PanelNode.localName) == nodes[i].name,
-              style: style,
-              onTap: () => onOpenNode(nodes[i].name),
-              onLongPress: onLongPressNode == null
-                  ? null
-                  : () => onLongPressNode!(nodeContext, nodes[i]),
-            ),
+          NodeServerCard(
+            server: server,
+            node: nodes[i],
+            isSelected: (activeNode ?? PanelNode.localName) == nodes[i].name,
+            style: style,
+            onTap: () => onOpenNode(nodes[i].name),
+            onLongPress: onLongPressNode == null
+                ? null
+                : () => onLongPressNode!(cardContext, nodes[i]),
           ),
         ],
       ],

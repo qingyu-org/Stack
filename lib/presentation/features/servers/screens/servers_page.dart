@@ -213,13 +213,23 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
       showBackButton: false,
       largeTitle: true,
       fadeOutDistance: 41,
-      trailingBuilder: (isDark, isOverlapping) => FrostedActionButton(
-        text: '',
-        icon: CupertinoIcons.add,
-        isDark: isDark,
-        isOverlapping: isOverlapping,
-        onTap: widget.onAddServer,
-      ),
+      trailingBuilder: (isDark, isOverlapping) {
+        if (_isSorting) {
+          return FrostedActionButton(
+            text: l10n.common_done,
+            isDark: isDark,
+            isOverlapping: isOverlapping,
+            onTap: () => setState(() => _isSorting = false),
+          );
+        }
+        return FrostedActionButton(
+          text: '',
+          icon: CupertinoIcons.add,
+          isDark: isDark,
+          isOverlapping: isOverlapping,
+          onTap: widget.onAddServer,
+        );
+      },
       body: CustomScrollView(
         physics: const AlwaysScrollableScrollPhysics(
           parent: BouncingScrollPhysics(),
@@ -269,12 +279,6 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
                           ),
                         ),
                       ),
-                      CupertinoButton(
-                        padding: EdgeInsets.zero,
-                        minimumSize: Size.zero,
-                        onPressed: () => setState(() => _isSorting = false),
-                        child: Text(l10n.common_done),
-                      ),
                     ],
                   ),
                 ),
@@ -306,20 +310,16 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
                 sliver: SliverReorderableList(
                   itemBuilder: (context, index) {
                     final server = orderedServers[index];
-                    return Builder(
+                    return Padding(
                       key: ValueKey(server.id),
-                      builder: (itemContext) {
-                        return Padding(
-                          padding: const EdgeInsets.only(bottom: 12),
-                          child: GestureDetector(
+                      padding: const EdgeInsets.only(bottom: 12),
+                      child: Builder(
+                        builder: (itemContext) {
+                          return GestureDetector(
                             behavior: HitTestBehavior.opaque,
                             onLongPress: _isSorting
                                 ? null
-                                : () => _showServerMenu(
-                                    itemContext,
-                                    server,
-                                    cardStyle,
-                                  ),
+                                : () => _showServerMenu(itemContext, server),
                             child: _isSorting
                                 ? ReorderableDragStartListener(
                                     index: index,
@@ -334,9 +334,9 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
                                     cardStyle,
                                     interactive: true,
                                   ),
-                          ),
-                        );
-                      },
+                          );
+                        },
+                      ),
                     );
                   },
                   itemCount: orderedServers.length,
@@ -356,17 +356,9 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
     );
   }
 
-  void _showServerMenu(
-    BuildContext itemContext,
-    Server server,
-    ServerCardStyle cardStyle, {
-    bool showPreview = true,
-  }) {
+  void _showServerMenu(BuildContext itemContext, Server server) {
     ServerContextMenu.show(
       itemContext,
-      server,
-      style: cardStyle,
-      showPreview: showPreview,
       onSort: () => setState(() => _isSorting = true),
       onEdit: () => AddServerSheet.edit(context, server),
       onDelete: () => _confirmDelete(server),
@@ -385,20 +377,10 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
         interactive: interactive,
         onOpenNode: (nodeName) => _openNode(server, nodeName),
         onLongPressNode: interactive
-            ? (anchorContext, _) => _showServerMenu(
-                anchorContext,
-                server,
-                cardStyle,
-                showPreview: false,
-              )
+            ? (anchorContext, _) => _showServerMenu(anchorContext, server)
             : null,
         onLongPressHeader: interactive
-            ? (anchorContext) => _showServerMenu(
-                anchorContext,
-                server,
-                cardStyle,
-                showPreview: false,
-              )
+            ? (anchorContext) => _showServerMenu(anchorContext, server)
             : null,
       );
     }
