@@ -1975,7 +1975,7 @@ class AppLocalizationsEn extends AppLocalizations {
       'Connect through the aaPanel API';
 
   @override
-  String get servers_panelType_bareMetal => 'Bare Server';
+  String get servers_panelType_bareMetal => 'SSH Server';
 
   @override
   String get servers_panelType_bareMetalDescription =>
@@ -1983,6 +1983,338 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get servers_comingSoon => 'Coming soon';
+
+  @override
+  String get ssh_addTitle => 'Add SSH Server';
+
+  @override
+  String get ssh_editTitle => 'Edit SSH Server';
+
+  @override
+  String get ssh_connectionSection => 'Connection';
+
+  @override
+  String get ssh_authSection => 'Authentication';
+
+  @override
+  String get ssh_authMethod => 'Method';
+
+  @override
+  String get ssh_user => 'Username';
+
+  @override
+  String get ssh_userPlaceholder => 'root';
+
+  @override
+  String get ssh_hostPlaceholder => 'IP or root@host';
+
+  @override
+  String get ssh_password => 'Password';
+
+  @override
+  String get ssh_passwordPlaceholder => 'SSH login password';
+
+  @override
+  String get ssh_privateKey => 'Private Key';
+
+  @override
+  String get ssh_privateKeyPlaceholder => 'Paste a PEM private key';
+
+  @override
+  String get ssh_passphrase => 'Passphrase';
+
+  @override
+  String get ssh_passphrasePlaceholder => 'Leave empty for no passphrase';
+
+  @override
+  String get ssh_authPassword => 'Password';
+
+  @override
+  String get ssh_authPrivateKey => 'Private key';
+
+  @override
+  String get ssh_importKey => 'Import from file';
+
+  @override
+  String get ssh_keyImported => 'Private key imported';
+
+  @override
+  String get ssh_keyImportFailed => 'Could not read the key file';
+
+  @override
+  String get ssh_hostKeyHint =>
+      'The server host key is recorded on first connection and verified afterwards. Credentials stay in this device\'s secure storage.';
+
+  @override
+  String get ssh_keepSecretHint =>
+      'Leave the password or key empty while editing to keep the saved credential.';
+
+  @override
+  String get ssh_hostKeyReset => 'Trust host key again';
+
+  @override
+  String get ssh_hostKeyResetHint =>
+      'Use this after reinstalling the server or replacing its host key.';
+
+  @override
+  String get ssh_connectFailed => 'SSH connection failed';
+
+  @override
+  String get ssh_credentialsLoadFailed => 'Failed to load saved credentials';
+
+  @override
+  String get ssh_hostKeyMismatchTitle => 'Host key changed';
+
+  @override
+  String get ssh_hostKeyMismatchMessage =>
+      'The server returned a different host key than on first connection, so the connection was stopped. If the server was reinstalled or its key changed, enable \"Trust host key again\" while editing.';
+
+  @override
+  String get ssh_passwordRequired => 'Enter the SSH password';
+
+  @override
+  String get ssh_privateKeyRequired => 'Enter the SSH private key';
+
+  @override
+  String get ssh_userRequired => 'Enter the SSH username';
+
+  @override
+  String get ssh_added => 'SSH server added';
+
+  @override
+  String get ssh_saved => 'SSH server saved';
+
+  @override
+  String get ssh_connecting => 'Connecting';
+
+  @override
+  String get ssh_tabOverview => 'Overview';
+
+  @override
+  String get ssh_tabTerminal => 'Terminal';
+
+  @override
+  String get ssh_tabFiles => 'Files';
+
+  @override
+  String get ssh_tabProcesses => 'Processes';
+
+  @override
+  String get ssh_terminal_connecting => 'Opening SSH terminal...';
+
+  @override
+  String get ssh_terminal_connected => 'Connected';
+
+  @override
+  String get ssh_terminal_disconnected => 'Connection closed';
+
+  @override
+  String get ssh_terminal_retry => 'Reconnect';
+
+  @override
+  String get ssh_terminal_failed => 'Terminal connection failed';
+
+  @override
+  String get ssh_overview_metaTitle => 'Status';
+
+  @override
+  String get ssh_overview_uptime => 'Uptime';
+
+  @override
+  String get ssh_overview_load => 'Load average';
+
+  @override
+  String get ssh_overview_processes => 'Processes';
+
+  @override
+  String get ssh_overview_latency => 'Sample time';
+
+  @override
+  String get ssh_overview_downloadRate => 'Down';
+
+  @override
+  String get ssh_overview_uploadRate => 'Up';
+
+  @override
+  String get ssh_files_loadFailed => 'Failed to read directory';
+
+  @override
+  String get ssh_files_empty => 'This directory is empty';
+
+  @override
+  String get ssh_files_upload => 'Upload file';
+
+  @override
+  String get ssh_files_overwriteTitle => 'File already exists';
+
+  @override
+  String ssh_files_overwriteConfirm(String name) {
+    return '\"$name\" already exists. Overwrite it?';
+  }
+
+  @override
+  String get ssh_files_overwriteAction => 'Overwrite';
+
+  @override
+  String get ssh_files_newFolder => 'New folder';
+
+  @override
+  String get ssh_files_download => 'Download / Share';
+
+  @override
+  String get ssh_files_downloadHint => 'Save a temporary copy and share it';
+
+  @override
+  String get ssh_files_edit => 'Edit';
+
+  @override
+  String get ssh_files_editHint => 'Modify the file as text';
+
+  @override
+  String get ssh_files_rename => 'Rename';
+
+  @override
+  String get ssh_files_renameHint => 'Change the file or folder name';
+
+  @override
+  String get ssh_files_delete => 'Delete';
+
+  @override
+  String get ssh_files_deleteHint => 'This cannot be undone';
+
+  @override
+  String get ssh_files_deleteTitle => 'Delete File';
+
+  @override
+  String ssh_files_deleteConfirm(String name) {
+    return 'Delete \"$name\"? Directories must be empty.';
+  }
+
+  @override
+  String get ssh_files_deleted => 'Deleted';
+
+  @override
+  String get ssh_files_renamed => 'Renamed';
+
+  @override
+  String get ssh_files_folderCreated => 'Folder created';
+
+  @override
+  String get ssh_files_uploaded => 'Upload complete';
+
+  @override
+  String get ssh_files_downloaded => 'File ready';
+
+  @override
+  String get ssh_files_renameTitle => 'Rename';
+
+  @override
+  String get ssh_files_newFolderTitle => 'New Folder';
+
+  @override
+  String get ssh_files_namePlaceholder => 'Name';
+
+  @override
+  String get ssh_files_invalidName =>
+      'Name cannot contain path separators or be . or ..';
+
+  @override
+  String get ssh_files_binary =>
+      'This is not a text file and cannot be edited online';
+
+  @override
+  String get ssh_files_encodingUnsupported =>
+      'This file is not UTF-8 encoded. Online editing is disabled to avoid corrupting it.';
+
+  @override
+  String get ssh_files_tooLarge =>
+      'File is too large to edit online (2 MB limit)';
+
+  @override
+  String get ssh_files_actionFailed => 'Operation failed';
+
+  @override
+  String get ssh_files_uploadFailed => 'Upload failed';
+
+  @override
+  String get ssh_files_uploadTooLarge =>
+      'File is too large (64 MB upload limit)';
+
+  @override
+  String get ssh_files_pathLabel => 'Path';
+
+  @override
+  String get ssh_files_home => 'Home';
+
+  @override
+  String get ssh_processes_searchPlaceholder => 'Search name, user or PID';
+
+  @override
+  String get ssh_processes_sortTitle => 'Sort by';
+
+  @override
+  String get ssh_processes_sortCpu => 'CPU';
+
+  @override
+  String get ssh_processes_sortMemory => 'Memory';
+
+  @override
+  String get ssh_processes_sortPid => 'PID';
+
+  @override
+  String get ssh_processes_empty => 'No processes found';
+
+  @override
+  String get ssh_processes_loadFailed => 'Failed to read processes';
+
+  @override
+  String get ssh_processes_kill => 'End process';
+
+  @override
+  String get ssh_processes_killTitle => 'End Process';
+
+  @override
+  String ssh_processes_killConfirm(String name, int pid) {
+    return 'End \"$name\" (PID $pid)?';
+  }
+
+  @override
+  String get ssh_processes_killed => 'Termination signal sent';
+
+  @override
+  String get ssh_processes_forceKill => 'Force kill (SIGKILL)';
+
+  @override
+  String get ssh_processes_detailTitle => 'Process Details';
+
+  @override
+  String get ssh_processes_user => 'User';
+
+  @override
+  String get ssh_processes_status => 'Status';
+
+  @override
+  String get ssh_processes_threads => 'Threads';
+
+  @override
+  String get ssh_processes_command => 'Command line';
+
+  @override
+  String get ssh_processes_actions => 'Actions';
+
+  @override
+  String get ssh_processes_termHint =>
+      'Send TERM and let the process exit cleanly';
+
+  @override
+  String get ssh_processes_forceKillHint =>
+      'Send KILL; unsaved data may be lost';
+
+  @override
+  String get ssh_processes_cpu => 'CPU';
+
+  @override
+  String get ssh_processes_memory => 'Memory';
 
   @override
   String get servers_connectionSettings => 'Connection Settings';
@@ -2766,13 +3098,7 @@ class AppLocalizationsEn extends AppLocalizations {
   String get ssh_encryptionMode => 'Encryption Mode';
 
   @override
-  String get ssh_passphrase => 'Passphrase';
-
-  @override
   String get ssh_publicKey => 'Public Key';
-
-  @override
-  String get ssh_privateKey => 'Private Key';
 
   @override
   String get ssh_unsynced => 'Not Synced';
@@ -2791,9 +3117,6 @@ class AppLocalizationsEn extends AppLocalizations {
 
   @override
   String get ssh_passphraseOptional => 'Passphrase (Optional)';
-
-  @override
-  String get ssh_passphrasePlaceholder => 'Leave empty for no passphrase';
 
   @override
   String get ssh_pastePublicKey => 'Paste public key content';

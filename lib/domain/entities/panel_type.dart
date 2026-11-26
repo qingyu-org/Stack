@@ -4,8 +4,8 @@
 /// 以便后续接入时不需要迁移已保存的数据。
 enum PanelType {
   onePanel('1panel', supported: true),
-  baota('baota', supported: false),
-  bareMetal('baremetal', supported: false);
+  bareMetal('baremetal', supported: true),
+  baota('baota', supported: false);
 
   const PanelType(this.storageName, {required this.supported});
 

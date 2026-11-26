@@ -14,6 +14,7 @@ import '../../../../data/api/dashboard_api.dart';
 import '../../../../data/api/setting_api.dart';
 import '../../../../data/repositories_impl/server_repository_impl.dart';
 import '../../../../data/services/panel_probe_service.dart';
+import '../../../../data/services/ssh/ssh_connection_manager.dart';
 import '../../../../domain/entities/dashboard.dart';
 import '../../../../domain/entities/panel_node.dart';
 import '../../../../domain/entities/panel_probe_result.dart';
@@ -111,6 +112,7 @@ class ServersNotifier extends _$ServersNotifier {
       final repo = ref.read(serverRepositoryProvider);
       final removed = await repo.find(id);
       _invalidateNodeClients(id, removed?.nodes ?? const []);
+      ref.read(sshConnectionManagerProvider).invalidate(id);
       await repo.remove(id);
       final servers = await repo.list();
       unawaited(IosServerWidgetBridge.removeServer(id));
@@ -278,12 +280,18 @@ class ServerMemoController extends StateNotifier<AsyncValue<String>> {
   Future<void> refresh() async {
     state = const AsyncValue.loading();
     state = await AsyncValue.guard(() async {
+      final storage = ref.read(storageServiceProvider);
+      final server = await ref.read(serverRepositoryProvider).find(serverId);
+      // SSH 服务器没有 1Panel 备注接口，直接使用本地备注。
+      if (server?.isSshServer ?? false) {
+        return storage.getServerMemo(serverId);
+      }
       final client = await ref.read(dioClientProvider(serverId).future);
       try {
         return await SettingApi(client).getMemo();
       } on HttpException catch (e) {
         if (e.statusCode != 404) rethrow;
-        return ref.read(storageServiceProvider).getServerMemo(serverId);
+        return storage.getServerMemo(serverId);
       }
     });
   }
@@ -292,14 +300,18 @@ class ServerMemoController extends StateNotifier<AsyncValue<String>> {
     final previous = state;
     state = AsyncValue.data(content);
     try {
+      final storage = ref.read(storageServiceProvider);
+      final server = await ref.read(serverRepositoryProvider).find(serverId);
+      if (server?.isSshServer ?? false) {
+        await storage.saveServerMemo(serverId, content);
+        return;
+      }
       final client = await ref.read(dioClientProvider(serverId).future);
       try {
         await SettingApi(client).saveMemo(content);
       } on HttpException catch (e) {
         if (e.statusCode != 404) rethrow;
-        await ref
-            .read(storageServiceProvider)
-            .saveServerMemo(serverId, content);
+        await storage.saveServerMemo(serverId, content);
       }
     } catch (_) {
       state = previous;

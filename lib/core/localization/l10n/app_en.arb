@@ -2749,7 +2749,7 @@
   "@servers_panelType_baotaDescription": {
     "description": "aaPanel type description."
   },
-  "servers_panelType_bareMetal": "Bare Server",
+  "servers_panelType_bareMetal": "SSH Server",
   "@servers_panelType_bareMetal": {
     "description": "Bare server (SSH) type name."
   },
@@ -2760,6 +2760,444 @@
   "servers_comingSoon": "Coming soon",
   "@servers_comingSoon": {
     "description": "Badge for panel types that are not supported yet."
+  },
+  "ssh_addTitle": "Add SSH Server",
+  "@ssh_addTitle": {
+    "description": "Title for the add SSH server sheet."
+  },
+  "ssh_editTitle": "Edit SSH Server",
+  "@ssh_editTitle": {
+    "description": "Title for editing an SSH server."
+  },
+  "ssh_connectionSection": "Connection",
+  "@ssh_connectionSection": {
+    "description": "SSH connection settings section."
+  },
+  "ssh_authSection": "Authentication",
+  "@ssh_authSection": {
+    "description": "SSH authentication section."
+  },
+  "ssh_authMethod": "Method",
+  "@ssh_authMethod": {
+    "description": "SSH authentication method label."
+  },
+  "ssh_user": "Username",
+  "@ssh_user": {
+    "description": "SSH username field label."
+  },
+  "ssh_userPlaceholder": "root",
+  "@ssh_userPlaceholder": {
+    "description": "SSH username field placeholder."
+  },
+  "ssh_hostPlaceholder": "IP or root@host",
+  "@ssh_hostPlaceholder": {
+    "description": "SSH host field placeholder supporting inline username."
+  },
+  "ssh_password": "Password",
+  "@ssh_password": {
+    "description": "SSH password field label."
+  },
+  "ssh_passwordPlaceholder": "SSH login password",
+  "@ssh_passwordPlaceholder": {
+    "description": "SSH password field placeholder."
+  },
+  "ssh_privateKey": "Private key",
+  "@ssh_privateKey": {
+    "description": "SSH private key field label."
+  },
+  "ssh_privateKeyPlaceholder": "Paste a PEM private key",
+  "@ssh_privateKeyPlaceholder": {
+    "description": "SSH private key field placeholder."
+  },
+  "ssh_passphrase": "Key passphrase",
+  "@ssh_passphrase": {
+    "description": "SSH private key passphrase label."
+  },
+  "ssh_passphrasePlaceholder": "Optional; leave empty for unencrypted keys",
+  "@ssh_passphrasePlaceholder": {
+    "description": "SSH private key passphrase placeholder."
+  },
+  "ssh_authPassword": "Password",
+  "@ssh_authPassword": {
+    "description": "Password authentication option."
+  },
+  "ssh_authPrivateKey": "Private key",
+  "@ssh_authPrivateKey": {
+    "description": "Private key authentication option."
+  },
+  "ssh_importKey": "Import from file",
+  "@ssh_importKey": {
+    "description": "Button to import a private key file."
+  },
+  "ssh_keyImported": "Private key imported",
+  "@ssh_keyImported": {
+    "description": "Toast after importing a private key."
+  },
+  "ssh_keyImportFailed": "Could not read the key file",
+  "@ssh_keyImportFailed": {
+    "description": "Toast when importing a private key fails."
+  },
+  "ssh_hostKeyHint": "The server host key is recorded on first connection and verified afterwards. Credentials stay in this device's secure storage.",
+  "@ssh_hostKeyHint": {
+    "description": "Hint about host key pinning and secure storage."
+  },
+  "ssh_keepSecretHint": "Leave the password or key empty while editing to keep the saved credential.",
+  "@ssh_keepSecretHint": {
+    "description": "Hint when editing keeps existing SSH credentials."
+  },
+  "ssh_hostKeyReset": "Trust host key again",
+  "@ssh_hostKeyReset": {
+    "description": "Option to clear the pinned SSH host key."
+  },
+  "ssh_hostKeyResetHint": "Use this after reinstalling the server or replacing its host key.",
+  "@ssh_hostKeyResetHint": {
+    "description": "Explanation for resetting the pinned host key."
+  },
+  "ssh_connectFailed": "SSH connection failed",
+  "@ssh_connectFailed": {
+    "description": "SSH connection failure title."
+  },
+  "ssh_credentialsLoadFailed": "Failed to load saved credentials",
+  "@ssh_credentialsLoadFailed": {
+    "description": "SSH saved credential read failure title."
+  },
+  "ssh_hostKeyMismatchTitle": "Host key changed",
+  "@ssh_hostKeyMismatchTitle": {
+    "description": "Title when the SSH host key no longer matches."
+  },
+  "ssh_hostKeyMismatchMessage": "The server returned a different host key than on first connection, so the connection was stopped. If the server was reinstalled or its key changed, enable \"Trust host key again\" while editing.",
+  "@ssh_hostKeyMismatchMessage": {
+    "description": "Explanation when the SSH host key changed."
+  },
+  "ssh_passwordRequired": "Enter the SSH password",
+  "@ssh_passwordRequired": {
+    "description": "Validation message for an empty SSH password."
+  },
+  "ssh_privateKeyRequired": "Enter the SSH private key",
+  "@ssh_privateKeyRequired": {
+    "description": "Validation message for an empty SSH private key."
+  },
+  "ssh_userRequired": "Enter the SSH username",
+  "@ssh_userRequired": {
+    "description": "Validation message for an empty SSH username."
+  },
+  "ssh_added": "SSH server added",
+  "@ssh_added": {
+    "description": "Toast after adding an SSH server."
+  },
+  "ssh_saved": "SSH server saved",
+  "@ssh_saved": {
+    "description": "Toast after editing an SSH server."
+  },
+  "ssh_connecting": "Connecting",
+  "@ssh_connecting": {
+    "description": "Connecting state in the SSH form."
+  },
+  "ssh_tabOverview": "Overview",
+  "@ssh_tabOverview": {
+    "description": "SSH server detail overview tab."
+  },
+  "ssh_tabTerminal": "Terminal",
+  "@ssh_tabTerminal": {
+    "description": "SSH server detail terminal tab."
+  },
+  "ssh_tabFiles": "Files",
+  "@ssh_tabFiles": {
+    "description": "SSH server detail files tab."
+  },
+  "ssh_tabProcesses": "Processes",
+  "@ssh_tabProcesses": {
+    "description": "SSH server detail processes tab."
+  },
+  "ssh_terminal_connecting": "Opening SSH terminal...",
+  "@ssh_terminal_connecting": {
+    "description": "Terminal connecting status."
+  },
+  "ssh_terminal_connected": "Connected",
+  "@ssh_terminal_connected": {
+    "description": "Terminal connected status."
+  },
+  "ssh_terminal_disconnected": "Connection closed",
+  "@ssh_terminal_disconnected": {
+    "description": "Terminal disconnected status."
+  },
+  "ssh_terminal_retry": "Reconnect",
+  "@ssh_terminal_retry": {
+    "description": "Reconnect terminal button."
+  },
+  "ssh_terminal_failed": "Terminal connection failed",
+  "@ssh_terminal_failed": {
+    "description": "Terminal connection failure title."
+  },
+  "ssh_overview_metaTitle": "Status",
+  "@ssh_overview_metaTitle": {
+    "description": "SSH overview status card title."
+  },
+  "ssh_overview_uptime": "Uptime",
+  "@ssh_overview_uptime": {
+    "description": "Uptime label."
+  },
+  "ssh_overview_load": "Load average",
+  "@ssh_overview_load": {
+    "description": "Load average label."
+  },
+  "ssh_overview_processes": "Processes",
+  "@ssh_overview_processes": {
+    "description": "Process count label."
+  },
+  "ssh_overview_latency": "Sample time",
+  "@ssh_overview_latency": {
+    "description": "Metrics sampling latency label."
+  },
+  "ssh_overview_downloadRate": "Down",
+  "@ssh_overview_downloadRate": {
+    "description": "Download rate label."
+  },
+  "ssh_overview_uploadRate": "Up",
+  "@ssh_overview_uploadRate": {
+    "description": "Upload rate label."
+  },
+  "ssh_files_loadFailed": "Failed to read directory",
+  "@ssh_files_loadFailed": {
+    "description": "SFTP directory load failure."
+  },
+  "ssh_files_empty": "This directory is empty",
+  "@ssh_files_empty": {
+    "description": "Empty SFTP directory message."
+  },
+  "ssh_files_upload": "Upload file",
+  "@ssh_files_upload": {
+    "description": "Upload file action."
+  },
+  "ssh_files_overwriteTitle": "File already exists",
+  "@ssh_files_overwriteTitle": {
+    "description": "Title for confirming an SFTP upload overwrite."
+  },
+  "ssh_files_overwriteConfirm": "\"{name}\" already exists. Overwrite it?",
+  "@ssh_files_overwriteConfirm": {
+    "description": "Confirmation message before overwriting a remote file.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "ssh_files_overwriteAction": "Overwrite",
+  "@ssh_files_overwriteAction": {
+    "description": "Confirm overwrite action."
+  },
+  "ssh_files_newFolder": "New folder",
+  "@ssh_files_newFolder": {
+    "description": "Create folder action."
+  },
+  "ssh_files_download": "Download / Share",
+  "@ssh_files_download": {
+    "description": "Download and share action."
+  },
+  "ssh_files_downloadHint": "Save a temporary copy and share it",
+  "@ssh_files_downloadHint": {
+    "description": "Download and share action subtitle."
+  },
+  "ssh_files_edit": "Edit",
+  "@ssh_files_edit": {
+    "description": "Edit remote file action."
+  },
+  "ssh_files_editHint": "Modify the file as text",
+  "@ssh_files_editHint": {
+    "description": "Edit remote file action subtitle."
+  },
+  "ssh_files_rename": "Rename",
+  "@ssh_files_rename": {
+    "description": "Rename remote file action."
+  },
+  "ssh_files_renameHint": "Change the file or folder name",
+  "@ssh_files_renameHint": {
+    "description": "Rename remote file action subtitle."
+  },
+  "ssh_files_delete": "Delete",
+  "@ssh_files_delete": {
+    "description": "Delete remote file action."
+  },
+  "ssh_files_deleteHint": "This cannot be undone",
+  "@ssh_files_deleteHint": {
+    "description": "Delete remote file action subtitle."
+  },
+  "ssh_files_deleteTitle": "Delete File",
+  "@ssh_files_deleteTitle": {
+    "description": "Delete remote file dialog title."
+  },
+  "ssh_files_deleteConfirm": "Delete \"{name}\"? Directories must be empty.",
+  "@ssh_files_deleteConfirm": {
+    "description": "Delete remote file confirmation.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      }
+    }
+  },
+  "ssh_files_deleted": "Deleted",
+  "@ssh_files_deleted": {
+    "description": "File deleted toast."
+  },
+  "ssh_files_renamed": "Renamed",
+  "@ssh_files_renamed": {
+    "description": "File renamed toast."
+  },
+  "ssh_files_folderCreated": "Folder created",
+  "@ssh_files_folderCreated": {
+    "description": "Folder created toast."
+  },
+  "ssh_files_uploaded": "Upload complete",
+  "@ssh_files_uploaded": {
+    "description": "Upload complete toast."
+  },
+  "ssh_files_downloaded": "File ready",
+  "@ssh_files_downloaded": {
+    "description": "Download ready toast."
+  },
+  "ssh_files_renameTitle": "Rename",
+  "@ssh_files_renameTitle": {
+    "description": "Rename dialog title."
+  },
+  "ssh_files_newFolderTitle": "New Folder",
+  "@ssh_files_newFolderTitle": {
+    "description": "New folder dialog title."
+  },
+  "ssh_files_namePlaceholder": "Name",
+  "@ssh_files_namePlaceholder": {
+    "description": "Name field placeholder."
+  },
+  "ssh_files_invalidName": "Name cannot contain path separators or be . or ..",
+  "@ssh_files_invalidName": {
+    "description": "Validation message for SFTP create/rename names."
+  },
+  "ssh_files_binary": "This is not a text file and cannot be edited online",
+  "@ssh_files_binary": {
+    "description": "Message for binary files."
+  },
+  "ssh_files_encodingUnsupported": "This file is not UTF-8 encoded. Online editing is disabled to avoid corrupting it.",
+  "@ssh_files_encodingUnsupported": {
+    "description": "Message for text files in an unsupported encoding."
+  },
+  "ssh_files_tooLarge": "File is too large to edit online (2 MB limit)",
+  "@ssh_files_tooLarge": {
+    "description": "Message for large files."
+  },
+  "ssh_files_actionFailed": "Operation failed",
+  "@ssh_files_actionFailed": {
+    "description": "Generic SFTP action failure."
+  },
+  "ssh_files_uploadFailed": "Upload failed",
+  "@ssh_files_uploadFailed": {
+    "description": "SFTP upload failure."
+  },
+  "ssh_files_uploadTooLarge": "File is too large (64 MB upload limit)",
+  "@ssh_files_uploadTooLarge": {
+    "description": "Message for files above the SFTP upload limit."
+  },
+  "ssh_files_pathLabel": "Path",
+  "@ssh_files_pathLabel": {
+    "description": "Path label in the SFTP header."
+  },
+  "ssh_files_home": "Home",
+  "@ssh_files_home": {
+    "description": "Home directory label."
+  },
+  "ssh_processes_searchPlaceholder": "Search name, user or PID",
+  "@ssh_processes_searchPlaceholder": {
+    "description": "SSH process search placeholder."
+  },
+  "ssh_processes_sortTitle": "Sort by",
+  "@ssh_processes_sortTitle": {
+    "description": "Process sort menu title."
+  },
+  "ssh_processes_sortCpu": "CPU",
+  "@ssh_processes_sortCpu": {
+    "description": "Sort processes by CPU."
+  },
+  "ssh_processes_sortMemory": "Memory",
+  "@ssh_processes_sortMemory": {
+    "description": "Sort processes by memory."
+  },
+  "ssh_processes_sortPid": "PID",
+  "@ssh_processes_sortPid": {
+    "description": "Sort processes by PID."
+  },
+  "ssh_processes_empty": "No processes found",
+  "@ssh_processes_empty": {
+    "description": "Empty process list message."
+  },
+  "ssh_processes_loadFailed": "Failed to read processes",
+  "@ssh_processes_loadFailed": {
+    "description": "Process list load failure."
+  },
+  "ssh_processes_kill": "End process",
+  "@ssh_processes_kill": {
+    "description": "End process action."
+  },
+  "ssh_processes_killTitle": "End Process",
+  "@ssh_processes_killTitle": {
+    "description": "End process dialog title."
+  },
+  "ssh_processes_killConfirm": "End \"{name}\" (PID {pid})?",
+  "@ssh_processes_killConfirm": {
+    "description": "End process confirmation.",
+    "placeholders": {
+      "name": {
+        "type": "String"
+      },
+      "pid": {
+        "type": "int"
+      }
+    }
+  },
+  "ssh_processes_killed": "Termination signal sent",
+  "@ssh_processes_killed": {
+    "description": "Process termination toast."
+  },
+  "ssh_processes_forceKill": "Force kill (SIGKILL)",
+  "@ssh_processes_forceKill": {
+    "description": "Force kill action."
+  },
+  "ssh_processes_detailTitle": "Process Details",
+  "@ssh_processes_detailTitle": {
+    "description": "Process detail sheet title."
+  },
+  "ssh_processes_user": "User",
+  "@ssh_processes_user": {
+    "description": "Process owner label."
+  },
+  "ssh_processes_status": "Status",
+  "@ssh_processes_status": {
+    "description": "Process status label."
+  },
+  "ssh_processes_threads": "Threads",
+  "@ssh_processes_threads": {
+    "description": "Process threads label."
+  },
+  "ssh_processes_command": "Command line",
+  "@ssh_processes_command": {
+    "description": "Process command line label."
+  },
+  "ssh_processes_actions": "Actions",
+  "@ssh_processes_actions": {
+    "description": "Process actions section title."
+  },
+  "ssh_processes_termHint": "Send TERM and let the process exit cleanly",
+  "@ssh_processes_termHint": {
+    "description": "Hint for the graceful termination action."
+  },
+  "ssh_processes_forceKillHint": "Send KILL; unsaved data may be lost",
+  "@ssh_processes_forceKillHint": {
+    "description": "Hint for the force kill action."
+  },
+  "ssh_processes_cpu": "CPU",
+  "@ssh_processes_cpu": {
+    "description": "Process CPU label."
+  },
+  "ssh_processes_memory": "Memory",
+  "@ssh_processes_memory": {
+    "description": "Process memory label."
   },
   "servers_connectionSettings": "Connection Settings",
   "@servers_connectionSettings": {

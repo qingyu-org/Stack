@@ -1924,13 +1924,336 @@ class AppLocalizationsZh extends AppLocalizations {
   String get servers_panelType_baotaDescription => '通过宝塔 API 连接';
 
   @override
-  String get servers_panelType_bareMetal => '纯服务器';
+  String get servers_panelType_bareMetal => 'SSH 服务器';
 
   @override
   String get servers_panelType_bareMetalDescription => '通过 SSH 直接管理服务器';
 
   @override
   String get servers_comingSoon => '即将支持';
+
+  @override
+  String get ssh_addTitle => '添加 SSH 服务器';
+
+  @override
+  String get ssh_editTitle => '编辑 SSH 服务器';
+
+  @override
+  String get ssh_connectionSection => '连接设置';
+
+  @override
+  String get ssh_authSection => '登录认证';
+
+  @override
+  String get ssh_authMethod => '认证方式';
+
+  @override
+  String get ssh_user => '用户名';
+
+  @override
+  String get ssh_userPlaceholder => 'root';
+
+  @override
+  String get ssh_hostPlaceholder => 'IP 或 root@host';
+
+  @override
+  String get ssh_password => '密码';
+
+  @override
+  String get ssh_passwordPlaceholder => 'SSH 登录密码';
+
+  @override
+  String get ssh_privateKey => '私钥';
+
+  @override
+  String get ssh_privateKeyPlaceholder => '粘贴 PEM 私钥内容';
+
+  @override
+  String get ssh_passphrase => '口令';
+
+  @override
+  String get ssh_passphrasePlaceholder => '留空表示无口令';
+
+  @override
+  String get ssh_authPassword => '密码';
+
+  @override
+  String get ssh_authPrivateKey => '私钥';
+
+  @override
+  String get ssh_importKey => '从文件导入';
+
+  @override
+  String get ssh_keyImported => '私钥已导入';
+
+  @override
+  String get ssh_keyImportFailed => '读取私钥文件失败';
+
+  @override
+  String get ssh_hostKeyHint => '首次连接会记录服务器主机密钥，后续连接会自动校验；凭据仅保存在本机安全存储中。';
+
+  @override
+  String get ssh_keepSecretHint => '编辑时留空密码或私钥，将保持已保存的凭据不变。';
+
+  @override
+  String get ssh_hostKeyReset => '重新信任主机密钥';
+
+  @override
+  String get ssh_hostKeyResetHint => '服务器重装或更换密钥后，重新连接时会记录新的主机密钥。';
+
+  @override
+  String get ssh_connectFailed => 'SSH 连接失败';
+
+  @override
+  String get ssh_credentialsLoadFailed => '读取已保存的凭据失败';
+
+  @override
+  String get ssh_hostKeyMismatchTitle => '主机密钥已变化';
+
+  @override
+  String get ssh_hostKeyMismatchMessage =>
+      '服务器返回的主机密钥与首次连接时不一致，连接已中止。若确认服务器已重装或更换密钥，请在编辑页面开启「重新信任主机密钥」。';
+
+  @override
+  String get ssh_passwordRequired => '请填写 SSH 密码';
+
+  @override
+  String get ssh_privateKeyRequired => '请填写 SSH 私钥';
+
+  @override
+  String get ssh_userRequired => '请填写 SSH 用户名';
+
+  @override
+  String get ssh_added => 'SSH 服务器已添加';
+
+  @override
+  String get ssh_saved => 'SSH 服务器已保存';
+
+  @override
+  String get ssh_connecting => '正在连接';
+
+  @override
+  String get ssh_tabOverview => '概览';
+
+  @override
+  String get ssh_tabTerminal => '终端';
+
+  @override
+  String get ssh_tabFiles => '文件';
+
+  @override
+  String get ssh_tabProcesses => '进程';
+
+  @override
+  String get ssh_terminal_connecting => '正在建立 SSH 终端…';
+
+  @override
+  String get ssh_terminal_connected => '已连接';
+
+  @override
+  String get ssh_terminal_disconnected => '连接已断开';
+
+  @override
+  String get ssh_terminal_retry => '重新连接';
+
+  @override
+  String get ssh_terminal_failed => '终端连接失败';
+
+  @override
+  String get ssh_overview_metaTitle => '运行状态';
+
+  @override
+  String get ssh_overview_uptime => '运行时间';
+
+  @override
+  String get ssh_overview_load => '平均负载';
+
+  @override
+  String get ssh_overview_processes => '进程数';
+
+  @override
+  String get ssh_overview_latency => '采样耗时';
+
+  @override
+  String get ssh_overview_downloadRate => '下载';
+
+  @override
+  String get ssh_overview_uploadRate => '上传';
+
+  @override
+  String get ssh_files_loadFailed => '读取目录失败';
+
+  @override
+  String get ssh_files_empty => '此目录为空';
+
+  @override
+  String get ssh_files_upload => '上传文件';
+
+  @override
+  String get ssh_files_overwriteTitle => '文件已存在';
+
+  @override
+  String ssh_files_overwriteConfirm(String name) {
+    return '「$name」已存在，是否覆盖？';
+  }
+
+  @override
+  String get ssh_files_overwriteAction => '覆盖';
+
+  @override
+  String get ssh_files_newFolder => '新建文件夹';
+
+  @override
+  String get ssh_files_download => '下载 / 分享';
+
+  @override
+  String get ssh_files_downloadHint => '保存到临时文件后分享';
+
+  @override
+  String get ssh_files_edit => '编辑';
+
+  @override
+  String get ssh_files_editHint => '以文本方式修改文件内容';
+
+  @override
+  String get ssh_files_rename => '重命名';
+
+  @override
+  String get ssh_files_renameHint => '修改文件或文件夹名称';
+
+  @override
+  String get ssh_files_delete => '删除';
+
+  @override
+  String get ssh_files_deleteHint => '删除后无法恢复';
+
+  @override
+  String get ssh_files_deleteTitle => '删除文件';
+
+  @override
+  String ssh_files_deleteConfirm(String name) {
+    return '确定删除「$name」吗？非空目录无法删除。';
+  }
+
+  @override
+  String get ssh_files_deleted => '已删除';
+
+  @override
+  String get ssh_files_renamed => '已重命名';
+
+  @override
+  String get ssh_files_folderCreated => '文件夹已创建';
+
+  @override
+  String get ssh_files_uploaded => '上传完成';
+
+  @override
+  String get ssh_files_downloaded => '文件已准备好';
+
+  @override
+  String get ssh_files_renameTitle => '重命名';
+
+  @override
+  String get ssh_files_newFolderTitle => '新建文件夹';
+
+  @override
+  String get ssh_files_namePlaceholder => '名称';
+
+  @override
+  String get ssh_files_invalidName => '名称不能包含路径分隔符，也不能是 . 或 ..';
+
+  @override
+  String get ssh_files_binary => '此文件不是文本文件，无法在线编辑';
+
+  @override
+  String get ssh_files_encodingUnsupported =>
+      '该文件不是 UTF-8 编码，为避免保存时损坏内容，暂不支持在线编辑';
+
+  @override
+  String get ssh_files_tooLarge => '文件过大，无法在线编辑（上限 2 MB）';
+
+  @override
+  String get ssh_files_actionFailed => '操作失败';
+
+  @override
+  String get ssh_files_uploadFailed => '上传失败';
+
+  @override
+  String get ssh_files_uploadTooLarge => '文件过大，上传上限为 64 MB';
+
+  @override
+  String get ssh_files_pathLabel => '路径';
+
+  @override
+  String get ssh_files_home => '主目录';
+
+  @override
+  String get ssh_processes_searchPlaceholder => '搜索进程名、用户或 PID';
+
+  @override
+  String get ssh_processes_sortTitle => '排序方式';
+
+  @override
+  String get ssh_processes_sortCpu => '按 CPU';
+
+  @override
+  String get ssh_processes_sortMemory => '按内存';
+
+  @override
+  String get ssh_processes_sortPid => '按 PID';
+
+  @override
+  String get ssh_processes_empty => '没有找到进程';
+
+  @override
+  String get ssh_processes_loadFailed => '读取进程失败';
+
+  @override
+  String get ssh_processes_kill => '结束进程';
+
+  @override
+  String get ssh_processes_killTitle => '结束进程';
+
+  @override
+  String ssh_processes_killConfirm(String name, int pid) {
+    return '确定结束进程「$name」(PID $pid) 吗？';
+  }
+
+  @override
+  String get ssh_processes_killed => '已发送结束信号';
+
+  @override
+  String get ssh_processes_forceKill => '强制结束 (SIGKILL)';
+
+  @override
+  String get ssh_processes_detailTitle => '进程详情';
+
+  @override
+  String get ssh_processes_user => '用户';
+
+  @override
+  String get ssh_processes_status => '状态';
+
+  @override
+  String get ssh_processes_threads => '线程';
+
+  @override
+  String get ssh_processes_command => '命令行';
+
+  @override
+  String get ssh_processes_actions => '操作';
+
+  @override
+  String get ssh_processes_termHint => '发送 TERM 信号，允许进程正常退出';
+
+  @override
+  String get ssh_processes_forceKillHint => '发送 KILL 信号，未保存的数据可能丢失';
+
+  @override
+  String get ssh_processes_cpu => 'CPU';
+
+  @override
+  String get ssh_processes_memory => '内存';
 
   @override
   String get servers_connectionSettings => '连接设置';
@@ -2687,13 +3010,7 @@ class AppLocalizationsZh extends AppLocalizations {
   String get ssh_encryptionMode => '加密模式';
 
   @override
-  String get ssh_passphrase => '口令';
-
-  @override
   String get ssh_publicKey => '公钥';
-
-  @override
-  String get ssh_privateKey => '私钥';
 
   @override
   String get ssh_unsynced => '未同步';
@@ -2712,9 +3029,6 @@ class AppLocalizationsZh extends AppLocalizations {
 
   @override
   String get ssh_passphraseOptional => '口令（可选）';
-
-  @override
-  String get ssh_passphrasePlaceholder => '留空表示无口令';
 
   @override
   String get ssh_pastePublicKey => '粘贴公钥内容';

@@ -3677,7 +3677,7 @@ abstract class AppLocalizations {
   /// Bare server (SSH) type name.
   ///
   /// In en, this message translates to:
-  /// **'Bare Server'**
+  /// **'SSH Server'**
   String get servers_panelType_bareMetal;
 
   /// Bare server type description.
@@ -3691,6 +3691,636 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Coming soon'**
   String get servers_comingSoon;
+
+  /// Title for the add SSH server sheet.
+  ///
+  /// In en, this message translates to:
+  /// **'Add SSH Server'**
+  String get ssh_addTitle;
+
+  /// Title for editing an SSH server.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit SSH Server'**
+  String get ssh_editTitle;
+
+  /// SSH connection settings section.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection'**
+  String get ssh_connectionSection;
+
+  /// SSH authentication section.
+  ///
+  /// In en, this message translates to:
+  /// **'Authentication'**
+  String get ssh_authSection;
+
+  /// SSH authentication method label.
+  ///
+  /// In en, this message translates to:
+  /// **'Method'**
+  String get ssh_authMethod;
+
+  /// SSH username field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Username'**
+  String get ssh_user;
+
+  /// SSH username field placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'root'**
+  String get ssh_userPlaceholder;
+
+  /// SSH host field placeholder supporting inline username.
+  ///
+  /// In en, this message translates to:
+  /// **'IP or root@host'**
+  String get ssh_hostPlaceholder;
+
+  /// SSH password field label.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get ssh_password;
+
+  /// SSH password field placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'SSH login password'**
+  String get ssh_passwordPlaceholder;
+
+  /// SSH key private key label.
+  ///
+  /// In en, this message translates to:
+  /// **'Private Key'**
+  String get ssh_privateKey;
+
+  /// SSH private key field placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Paste a PEM private key'**
+  String get ssh_privateKeyPlaceholder;
+
+  /// SSH key passphrase label.
+  ///
+  /// In en, this message translates to:
+  /// **'Passphrase'**
+  String get ssh_passphrase;
+
+  /// SSH key passphrase field placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave empty for no passphrase'**
+  String get ssh_passphrasePlaceholder;
+
+  /// Password authentication option.
+  ///
+  /// In en, this message translates to:
+  /// **'Password'**
+  String get ssh_authPassword;
+
+  /// Private key authentication option.
+  ///
+  /// In en, this message translates to:
+  /// **'Private key'**
+  String get ssh_authPrivateKey;
+
+  /// Button to import a private key file.
+  ///
+  /// In en, this message translates to:
+  /// **'Import from file'**
+  String get ssh_importKey;
+
+  /// Toast after importing a private key.
+  ///
+  /// In en, this message translates to:
+  /// **'Private key imported'**
+  String get ssh_keyImported;
+
+  /// Toast when importing a private key fails.
+  ///
+  /// In en, this message translates to:
+  /// **'Could not read the key file'**
+  String get ssh_keyImportFailed;
+
+  /// Hint about host key pinning and secure storage.
+  ///
+  /// In en, this message translates to:
+  /// **'The server host key is recorded on first connection and verified afterwards. Credentials stay in this device\'s secure storage.'**
+  String get ssh_hostKeyHint;
+
+  /// Hint when editing keeps existing SSH credentials.
+  ///
+  /// In en, this message translates to:
+  /// **'Leave the password or key empty while editing to keep the saved credential.'**
+  String get ssh_keepSecretHint;
+
+  /// Option to clear the pinned SSH host key.
+  ///
+  /// In en, this message translates to:
+  /// **'Trust host key again'**
+  String get ssh_hostKeyReset;
+
+  /// Explanation for resetting the pinned host key.
+  ///
+  /// In en, this message translates to:
+  /// **'Use this after reinstalling the server or replacing its host key.'**
+  String get ssh_hostKeyResetHint;
+
+  /// SSH connection failure title.
+  ///
+  /// In en, this message translates to:
+  /// **'SSH connection failed'**
+  String get ssh_connectFailed;
+
+  /// SSH saved credential read failure title.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to load saved credentials'**
+  String get ssh_credentialsLoadFailed;
+
+  /// Title when the SSH host key no longer matches.
+  ///
+  /// In en, this message translates to:
+  /// **'Host key changed'**
+  String get ssh_hostKeyMismatchTitle;
+
+  /// Explanation when the SSH host key changed.
+  ///
+  /// In en, this message translates to:
+  /// **'The server returned a different host key than on first connection, so the connection was stopped. If the server was reinstalled or its key changed, enable \"Trust host key again\" while editing.'**
+  String get ssh_hostKeyMismatchMessage;
+
+  /// Validation message for an empty SSH password.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the SSH password'**
+  String get ssh_passwordRequired;
+
+  /// Validation message for an empty SSH private key.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the SSH private key'**
+  String get ssh_privateKeyRequired;
+
+  /// Validation message for an empty SSH username.
+  ///
+  /// In en, this message translates to:
+  /// **'Enter the SSH username'**
+  String get ssh_userRequired;
+
+  /// Toast after adding an SSH server.
+  ///
+  /// In en, this message translates to:
+  /// **'SSH server added'**
+  String get ssh_added;
+
+  /// Toast after editing an SSH server.
+  ///
+  /// In en, this message translates to:
+  /// **'SSH server saved'**
+  String get ssh_saved;
+
+  /// Connecting state in the SSH form.
+  ///
+  /// In en, this message translates to:
+  /// **'Connecting'**
+  String get ssh_connecting;
+
+  /// SSH server detail overview tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Overview'**
+  String get ssh_tabOverview;
+
+  /// SSH server detail terminal tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal'**
+  String get ssh_tabTerminal;
+
+  /// SSH server detail files tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Files'**
+  String get ssh_tabFiles;
+
+  /// SSH server detail processes tab.
+  ///
+  /// In en, this message translates to:
+  /// **'Processes'**
+  String get ssh_tabProcesses;
+
+  /// Terminal connecting status.
+  ///
+  /// In en, this message translates to:
+  /// **'Opening SSH terminal...'**
+  String get ssh_terminal_connecting;
+
+  /// Terminal connected status.
+  ///
+  /// In en, this message translates to:
+  /// **'Connected'**
+  String get ssh_terminal_connected;
+
+  /// Terminal disconnected status.
+  ///
+  /// In en, this message translates to:
+  /// **'Connection closed'**
+  String get ssh_terminal_disconnected;
+
+  /// Reconnect terminal button.
+  ///
+  /// In en, this message translates to:
+  /// **'Reconnect'**
+  String get ssh_terminal_retry;
+
+  /// Terminal connection failure title.
+  ///
+  /// In en, this message translates to:
+  /// **'Terminal connection failed'**
+  String get ssh_terminal_failed;
+
+  /// SSH overview status card title.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get ssh_overview_metaTitle;
+
+  /// Uptime label.
+  ///
+  /// In en, this message translates to:
+  /// **'Uptime'**
+  String get ssh_overview_uptime;
+
+  /// Load average label.
+  ///
+  /// In en, this message translates to:
+  /// **'Load average'**
+  String get ssh_overview_load;
+
+  /// Process count label.
+  ///
+  /// In en, this message translates to:
+  /// **'Processes'**
+  String get ssh_overview_processes;
+
+  /// Metrics sampling latency label.
+  ///
+  /// In en, this message translates to:
+  /// **'Sample time'**
+  String get ssh_overview_latency;
+
+  /// Download rate label.
+  ///
+  /// In en, this message translates to:
+  /// **'Down'**
+  String get ssh_overview_downloadRate;
+
+  /// Upload rate label.
+  ///
+  /// In en, this message translates to:
+  /// **'Up'**
+  String get ssh_overview_uploadRate;
+
+  /// SFTP directory load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read directory'**
+  String get ssh_files_loadFailed;
+
+  /// Empty SFTP directory message.
+  ///
+  /// In en, this message translates to:
+  /// **'This directory is empty'**
+  String get ssh_files_empty;
+
+  /// Upload file action.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload file'**
+  String get ssh_files_upload;
+
+  /// Title for confirming an SFTP upload overwrite.
+  ///
+  /// In en, this message translates to:
+  /// **'File already exists'**
+  String get ssh_files_overwriteTitle;
+
+  /// Confirmation message before overwriting a remote file.
+  ///
+  /// In en, this message translates to:
+  /// **'\"{name}\" already exists. Overwrite it?'**
+  String ssh_files_overwriteConfirm(String name);
+
+  /// Confirm overwrite action.
+  ///
+  /// In en, this message translates to:
+  /// **'Overwrite'**
+  String get ssh_files_overwriteAction;
+
+  /// Create folder action.
+  ///
+  /// In en, this message translates to:
+  /// **'New folder'**
+  String get ssh_files_newFolder;
+
+  /// Download and share action.
+  ///
+  /// In en, this message translates to:
+  /// **'Download / Share'**
+  String get ssh_files_download;
+
+  /// Download and share action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Save a temporary copy and share it'**
+  String get ssh_files_downloadHint;
+
+  /// Edit remote file action.
+  ///
+  /// In en, this message translates to:
+  /// **'Edit'**
+  String get ssh_files_edit;
+
+  /// Edit remote file action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Modify the file as text'**
+  String get ssh_files_editHint;
+
+  /// Rename remote file action.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get ssh_files_rename;
+
+  /// Rename remote file action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'Change the file or folder name'**
+  String get ssh_files_renameHint;
+
+  /// Delete remote file action.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete'**
+  String get ssh_files_delete;
+
+  /// Delete remote file action subtitle.
+  ///
+  /// In en, this message translates to:
+  /// **'This cannot be undone'**
+  String get ssh_files_deleteHint;
+
+  /// Delete remote file dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete File'**
+  String get ssh_files_deleteTitle;
+
+  /// Delete remote file confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'Delete \"{name}\"? Directories must be empty.'**
+  String ssh_files_deleteConfirm(String name);
+
+  /// File deleted toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Deleted'**
+  String get ssh_files_deleted;
+
+  /// File renamed toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Renamed'**
+  String get ssh_files_renamed;
+
+  /// Folder created toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Folder created'**
+  String get ssh_files_folderCreated;
+
+  /// Upload complete toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload complete'**
+  String get ssh_files_uploaded;
+
+  /// Download ready toast.
+  ///
+  /// In en, this message translates to:
+  /// **'File ready'**
+  String get ssh_files_downloaded;
+
+  /// Rename dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'Rename'**
+  String get ssh_files_renameTitle;
+
+  /// New folder dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'New Folder'**
+  String get ssh_files_newFolderTitle;
+
+  /// Name field placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Name'**
+  String get ssh_files_namePlaceholder;
+
+  /// Validation message for SFTP create/rename names.
+  ///
+  /// In en, this message translates to:
+  /// **'Name cannot contain path separators or be . or ..'**
+  String get ssh_files_invalidName;
+
+  /// Message for binary files.
+  ///
+  /// In en, this message translates to:
+  /// **'This is not a text file and cannot be edited online'**
+  String get ssh_files_binary;
+
+  /// Message for text files in an unsupported encoding.
+  ///
+  /// In en, this message translates to:
+  /// **'This file is not UTF-8 encoded. Online editing is disabled to avoid corrupting it.'**
+  String get ssh_files_encodingUnsupported;
+
+  /// Message for large files.
+  ///
+  /// In en, this message translates to:
+  /// **'File is too large to edit online (2 MB limit)'**
+  String get ssh_files_tooLarge;
+
+  /// Generic SFTP action failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Operation failed'**
+  String get ssh_files_actionFailed;
+
+  /// SFTP upload failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Upload failed'**
+  String get ssh_files_uploadFailed;
+
+  /// Message for files above the SFTP upload limit.
+  ///
+  /// In en, this message translates to:
+  /// **'File is too large (64 MB upload limit)'**
+  String get ssh_files_uploadTooLarge;
+
+  /// Path label in the SFTP header.
+  ///
+  /// In en, this message translates to:
+  /// **'Path'**
+  String get ssh_files_pathLabel;
+
+  /// Home directory label.
+  ///
+  /// In en, this message translates to:
+  /// **'Home'**
+  String get ssh_files_home;
+
+  /// SSH process search placeholder.
+  ///
+  /// In en, this message translates to:
+  /// **'Search name, user or PID'**
+  String get ssh_processes_searchPlaceholder;
+
+  /// Process sort menu title.
+  ///
+  /// In en, this message translates to:
+  /// **'Sort by'**
+  String get ssh_processes_sortTitle;
+
+  /// Sort processes by CPU.
+  ///
+  /// In en, this message translates to:
+  /// **'CPU'**
+  String get ssh_processes_sortCpu;
+
+  /// Sort processes by memory.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory'**
+  String get ssh_processes_sortMemory;
+
+  /// Sort processes by PID.
+  ///
+  /// In en, this message translates to:
+  /// **'PID'**
+  String get ssh_processes_sortPid;
+
+  /// Empty process list message.
+  ///
+  /// In en, this message translates to:
+  /// **'No processes found'**
+  String get ssh_processes_empty;
+
+  /// Process list load failure.
+  ///
+  /// In en, this message translates to:
+  /// **'Failed to read processes'**
+  String get ssh_processes_loadFailed;
+
+  /// End process action.
+  ///
+  /// In en, this message translates to:
+  /// **'End process'**
+  String get ssh_processes_kill;
+
+  /// End process dialog title.
+  ///
+  /// In en, this message translates to:
+  /// **'End Process'**
+  String get ssh_processes_killTitle;
+
+  /// End process confirmation.
+  ///
+  /// In en, this message translates to:
+  /// **'End \"{name}\" (PID {pid})?'**
+  String ssh_processes_killConfirm(String name, int pid);
+
+  /// Process termination toast.
+  ///
+  /// In en, this message translates to:
+  /// **'Termination signal sent'**
+  String get ssh_processes_killed;
+
+  /// Force kill action.
+  ///
+  /// In en, this message translates to:
+  /// **'Force kill (SIGKILL)'**
+  String get ssh_processes_forceKill;
+
+  /// Process detail sheet title.
+  ///
+  /// In en, this message translates to:
+  /// **'Process Details'**
+  String get ssh_processes_detailTitle;
+
+  /// Process owner label.
+  ///
+  /// In en, this message translates to:
+  /// **'User'**
+  String get ssh_processes_user;
+
+  /// Process status label.
+  ///
+  /// In en, this message translates to:
+  /// **'Status'**
+  String get ssh_processes_status;
+
+  /// Process threads label.
+  ///
+  /// In en, this message translates to:
+  /// **'Threads'**
+  String get ssh_processes_threads;
+
+  /// Process command line label.
+  ///
+  /// In en, this message translates to:
+  /// **'Command line'**
+  String get ssh_processes_command;
+
+  /// Process actions section title.
+  ///
+  /// In en, this message translates to:
+  /// **'Actions'**
+  String get ssh_processes_actions;
+
+  /// Hint for the graceful termination action.
+  ///
+  /// In en, this message translates to:
+  /// **'Send TERM and let the process exit cleanly'**
+  String get ssh_processes_termHint;
+
+  /// Hint for the force kill action.
+  ///
+  /// In en, this message translates to:
+  /// **'Send KILL; unsaved data may be lost'**
+  String get ssh_processes_forceKillHint;
+
+  /// Process CPU label.
+  ///
+  /// In en, this message translates to:
+  /// **'CPU'**
+  String get ssh_processes_cpu;
+
+  /// Process memory label.
+  ///
+  /// In en, this message translates to:
+  /// **'Memory'**
+  String get ssh_processes_memory;
 
   /// Add server sheet connection settings section title.
   ///
@@ -5114,23 +5744,11 @@ abstract class AppLocalizations {
   /// **'Encryption Mode'**
   String get ssh_encryptionMode;
 
-  /// SSH key passphrase label.
-  ///
-  /// In en, this message translates to:
-  /// **'Passphrase'**
-  String get ssh_passphrase;
-
   /// SSH key public key label.
   ///
   /// In en, this message translates to:
   /// **'Public Key'**
   String get ssh_publicKey;
-
-  /// SSH key private key label.
-  ///
-  /// In en, this message translates to:
-  /// **'Private Key'**
-  String get ssh_privateKey;
 
   /// SSH key field value when key content has not synced.
   ///
@@ -5167,12 +5785,6 @@ abstract class AppLocalizations {
   /// In en, this message translates to:
   /// **'Passphrase (Optional)'**
   String get ssh_passphraseOptional;
-
-  /// SSH key passphrase field placeholder.
-  ///
-  /// In en, this message translates to:
-  /// **'Leave empty for no passphrase'**
-  String get ssh_passphrasePlaceholder;
 
   /// SSH public key field placeholder.
   ///

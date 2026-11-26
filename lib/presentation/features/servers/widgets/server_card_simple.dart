@@ -27,6 +27,7 @@ class SimpleServerCard extends StatelessWidget {
     this.subtitleOverride,
     this.titleBadge,
     this.showCountLinks = true,
+    this.showCounts = true,
   });
 
   final Server server;
@@ -39,6 +40,7 @@ class SimpleServerCard extends StatelessWidget {
   final String? subtitleOverride;
   final Widget? titleBadge;
   final bool showCountLinks;
+  final bool showCounts;
 
   @override
   Widget build(BuildContext context) {
@@ -104,29 +106,31 @@ class SimpleServerCard extends StatelessWidget {
                 diskPercent: disk?.usedPercent,
                 loading: loading,
               ),
-              const SizedBox(height: 16),
-              const _SimpleDivider(),
-              const SizedBox(height: 13),
-              _SimpleCountRow(
-                base: base,
-                loading: loading,
-                onWebsitesTap: showCountLinks
-                    ? () => _openWebsitesPage(context)
-                    : null,
-                onDatabasesTap: showCountLinks
-                    ? () => showDatabaseSheet(context, server.id)
-                    : null,
-                onAppsTap: showCountLinks
-                    ? () => Navigator.of(context).push(
-                        CupertinoPageRoute<void>(
-                          builder: (_) => AppStorePage(serverId: server.id),
-                        ),
-                      )
-                    : null,
-                onTasksTap: showCountLinks
-                    ? () => openCronjobPage(context, server.id)
-                    : null,
-              ),
+              if (showCounts) ...[
+                const SizedBox(height: 16),
+                const _SimpleDivider(),
+                const SizedBox(height: 13),
+                _SimpleCountRow(
+                  base: base,
+                  loading: loading,
+                  onWebsitesTap: showCountLinks
+                      ? () => _openWebsitesPage(context)
+                      : null,
+                  onDatabasesTap: showCountLinks
+                      ? () => showDatabaseSheet(context, server.id)
+                      : null,
+                  onAppsTap: showCountLinks
+                      ? () => Navigator.of(context).push(
+                          CupertinoPageRoute<void>(
+                            builder: (_) => AppStorePage(serverId: server.id),
+                          ),
+                        )
+                      : null,
+                  onTasksTap: showCountLinks
+                      ? () => openCronjobPage(context, server.id)
+                      : null,
+                ),
+              ],
             ],
           ),
         ),

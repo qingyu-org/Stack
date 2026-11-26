@@ -1,6 +1,7 @@
 import '../entities/panel_probe_result.dart';
 import '../entities/panel_type.dart';
 import '../entities/server.dart';
+import '../entities/ssh_credentials.dart';
 
 /// 面板服务器仓库抽象。
 ///
@@ -26,6 +27,23 @@ abstract class ServerRepository {
 
   /// 更新服务器元数据（可选更新 API Key）。
   Future<void> update(Server server, {String? apiKey});
+
+  /// 新增一台纯 SSH 服务器（元数据 + 安全存储凭据）。
+  Future<Server> addSsh({
+    String? name,
+    required String host,
+    required int port,
+    required String username,
+    required SshAuthType authType,
+    required SshCredentials credentials,
+    String hostKey = '',
+  });
+
+  Future<SshCredentials?> getSshCredentials(int id);
+
+  Future<void> saveSshCredentials(int id, SshCredentials credentials);
+
+  Future<void> deleteSshCredentials(int id);
 
   Future<void> remove(int id);
 

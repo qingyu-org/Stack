@@ -59,7 +59,6 @@ class _PanelTypePickerSheet extends StatelessWidget {
       isAdaptive: true,
       showHandle: false,
       isFloating: true,
-      hasHorizontalPadding: false,
       contentPadding: EdgeInsets.zero,
       panelHeader: Padding(
         padding: const EdgeInsets.fromLTRB(20, 16, 10, 0),

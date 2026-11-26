@@ -9,6 +9,7 @@ import 'package:shared_preferences/shared_preferences.dart';
 import 'package:uuid/uuid.dart';
 import '../../domain/entities/panel_node.dart';
 import '../../domain/entities/server.dart';
+import '../../domain/entities/ssh_credentials.dart';
 
 import 'icloud_key_value_bridge.dart';
 import 'webdav_sync_client.dart';
@@ -193,6 +194,7 @@ class StorageService {
     } else {
       await deleteApiKey(id, sync: false);
     }
+    await deleteSshCredentials(id);
     await deleteServerMemo(id);
     await deleteActiveNodeName(id);
   }
@@ -453,6 +455,7 @@ class StorageService {
         } else {
           await deleteApiKey(id, sync: false);
         }
+        await deleteSshCredentials(id);
       }
     }
     if (mergeResult.changedLocalTombstones) {
@@ -521,6 +524,7 @@ class StorageService {
           } else {
             await deleteApiKey(id, sync: false);
           }
+          await deleteSshCredentials(id);
         }
       }
       if (mergeResult.changedLocalTombstones) {
@@ -599,6 +603,27 @@ class StorageService {
   }
 
   Future<String?> getApiKey(int id) => _secureStorage.read(key: _apiKeyKey(id));
+
+  // --- SSH credentials (local secure storage only) ---
+
+  String _sshCredentialsKey(int id) => 'ssh_credentials_$id';
+
+  Future<SshCredentials?> getSshCredentials(int id) async {
+    final raw = await _secureStorage.read(key: _sshCredentialsKey(id));
+    if (raw == null || raw.isEmpty) return null;
+    return SshCredentials.fromJsonString(raw);
+  }
+
+  Future<void> saveSshCredentials(int id, SshCredentials credentials) async {
+    await _secureStorage.write(
+      key: _sshCredentialsKey(id),
+      value: credentials.toJsonString(),
+    );
+  }
+
+  Future<void> deleteSshCredentials(int id) async {
+    await _secureStorage.delete(key: _sshCredentialsKey(id));
+  }
 
   Future<void> deleteApiKey(int id, {bool sync = true}) async {
     final server = await getServer(id);

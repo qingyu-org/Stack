@@ -6,6 +6,7 @@ import '../../domain/entities/panel_node.dart';
 import '../../domain/entities/panel_probe_result.dart';
 import '../../domain/entities/panel_type.dart';
 import '../../domain/entities/server.dart';
+import '../../domain/entities/ssh_credentials.dart';
 import '../../domain/repositories/server_repository.dart';
 
 part 'server_repository_impl.g.dart';
@@ -53,6 +54,46 @@ class ServerRepositoryImpl implements ServerRepository {
 
     await _storage.saveServer(server);
     await _storage.saveApiKey(server.id, apiKey);
+    return server;
+  }
+
+  @override
+  Future<SshCredentials?> getSshCredentials(int id) =>
+      _storage.getSshCredentials(id);
+
+  @override
+  Future<void> saveSshCredentials(int id, SshCredentials credentials) =>
+      _storage.saveSshCredentials(id, credentials);
+
+  @override
+  Future<void> deleteSshCredentials(int id) =>
+      _storage.deleteSshCredentials(id);
+
+  @override
+  Future<Server> addSsh({
+    String? name,
+    required String host,
+    required int port,
+    required String username,
+    required SshAuthType authType,
+    required SshCredentials credentials,
+    String hostKey = '',
+  }) async {
+    final existing = await _storage.getServers();
+    final now = DateTime.now();
+    final server = Server()
+      ..name = name
+      ..host = host
+      ..port = port
+      ..panelType = PanelType.bareMetal
+      ..sshUsername = username
+      ..sshAuthType = authType
+      ..sshHostKey = hostKey
+      ..createdAt = now
+      ..sortIndex = existing.length;
+
+    await _storage.saveServer(server);
+    await _storage.saveSshCredentials(server.id, credentials);
     return server;
   }
 

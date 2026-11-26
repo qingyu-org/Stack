@@ -8,15 +8,19 @@ import '../../../../core/localization/l10n_x.dart';
 import '../../../../core/router/app_router.dart';
 import '../../../../core/theme/app_theme.dart';
 import '../../../../domain/entities/panel_node.dart';
+import '../../../../domain/entities/panel_type.dart';
 import '../../../../domain/entities/server.dart';
 import '../../../common/components/floating_tab_bar.dart';
 import '../../../common/components/frosted_action_button.dart';
 import '../../../common/components/frosted_scaffold.dart';
 import '../../settings/providers/app_settings_provider.dart';
+import '../../ssh_server/screens/ssh_server_detail_page.dart';
 import '../providers/node_providers.dart';
 import '../providers/node_selection_provider.dart';
 import '../providers/servers_provider.dart';
+import '../providers/ssh_servers_provider.dart';
 import '../widgets/add_server_sheet.dart';
+import '../widgets/add_ssh_server_sheet.dart';
 import '../widgets/panel_type_picker_sheet.dart';
 import '../widgets/server_context_menu.dart';
 import '../widgets/server_group_card.dart';
@@ -165,6 +169,10 @@ class _ServersPageState extends ConsumerState<ServersPage>
       _lastNodeRefreshAt = now;
     }
     for (final server in servers) {
+      if (server.isSshServer) {
+        ref.invalidate(sshDashboardSnapshotProvider(server.id));
+        continue;
+      }
       ref.invalidate(serverDashboardSnapshotProvider(server.id));
       if (server.isProActive && shouldRefreshNodes) {
         ref.invalidate(serverNodesProvider(server.id));
@@ -205,6 +213,10 @@ class _ServersPageState extends ConsumerState<ServersPage>
   Future<void> _handleAddServer() async {
     final panelType = await showPanelTypePicker(context);
     if (panelType == null || !mounted) return;
+    if (panelType == PanelType.bareMetal) {
+      await AddSshServerSheet.show(context);
+      return;
+    }
     await AddServerSheet.show(context, panelType: panelType);
   }
 }
@@ -383,7 +395,9 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
     ServerContextMenu.show(
       itemContext,
       onSort: () => setState(() => _isSorting = true),
-      onEdit: () => AddServerSheet.edit(context, server),
+      onEdit: () => server.isSshServer
+          ? AddSshServerSheet.edit(context, server)
+          : AddServerSheet.edit(context, server),
       onDelete: () => _confirmDelete(server),
     );
   }
@@ -417,6 +431,14 @@ class _ServerListTabState extends ConsumerState<_ServerListTab> {
   }
 
   Future<void> _openServer(Server server, String nodeName) async {
+    if (server.isSshServer) {
+      await Navigator.of(context).push(
+        CupertinoPageRoute<void>(
+          builder: (_) => SshServerDetailPage(serverId: server.id),
+        ),
+      );
+      return;
+    }
     await ref
         .read(activeNodeControllerProvider(server.id).notifier)
         .select(nodeName);

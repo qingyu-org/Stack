@@ -1,6 +1,7 @@
 import '../../core/utils/server_host_normalizer.dart';
 import 'panel_node.dart';
 import 'panel_type.dart';
+import 'ssh_credentials.dart';
 
 /// 用户对面板版本的覆盖设置。
 ///
@@ -37,6 +38,17 @@ class Server {
   /// 面板类型；旧数据没有该字段时按 1Panel 处理。
   PanelType panelType = PanelType.onePanel;
 
+  /// 纯 SSH 服务器的登录用户名。
+  String sshUsername = 'root';
+
+  /// SSH 认证方式，具体密码/私钥保存在安全存储中。
+  SshAuthType sshAuthType = SshAuthType.password;
+
+  /// 首次连接时记录的主机密钥指纹（TOFU），后续连接必须一致。
+  String sshHostKey = '';
+
+  bool get isSshServer => panelType == PanelType.bareMetal;
+
   bool isHttps = false;
 
   bool allowInsecureConnections = false;
@@ -64,6 +76,7 @@ class Server {
 
   /// 当前是否按专业版展示。
   bool get isProActive {
+    if (isSshServer) return false;
     return switch (editionOverride) {
       PanelEditionOverride.pro => true,
       PanelEditionOverride.community => false,
@@ -105,6 +118,9 @@ class Server {
       'host': host,
       'port': port,
       'panelType': panelType.storageName,
+      'sshUsername': sshUsername,
+      'sshAuthType': sshAuthType.storageName,
+      'sshHostKey': sshHostKey,
       'isHttps': isHttps,
       'allowInsecureConnections': allowInsecureConnections,
       'sortIndex': sortIndex,
@@ -127,6 +143,9 @@ class Server {
       ..host = json['host'] as String
       ..port = _intValue(json['port'])
       ..panelType = PanelType.fromName(json['panelType'] as String?)
+      ..sshUsername = json['sshUsername'] as String? ?? 'root'
+      ..sshAuthType = SshAuthType.fromName(json['sshAuthType'] as String?)
+      ..sshHostKey = json['sshHostKey'] as String? ?? ''
       ..isHttps = json['isHttps'] == true
       ..allowInsecureConnections = json['allowInsecureConnections'] == true
       ..sortIndex = _intValue(json['sortIndex'])

@@ -34,7 +34,7 @@
 		<true/>
 	</dict>
 	<key>NSLocalNetworkUsageDescription</key>
-	<string>Access 1Panel services and website resources on your local network.</string>
+	<string>Access 1Panel services, SSH servers and website resources on your local network.</string>
 	<key>NSBonjourServices</key>
 	<array>
 		<string>_bonjour._tcp</string>
